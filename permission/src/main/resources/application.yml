@@ -70,3 +70,6 @@ rsa:
 app:
   url:
     permission: http://127.0.0.1:${server.port}${server.servlet.context-path}
+redis:
+  message:
+    topic: web-sys
