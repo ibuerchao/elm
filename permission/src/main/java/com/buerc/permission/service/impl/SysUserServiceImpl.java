@@ -6,6 +6,7 @@ import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.JwtTokenUtil;
 import com.buerc.common.utils.RedisUtil;
+import com.buerc.common.utils.RsaUtil;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
@@ -20,8 +21,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +41,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private MailUtil mailUtil;
+
+    @Resource
+    private RsaUtil rsaUtil;
 
     @Override
     public String signUp(SignUp signUp) {
@@ -191,5 +198,16 @@ public class SysUserServiceImpl implements SysUserService {
         String value = jwtTokenUtil.createToken(id);
         RedisUtil.set(key,value,jwtTokenUtil.getExpiration(), TimeUnit.SECONDS);
         return value;
+    }
+
+    @Override
+    public Boolean logOut() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String header = request.getHeader(RedisConstant.PARAM_HEADER);
+        if (StringUtils.isBlank(header)){
+            return Boolean.TRUE;
+        }
+        String userId = jwtTokenUtil.getUserId(header);
+        return RedisUtil.del(RedisConstant.USER_TOKEN.concat(userId));
     }
 }

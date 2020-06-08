@@ -39,9 +39,8 @@ public class SysUserController {
 
     @ApiOperation(value = "用户登出")
     @PostMapping("/sign_out")
-    public Result sign_out(@RequestBody User user){
-        BeanValidator.validator(user);
-        return Result.success(sysUserService.login(user));
+    public Result sign_out(){
+        return Result.success(sysUserService.logOut());
     }
 
     @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)

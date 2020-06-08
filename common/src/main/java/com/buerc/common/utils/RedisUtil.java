@@ -23,6 +23,10 @@ public class RedisUtil {
         return get().opsForValue().get(key);
     }
 
+    public static Boolean del(String key){
+        return get().delete(key);
+    }
+
     public static void set(String key, String value, long l, TimeUnit timeUnit) {
         get().opsForValue().set(key, value, l, timeUnit);
     }

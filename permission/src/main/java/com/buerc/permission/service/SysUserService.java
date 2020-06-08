@@ -1,9 +1,9 @@
 package com.buerc.permission.service;
 
-import com.buerc.permission.param.SignUp;
-import com.buerc.permission.param.User;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
+import com.buerc.permission.param.SignUp;
+import com.buerc.permission.param.User;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,12 @@ public interface SysUserService {
      */
     Map<String,Object> validateEmail(String payload);
 
+    /**
+     * 用户登录
+     */
     String login(User user);
+
+    Boolean logOut();
 
     List<SysUser> selectByExample(SysUserExample example);
 

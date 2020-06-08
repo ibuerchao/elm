@@ -1,9 +1,6 @@
 package com.buerc.permission.shiro;
 
-import com.buerc.common.constants.ResultCode;
-import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.JwtTokenUtil;
-import com.buerc.permission.model.SysUser;
 import com.buerc.permission.service.SysUserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

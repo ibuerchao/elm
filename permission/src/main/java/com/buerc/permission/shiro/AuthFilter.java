@@ -1,5 +1,6 @@
 package com.buerc.permission.shiro;
 
+import com.buerc.common.constants.RedisConstant;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.ApplicationContextUtil;
@@ -70,7 +71,7 @@ public class AuthFilter extends AuthenticatingFilter {
      */
     private String getRequestToken(ServletRequest servletRequest){
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        return request.getHeader("token");
+        return request.getHeader(RedisConstant.PARAM_HEADER);
     }
 
     /**

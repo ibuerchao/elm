@@ -1,6 +1,7 @@
 package com.buerc.permission.config;
 
 import com.buerc.common.utils.JwtTokenUtil;
+import com.buerc.common.utils.RsaUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -16,6 +17,11 @@ public class MVCConfig implements WebMvcConfigurer {
     @Bean
     public JwtTokenUtil jwtTokenUtils(){
         return new JwtTokenUtil();
+    }
+
+    @Bean
+    public RsaUtil rsaUtil(){
+        return new RsaUtil();
     }
 
     @Bean
