@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>为保证您的账号安全，请验证邮箱</title>
+</head>
+<body style="background-color: #F0F0F0;">
+<div style="position: absolute;left: 50%;top: 50%;width: 800px;height: 600px;margin:-300px 0 0 -400px;
+background-color: #FFFFFF;">
+    <div style="padding: 50px">
+        <div style="text-align: center;margin-top: 100px;">
+            <div th:if="${flag} == 0">
+                <img src="/img/error.png">
+                <p style="margin-top: 50px">对不起，此链接已失效，请访问<a href="http://www.baidu.com">注册</a>页面重新发送注册链接。</p>
+            </div>
+            <div th:if="${flag} == 1">
+                <img src="/img/error.png">
+                <p style="margin-top: 50px">对不起，激活失败，请检查访问链接是否复制完整。</p>
+            </div>
+            <div th:if="${flag} == 2">
+                <img src="/img/success.png">
+                <p style="margin-top: 50px">此账号已激活，请使用账号密码<a href="http://www.baidu.com">直接登录。</a></p>
+            </div>
+            <div th:if="${flag} == 3">
+                <img src="/img/success.png">
+                <p style="margin-top: 50px"><span th:text="${username}"></span>&nbsp;恭喜你激活成功，<a href="http://www.baidu.com">直接登录。</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

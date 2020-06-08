@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>为保证您的账号安全，请验证邮箱</title>
+</head>
+<body style="background-color: #F0F0F0;width: 100%;height: 100%;padding-top: 50px;">
+<div style="margin: 0 50px 50px 50px;border-top: 5px solid red;background-color: #FFFFFF;padding: 50px">
+    <p><span th:text="${username}"></span> 您好，</p>
+    <p>感谢您注册不二超elm，为了避免您忘记账号或密码导致您的账号无法找回，请您验证 Email 地址。</p>
+    <p style="text-align: center;margin: 30px auto;">
+        <a th:href="@{${alink}}"
+           style="display: inline-block;width: 120px;line-height: 26px;height: 26px;padding: 10px;
+                  background-color: #f55d54;color: white;text-align: center;font-size: 16px;text-decoration: none;">
+            点击验证
+        </a>
+    </p>
+    <p>-----------------</p>
+    <p>按钮无效？请复制粘贴下面的链接至浏览器地址栏打开：&nbsp;
+        <a th:href="@{${alink}}" target="_blank" style="word-break:break-all"><span th:text="${alink}"></span></a>
+    </p>
+    <p>若这封验证邮件并非应您要求寄发，请您忽略不须予以理会，这不会对您的邮箱安全造成任何影响。</p>
+</div>
+</body>
+</html>

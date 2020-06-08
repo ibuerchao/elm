@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- 控制台输出：CONSOLE -->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <!-- 文件路径 -->
+    <property name="FILE_PATH" value="/logs/elm-permission" />
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>ELM-PERMISSION - [%d{yyyy-MM-dd HH:mm:ss.SSS}] - %clr(%-5.5p) - %clr(%-60.60logger{59}){cyan} - %-4.4L - %clr(%8X{token}){yellow} - %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 文件路径 -->
+        <file>${FILE_PATH}/elm-permission.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名称 -->
+            <fileNamePattern>${FILE_PATH}/elm-permission.%d{yyyy-MM-dd-HH}.log</fileNamePattern>
+            <!-- 文件最大保存历史数量 -->
+            <MaxHistory>100</MaxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.buerc" level="debug"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
