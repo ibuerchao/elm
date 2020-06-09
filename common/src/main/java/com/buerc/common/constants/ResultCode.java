@@ -45,4 +45,7 @@ public interface ResultCode {
 
     int MAIL_EXIST_ERROR_CODE = 1013;
     String MAIL_EXIST_ERROR_MSG = "邮箱已被注册";
+
+    int INVALID_ENCRYPT_STR_CODE = 1014;
+    String INVALID_ENCRYPT_STR_MSG = "非法加密字符串";
 }

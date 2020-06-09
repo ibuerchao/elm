@@ -1,5 +1,8 @@
 package com.buerc.common.utils;
 
+import com.buerc.common.constants.ResultCode;
+import com.buerc.common.exception.BizException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.BadPaddingException;
@@ -15,6 +18,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+@Slf4j
 public class RsaUtil {
 
     //定义加密方式
@@ -210,10 +214,10 @@ public class RsaUtil {
             Cipher cipher = getPrivateDecryptCipher();
             byte[] bytes = doFinal(cipher, data, DECRYPT);
             return new String(bytes, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e){
+            log.error("私钥解密错误，{},{}",str,e);
+            throw new BizException(ResultCode.INVALID_ENCRYPT_STR_CODE,ResultCode.INVALID_ENCRYPT_STR_MSG);
         }
-        return null;
     }
 
     /**

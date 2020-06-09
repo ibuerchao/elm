@@ -10,4 +10,6 @@ public class User {
     private String username;
     @NotBlank(message = "密码不能为空")
     private String password;
+    //是否七天免密登录
+    private boolean rememberMe = false;
 }

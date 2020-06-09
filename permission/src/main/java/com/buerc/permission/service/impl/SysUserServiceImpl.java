@@ -178,10 +178,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public String login(User user) {
+        String decrypt = rsaUtil.decryptByPrivateKey(user.getPassword());
         SysUserExample sysUserExample = new SysUserExample();
         SysUserExample.Criteria criteria = sysUserExample.createCriteria();
         criteria.andUsernameEqualTo(user.getUsername());
-        criteria.andPasswordEqualTo(user.getPassword());
+        criteria.andPasswordEqualTo(decrypt);
         List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
         if (CollectionUtils.isEmpty(users)){
             throw new BizException(ResultCode.USER_OR_PASSWORD_ERROR_CODE,ResultCode.USER_OR_PASSWORD_ERROR_MSG);
@@ -190,13 +191,14 @@ public class SysUserServiceImpl implements SysUserService {
             throw new BizException(ResultCode.INTERNAL_ERROR_CODE,ResultCode.INTERNAL_ERROR_MSG);
         }
         SysUser sysUser = users.get(0);
-        if (SysConstant.UserStatus.NORMAL != sysUser.getStatus()){
+        if (!SysConstant.UserStatus.NORMAL.equals(sysUser.getStatus())){
             throw new BizException(ResultCode.USER_STATUS_ERROR_CODE,ResultCode.USER_STATUS_ERROR_MSG);
         }
         String id = sysUser.getId();
         String key = RedisUtil.getKeyForToken(id);
         String value = jwtTokenUtil.createToken(id);
-        RedisUtil.set(key,value,jwtTokenUtil.getExpiration(), TimeUnit.SECONDS);
+        long time = user.isRememberMe() ? RedisConstant.REMEMBER_ME : jwtTokenUtil.getExpiration();
+        RedisUtil.set(key,value,time, TimeUnit.SECONDS);
         return value;
     }
 

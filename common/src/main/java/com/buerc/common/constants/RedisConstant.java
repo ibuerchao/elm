@@ -7,4 +7,7 @@ public interface RedisConstant {
     String USER_TOKEN = "token:user:";
     //用户注册后需要激活时的token
     String SIGN_UP_TOKEN = "token:sign_up:";
+
+    //7天免密登录
+    Integer REMEMBER_ME = 7*24*60*60;
 }
