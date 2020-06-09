@@ -44,6 +44,7 @@ public class ShiroConfig {
         filterMap.put("/sys/sign_up", "anon");
         filterMap.put("/sys/sign_in", "anon");
         filterMap.put("/unauthorized", "anon");
+        filterMap.put("/code", "anon");
         filterMap.put("/validate_email", "anon");
         filterMap.put("/static/**", "anon");
         filterMap.put("/img/**", "anon");

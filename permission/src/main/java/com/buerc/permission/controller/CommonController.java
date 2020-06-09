@@ -32,4 +32,11 @@ public class CommonController {
         return new ModelAndView("validate_email",sysUserService.validateEmail(payload));
     }
 
+    @GetMapping("/code")
+    @ResponseBody
+    public Result code(@RequestParam("email") String email){
+        sysUserService.getCode(email);
+        return Result.success();
+    }
+
 }

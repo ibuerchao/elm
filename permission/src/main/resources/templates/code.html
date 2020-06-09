@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>为保证您的账号安全，请验证邮箱</title>
+</head>
+<body style="background-color: #F0F0F0;width: 100%;height: 100%;padding-top: 50px;">
+<div style="margin: 0 50px 50px 50px;border-top: 5px solid red;background-color: #FFFFFF;padding: 50px">
+    <p>亲爱的用户，您好:</p>
+    <p>您此次【找回密码】的验证码为：</p>
+    <h1 th:text="${code}"></h1>
+    <p>此验证码15分钟内有效，请立即进行下一步操作。 如非你本人操作，请忽略此邮件。</p>
+    <p>-----------------</p>
+    <p>感谢您的使用！</p>
+    <p>vue-web</p>
+</div>
+</body>
+</html>

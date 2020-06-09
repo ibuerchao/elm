@@ -37,4 +37,9 @@ public interface SysUserService {
     Set<String> getRolesByUserId(String id);
 
     Set<String> getPermissionsByUserId(String id);
+
+    /**
+     * 获取邮箱验证码
+     */
+    void getCode(String email);
 }

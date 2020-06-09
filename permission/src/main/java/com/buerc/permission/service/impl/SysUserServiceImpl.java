@@ -107,10 +107,10 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("username",signUp.getUsername());
         String token = jwtTokenUtil.createToken(id);
         RedisUtil.set(RedisConstant.SIGN_UP_TOKEN.concat(id),token,5,TimeUnit.MINUTES);
-        String alink = IpUtil.getServerAddr().concat("/validate_email?payload=").concat(token);
+        String alink = IpUtil.getServerAddr().concat("/api/validate_email?payload=").concat(token);
         map.put("alink",alink);
         mail.setAttachment(map);
-        mailUtil.sendTemplateMail(mail);
+        mailUtil.sendTemplateMail(mail,"mail");
     }
 
     public Map<String,Object> validateEmail(String payload){
@@ -211,5 +211,20 @@ public class SysUserServiceImpl implements SysUserService {
         }
         String userId = jwtTokenUtil.getUserId(header);
         return RedisUtil.del(RedisConstant.USER_TOKEN.concat(userId));
+    }
+
+    @Override
+    public void getCode(String email) {
+        if(StringUtils.isBlank(email)){
+            throw new BizException(ResultCode.EMAIL_NOT_BLANK_CODE,ResultCode.EMAIL_NOT_BLANK_MSG);
+        }
+
+        Mail mail = new Mail();
+        mail.setEmail(email);
+        mail.setTitle("vue-web验证码");
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",123456);
+        mail.setAttachment(map);
+        mailUtil.sendTemplateMail(mail,"code");
     }
 }

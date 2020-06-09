@@ -94,7 +94,7 @@ public class MailUtil {
      *
      */
     @Async
-    public void sendTemplateMail(Mail mail) {
+    public void sendTemplateMail(Mail mail,String templateName) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -106,7 +106,7 @@ public class MailUtil {
             //定义模板数据
             context.setVariables(mail.getAttachment());
             //获取thymeleaf的html模板
-            String emailContent = templateEngine.process("mail", context); //指定模板路径
+            String emailContent = templateEngine.process(templateName, context); //指定模板路径
             messageHelper.setText(emailContent, true);
             //发送邮件
             javaMailSender.send(mimeMessage);
