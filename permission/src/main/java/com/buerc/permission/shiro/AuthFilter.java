@@ -52,7 +52,7 @@ public class AuthFilter extends AuthenticatingFilter {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             //设置编码，否则中文字符在重定向时会变为空字符串
             String msg = URLEncoder.encode(e.getMessage(), "UTF-8");
-            httpServletResponse.sendRedirect("/unauthorized?code="+e.getCode()+"&msg="+ msg);
+            httpServletResponse.sendRedirect("/api/unauthorized?code="+e.getCode()+"&msg="+ msg);
             return false;
         }
 
