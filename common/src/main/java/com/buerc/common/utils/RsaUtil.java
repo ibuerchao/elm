@@ -215,7 +215,7 @@ public class RsaUtil {
             byte[] bytes = doFinal(cipher, data, DECRYPT);
             return new String(bytes, StandardCharsets.UTF_8);
         } catch (Exception e){
-            log.error("私钥解密错误，{},{}",str,e);
+            log.error("私钥解密错误，{}",str,e);
             throw new BizException(ResultCode.INVALID_ENCRYPT_STR_CODE,ResultCode.INVALID_ENCRYPT_STR_MSG);
         }
     }
