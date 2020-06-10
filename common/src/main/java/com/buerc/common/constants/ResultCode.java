@@ -50,4 +50,9 @@ public interface ResultCode {
     String INVALID_ENCRYPT_STR_MSG = "非法加密字符串";
 
     String EMAIL_NOT_BLANK_MSG = "邮箱不能为空";
+
+    String CODE_FAILURE_MSG="验证码已失效";
+    String CODE_ERROR_MSG="验证码错误";
+    String PASSWORD_ERROR_MSG = "密码不能为空";
+    String PASSWORD_LENGTH_ERROR_MSG="密码长度为6-18之间";
 }

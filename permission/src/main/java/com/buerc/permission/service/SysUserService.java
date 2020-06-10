@@ -2,6 +2,7 @@ package com.buerc.permission.service;
 
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
+import com.buerc.permission.param.ResetPassword;
 import com.buerc.permission.param.SignUp;
 import com.buerc.permission.param.User;
 
@@ -42,4 +43,9 @@ public interface SysUserService {
      * 获取邮箱验证码
      */
     void getCode(String email);
+
+    /**
+     * 重置密码
+     */
+    void resetPassword(ResetPassword resetPassword);
 }

@@ -9,6 +9,7 @@ import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
 import com.buerc.permission.param.Mail;
+import com.buerc.permission.param.ResetPassword;
 import com.buerc.permission.param.SignUp;
 import com.buerc.permission.param.User;
 import com.buerc.permission.service.SysUserService;
@@ -214,11 +215,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void getCode(String email) {
         ValidateKit.notBlank(email,ResultCode.EMAIL_NOT_BLANK_MSG);
-
-        SysUserExample sysUserExample = new SysUserExample();
-        SysUserExample.Criteria criteria = sysUserExample.createCriteria();
-        criteria.andMailEqualTo(email);
-        List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
+        List<SysUser> users = getSysUserByEmail(email);
         if (CollectionUtils.isNotEmpty(users)){
             Mail mail = new Mail();
             mail.setEmail(email);
@@ -230,6 +227,43 @@ public class SysUserServiceImpl implements SysUserService {
             mailUtil.sendTemplateMail(mail,"code");
             String key = RedisConstant.CODE_EMAIL.concat(users.get(0).getId());
             RedisUtil.set(key,code,RedisConstant.CODE_EMAIL_TIME,TimeUnit.MINUTES);
+        }
+    }
+
+    private List<SysUser> getSysUserByEmail(String email){
+        SysUserExample sysUserExample = new SysUserExample();
+        SysUserExample.Criteria criteria = sysUserExample.createCriteria();
+        criteria.andMailEqualTo(email);
+        return sysUserMapper.selectByExample(sysUserExample);
+    }
+
+    @Override
+    public void resetPassword(ResetPassword resetPassword) {
+        List<SysUser> users = getSysUserByEmail(resetPassword.getEmail());
+        if(CollectionUtils.isNotEmpty(users)){
+            String password = resetPassword.getPassword();
+            ValidateKit.notBlank(password,ResultCode.PASSWORD_ERROR_MSG);
+            password = rsaUtil.decryptByPrivateKey(resetPassword.getPassword());
+            ValidateKit.assertTrue(password.length()<6 || password.length()>18,ResultCode.PASSWORD_LENGTH_ERROR_MSG);
+            //todo 密码数字字母下划线符号等
+            String id = users.get(0).getId();
+            String key = RedisConstant.CODE_EMAIL.concat(id);
+            String code = RedisUtil.get(key);
+            if (StringUtils.isBlank(code)){
+                throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.CODE_FAILURE_MSG);
+            }
+            if (!code.equals(resetPassword.getCode())){
+                throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.CODE_ERROR_MSG);
+            }
+            SysUser user = new SysUser();
+            user.setId(id);
+            user.setPassword(password);
+            user.setOperateTime(new Date());
+            user.setOperateIp(IpUtil.getRemoteAddr());
+            sysUserMapper.updateByPrimaryKeySelective(user);
+            RedisUtil.del(key);
+        }else{
+            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.CODE_FAILURE_MSG);
         }
     }
 }

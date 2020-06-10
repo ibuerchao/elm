@@ -4,6 +4,7 @@ import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysUser;
+import com.buerc.permission.param.ResetPassword;
 import com.buerc.permission.param.SignUp;
 import com.buerc.permission.param.User;
 import com.buerc.permission.service.SysUserService;
@@ -41,6 +42,14 @@ public class SysUserController {
     @PostMapping("/sign_out")
     public Result sign_out(){
         return Result.success(sysUserService.logOut());
+    }
+
+    @ApiOperation(value = "重置密码")
+    @PostMapping("/reset/password")
+    public Result resetPassword(@RequestBody ResetPassword resetPassword){
+        BeanValidator.validator(resetPassword);
+        sysUserService.resetPassword(resetPassword);
+        return Result.success();
     }
 
     @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
