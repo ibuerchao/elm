@@ -106,7 +106,7 @@ public class SysUserServiceImpl implements SysUserService {
         map.put("username",signUp.getUsername());
         String token = jwtTokenUtil.createToken(id);
         RedisUtil.set(RedisConstant.SIGN_UP_TOKEN.concat(id),token,5,TimeUnit.MINUTES);
-        String alink = IpUtil.getServerAddr().concat("/api/validate_email?payload=").concat(token);
+        String alink = IpUtil.getServerAddr().concat("/api/help/validate_email?payload=").concat(token);
         map.put("alink",alink);
         mail.setAttachment(map);
         mailUtil.sendTemplateMail(mail,"mail");
