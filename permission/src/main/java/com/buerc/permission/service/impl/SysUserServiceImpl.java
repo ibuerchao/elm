@@ -45,13 +45,12 @@ public class SysUserServiceImpl implements SysUserService {
     private RsaUtil rsaUtil;
 
     @Override
-    public String signUp(SignUp signUp) {
+    public void signUp(SignUp signUp) {
         validateSignUp(signUp);
         String id = insertSignUp(signUp);
         sendMail(signUp,id);
         String token = jwtTokenUtil.createToken(id);
         RedisUtil.set(RedisConstant.USER_TOKEN.concat(id),token,jwtTokenUtil.getExpiration(),TimeUnit.SECONDS);
-        return token;
     }
 
     /**
@@ -66,7 +65,7 @@ public class SysUserServiceImpl implements SysUserService {
         }
         example.clear();
         criteria = example.createCriteria();
-        criteria.andMailEqualTo(signUp.getMail());
+        criteria.andEmailEqualTo(signUp.getEmail());
         if(sysUserMapper.countByExample(example) > 0){
             throw new BizException(ResultCode.MAIL_EXIST_ERROR_CODE,ResultCode.MAIL_EXIST_ERROR_MSG);
         }
@@ -78,10 +77,12 @@ public class SysUserServiceImpl implements SysUserService {
      * @return 主键id
      */
     private String insertSignUp(SignUp signUp){
+        String password = validateEncryptPassword(signUp.getPassword());
         SysUser user = new SysUser();
         BeanUtils.copyProperties(signUp,user);
         String id = UUID.randomUUID().toString();
         user.setId(id);
+        user.setPassword(password);
         user.setStatus(SysConstant.UserStatus.NO_ACTIVATED);
         user.setOperateId(id);
         user.setOperateName(signUp.getUsername());
@@ -100,7 +101,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     private void sendMail(SignUp signUp,String id){
         Mail mail = new Mail();
-        mail.setEmail(signUp.getMail());
+        mail.setEmail(signUp.getEmail());
         mail.setTitle("不二超elm注册成功通知");
         Map<String,Object> map = new HashMap<>();
         map.put("username",signUp.getUsername());
@@ -180,7 +181,7 @@ public class SysUserServiceImpl implements SysUserService {
         String decrypt = rsaUtil.decryptByPrivateKey(user.getPassword());
         SysUserExample sysUserExample = new SysUserExample();
         SysUserExample.Criteria criteria = sysUserExample.createCriteria();
-        criteria.andUsernameEqualTo(user.getUsername());
+        criteria.andEmailEqualTo(user.getEmail());
         criteria.andPasswordEqualTo(decrypt);
         List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
         if (CollectionUtils.isEmpty(users)){
@@ -233,7 +234,7 @@ public class SysUserServiceImpl implements SysUserService {
     private List<SysUser> getSysUserByEmail(String email){
         SysUserExample sysUserExample = new SysUserExample();
         SysUserExample.Criteria criteria = sysUserExample.createCriteria();
-        criteria.andMailEqualTo(email);
+        criteria.andEmailEqualTo(email);
         return sysUserMapper.selectByExample(sysUserExample);
     }
 
@@ -241,11 +242,7 @@ public class SysUserServiceImpl implements SysUserService {
     public void resetPassword(ResetPassword resetPassword) {
         List<SysUser> users = getSysUserByEmail(resetPassword.getEmail());
         if(CollectionUtils.isNotEmpty(users)){
-            String password = resetPassword.getPassword();
-            ValidateKit.notBlank(password,ResultCode.PASSWORD_ERROR_MSG);
-            password = rsaUtil.decryptByPrivateKey(resetPassword.getPassword());
-            ValidateKit.assertTrue(password.length()<6 || password.length()>18,ResultCode.PASSWORD_LENGTH_ERROR_MSG);
-            //todo 密码数字字母下划线符号等
+            String password = validateEncryptPassword(resetPassword.getPassword());
             String id = users.get(0).getId();
             String key = RedisConstant.CODE_EMAIL.concat(id);
             String code = RedisUtil.get(key);
@@ -265,5 +262,12 @@ public class SysUserServiceImpl implements SysUserService {
         }else{
             throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.CODE_FAILURE_MSG);
         }
+    }
+
+    private String validateEncryptPassword(String encryptPassword){
+        String password = rsaUtil.decryptByPrivateKey(encryptPassword);
+        ValidateKit.assertTrue(password.length()<6 || password.length()>18,ResultCode.PASSWORD_LENGTH_ERROR_MSG);
+        //todo 密码数字字母下划线符号等
+        return password;
     }
 }

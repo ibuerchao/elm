@@ -15,6 +15,7 @@ public class ResetPassword {
     @Email
     private String email;
     //新密码
+    @NotBlank(message = "密码不能为空")
     private String password;
     //邮箱验证码
     @NotBlank(message = "验证码不能为空")

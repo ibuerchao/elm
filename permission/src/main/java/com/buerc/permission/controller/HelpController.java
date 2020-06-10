@@ -24,7 +24,8 @@ public class HelpController {
     @ResponseBody
     public Result signUp(@RequestBody SignUp signUp){
         BeanValidator.validator(signUp);
-        return Result.success(sysUserService.signUp(signUp));
+        sysUserService.signUp(signUp);
+        return Result.success();
     }
 
     @ApiOperation(value = "用户登录")

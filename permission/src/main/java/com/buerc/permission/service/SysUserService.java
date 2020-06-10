@@ -16,7 +16,7 @@ public interface SysUserService {
      * @param signUp 用户注册信息
      * @return token
      */
-    String signUp(SignUp signUp);
+    void signUp(SignUp signUp);
 
     /**
      * 注册成功后，激活邮箱
