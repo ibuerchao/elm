@@ -5,7 +5,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
-    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, telephone, mail, password, dept_id, status, remark, operate_id, operate_name, 
+    id, username, telephone, email, password, dept_id, status, remark, operate_id, operate_name, 
     operate_time, operate_ip
   </sql>
   <select id="selectByExample" parameterType="com.buerc.permission.model.SysUserExample" resultMap="BaseResultMap">
@@ -109,12 +109,12 @@
   </delete>
   <insert id="insert" parameterType="com.buerc.permission.model.SysUser">
     insert into sys_user (id, username, telephone, 
-      mail, password, dept_id, 
+      email, password, dept_id, 
       status, remark, operate_id, 
       operate_name, operate_time, operate_ip
       )
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{mail,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
       #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{operateId,jdbcType=VARCHAR}, 
       #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}
       )
@@ -131,8 +131,8 @@
       <if test="telephone != null">
         telephone,
       </if>
-      <if test="mail != null">
-        mail,
+      <if test="email != null">
+        email,
       </if>
       <if test="password != null">
         password,
@@ -169,8 +169,8 @@
       <if test="telephone != null">
         #{telephone,jdbcType=VARCHAR},
       </if>
-      <if test="mail != null">
-        #{mail,jdbcType=VARCHAR},
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -216,8 +216,8 @@
       <if test="record.telephone != null">
         telephone = #{record.telephone,jdbcType=VARCHAR},
       </if>
-      <if test="record.mail != null">
-        mail = #{record.mail,jdbcType=VARCHAR},
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
       </if>
       <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
@@ -253,7 +253,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
-      mail = #{record.mail,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       dept_id = #{record.deptId,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
@@ -275,8 +275,8 @@
       <if test="telephone != null">
         telephone = #{telephone,jdbcType=VARCHAR},
       </if>
-      <if test="mail != null">
-        mail = #{mail,jdbcType=VARCHAR},
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
@@ -309,7 +309,7 @@
     update sys_user
     set username = #{username,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
-      mail = #{mail,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       dept_id = #{deptId,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},

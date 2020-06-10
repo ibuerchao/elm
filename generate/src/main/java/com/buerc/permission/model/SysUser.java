@@ -15,7 +15,7 @@ public class SysUser implements Serializable {
     private String telephone;
 
     @ApiModelProperty(value = "邮箱")
-    private String mail;
+    private String email;
 
     @ApiModelProperty(value = "加密后的密码")
     private String password;
@@ -67,12 +67,12 @@ public class SysUser implements Serializable {
         this.telephone = telephone;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -148,7 +148,7 @@ public class SysUser implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", username=").append(username);
         sb.append(", telephone=").append(telephone);
-        sb.append(", mail=").append(mail);
+        sb.append(", email=").append(email);
         sb.append(", password=").append(password);
         sb.append(", deptId=").append(deptId);
         sb.append(", status=").append(status);

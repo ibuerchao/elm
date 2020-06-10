@@ -315,73 +315,73 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andMailIsNull() {
-            addCriterion("mail is null");
+        public Criteria andEmailIsNull() {
+            addCriterion("email is null");
             return (Criteria) this;
         }
 
-        public Criteria andMailIsNotNull() {
-            addCriterion("mail is not null");
+        public Criteria andEmailIsNotNull() {
+            addCriterion("email is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMailEqualTo(String value) {
-            addCriterion("mail =", value, "mail");
+        public Criteria andEmailEqualTo(String value) {
+            addCriterion("email =", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailNotEqualTo(String value) {
-            addCriterion("mail <>", value, "mail");
+        public Criteria andEmailNotEqualTo(String value) {
+            addCriterion("email <>", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailGreaterThan(String value) {
-            addCriterion("mail >", value, "mail");
+        public Criteria andEmailGreaterThan(String value) {
+            addCriterion("email >", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailGreaterThanOrEqualTo(String value) {
-            addCriterion("mail >=", value, "mail");
+        public Criteria andEmailGreaterThanOrEqualTo(String value) {
+            addCriterion("email >=", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailLessThan(String value) {
-            addCriterion("mail <", value, "mail");
+        public Criteria andEmailLessThan(String value) {
+            addCriterion("email <", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailLessThanOrEqualTo(String value) {
-            addCriterion("mail <=", value, "mail");
+        public Criteria andEmailLessThanOrEqualTo(String value) {
+            addCriterion("email <=", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailLike(String value) {
-            addCriterion("mail like", value, "mail");
+        public Criteria andEmailLike(String value) {
+            addCriterion("email like", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailNotLike(String value) {
-            addCriterion("mail not like", value, "mail");
+        public Criteria andEmailNotLike(String value) {
+            addCriterion("email not like", value, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailIn(List<String> values) {
-            addCriterion("mail in", values, "mail");
+        public Criteria andEmailIn(List<String> values) {
+            addCriterion("email in", values, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailNotIn(List<String> values) {
-            addCriterion("mail not in", values, "mail");
+        public Criteria andEmailNotIn(List<String> values) {
+            addCriterion("email not in", values, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailBetween(String value1, String value2) {
-            addCriterion("mail between", value1, value2, "mail");
+        public Criteria andEmailBetween(String value1, String value2) {
+            addCriterion("email between", value1, value2, "email");
             return (Criteria) this;
         }
 
-        public Criteria andMailNotBetween(String value1, String value2) {
-            addCriterion("mail not between", value1, value2, "mail");
+        public Criteria andEmailNotBetween(String value1, String value2) {
+            addCriterion("email not between", value1, value2, "email");
             return (Criteria) this;
         }
 
