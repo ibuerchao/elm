@@ -4,9 +4,7 @@ import com.buerc.common.constants.RedisConstant;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
-import com.buerc.common.utils.JwtTokenUtil;
-import com.buerc.common.utils.RedisUtil;
-import com.buerc.common.utils.RsaUtil;
+import com.buerc.common.utils.*;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
@@ -215,16 +213,23 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void getCode(String email) {
-        if(StringUtils.isBlank(email)){
-            throw new BizException(ResultCode.EMAIL_NOT_BLANK_CODE,ResultCode.EMAIL_NOT_BLANK_MSG);
-        }
+        ValidateKit.notBlank(email,ResultCode.EMAIL_NOT_BLANK_MSG);
 
-        Mail mail = new Mail();
-        mail.setEmail(email);
-        mail.setTitle("vue-web验证码");
-        Map<String,Object> map = new HashMap<>();
-        map.put("code",123456);
-        mail.setAttachment(map);
-        mailUtil.sendTemplateMail(mail,"code");
+        SysUserExample sysUserExample = new SysUserExample();
+        SysUserExample.Criteria criteria = sysUserExample.createCriteria();
+        criteria.andMailEqualTo(email);
+        List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
+        if (CollectionUtils.isNotEmpty(users)){
+            Mail mail = new Mail();
+            mail.setEmail(email);
+            mail.setTitle("vue-web验证码");
+            Map<String,Object> map = new HashMap<>();
+            String code = GenerateCodeUtil.code(SysConstant.Sys.EMAIL_CODE_LENGTH);
+            map.put("code", code);
+            mail.setAttachment(map);
+            mailUtil.sendTemplateMail(mail,"code");
+            String key = RedisConstant.CODE_EMAIL.concat(users.get(0).getId());
+            RedisUtil.set(key,code,RedisConstant.CODE_EMAIL_TIME,TimeUnit.MINUTES);
+        }
     }
 }

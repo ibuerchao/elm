@@ -49,6 +49,5 @@ public interface ResultCode {
     int INVALID_ENCRYPT_STR_CODE = 1014;
     String INVALID_ENCRYPT_STR_MSG = "非法加密字符串";
 
-    int EMAIL_NOT_BLANK_CODE = 1015;
     String EMAIL_NOT_BLANK_MSG = "邮箱不能为空";
 }
