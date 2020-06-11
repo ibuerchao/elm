@@ -1,5 +1,6 @@
 package com.buerc.permission.service;
 
+import com.buerc.common.vo.permission.UserInfo;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
 import com.buerc.permission.param.ResetPassword;
@@ -48,4 +49,6 @@ public interface SysUserService {
      * 重置密码
      */
     void resetPassword(ResetPassword resetPassword);
+
+    UserInfo info(String token);
 }

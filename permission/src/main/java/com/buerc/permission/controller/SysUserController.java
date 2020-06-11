@@ -6,9 +6,7 @@ import com.buerc.permission.model.SysUser;
 import com.buerc.permission.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,5 +29,11 @@ public class SysUserController {
     public Result<List<SysUser>> list(){
         List<SysUser> sysUsers = sysUserService.selectByExample(null);
         return Result.success(sysUsers);
+    }
+
+    @ApiOperation(value = "通过token查询用户信息、角色、权限")
+    @GetMapping("/info")
+    public Result info(@RequestParam("token") String token){
+        return Result.success(sysUserService.info(token));
     }
 }

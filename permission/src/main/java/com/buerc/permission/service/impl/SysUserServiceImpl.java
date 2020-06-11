@@ -5,6 +5,8 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.*;
+import com.buerc.common.vo.permission.UserInfo;
+import com.buerc.common.vo.permission.UserVo;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
@@ -196,8 +198,8 @@ public class SysUserServiceImpl implements SysUserService {
         }
         String id = sysUser.getId();
         String key = RedisUtil.getKeyForToken(id);
-        String value = jwtTokenUtil.createToken(id);
         long time = user.isRememberMe() ? RedisConstant.REMEMBER_ME : jwtTokenUtil.getExpiration();
+        String value = jwtTokenUtil.createToken(id,time);
         RedisUtil.set(key,value,time, TimeUnit.SECONDS);
         return value;
     }
@@ -269,5 +271,20 @@ public class SysUserServiceImpl implements SysUserService {
         ValidateKit.assertTrue(password.length()<6 || password.length()>18,ResultCode.PASSWORD_LENGTH_ERROR_MSG);
         //todo 密码数字字母下划线符号等
         return password;
+    }
+
+    @Override
+    public UserInfo info(String token) {
+        ValidateKit.notBlank(token,ResultCode.TOKEN_BLANK_MSG);
+        String userId = jwtTokenUtil.getUserId(token);
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        ValidateKit.notNull(sysUser,ResultCode.USER_NOT_EXIST_MSG);
+        UserInfo userInfo = new UserInfo();
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(sysUser,userVo);
+        userInfo.setInfo(userVo);
+        userInfo.setRoles(new HashSet<>());
+        userInfo.setPermissions(new HashSet<>());
+        return userInfo;
     }
 }
