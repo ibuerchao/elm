@@ -7,8 +7,6 @@ import com.buerc.common.utils.ApplicationContextUtil;
 import com.buerc.common.utils.JSONUtil;
 import com.buerc.common.utils.JwtTokenUtil;
 import com.buerc.common.web.Result;
-import com.buerc.permission.mapper.SysUserMapper;
-import com.buerc.permission.model.SysUser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
@@ -44,9 +42,8 @@ public class AuthFilter extends AuthenticatingFilter {
         try {
             JwtTokenUtil jwtTokenUtil = ApplicationContextUtil.getApplicationContext().getBean(JwtTokenUtil.class);
             String id = jwtTokenUtil.getUserId(token);
-            SysUserMapper sysUserMapper = ApplicationContextUtil.getApplicationContext().getBean(SysUserMapper.class);
-            SysUser user = sysUserMapper.selectByPrimaryKey(id);
-            if (user == null){
+            //todo 通过id调用permission服务获取用户信息来判断用户是否存在
+            if (id == null){
                 throw new BizException(ResultCode.USER_NOT_EXIST_CODE,ResultCode.USER_NOT_EXIST_MSG);
             }
         }catch (BizException e){
