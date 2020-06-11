@@ -78,6 +78,18 @@ public class JwtTokenUtil {
     }
 
     /**
+     * 生成指定过期时间的token
+     */
+    public String createToken(String id,long time){
+        return Jwts.builder()
+                .setSubject(id)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + time * 1000))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    /**
      * 生成token的过期时间
      */
     private Date generateExpirationDate() {
