@@ -23,7 +23,13 @@ public class SysDeptController {
     @PostMapping("/add")
     public Result add(@RequestBody Dept dept){
         BeanValidator.validator(dept);
-        sysDeptService.add(dept);
-        return Result.success();
+        return Result.success(sysDeptService.add(dept));
+    }
+
+    @ApiOperation(value = "编辑部门")
+    @PostMapping("/edit")
+    public Result edit(@RequestBody Dept dept){
+        BeanValidator.validator(dept);
+        return Result.success(sysDeptService.edit(dept));
     }
 }

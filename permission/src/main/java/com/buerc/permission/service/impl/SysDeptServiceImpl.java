@@ -2,6 +2,7 @@ package com.buerc.permission.service.impl;
 
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.ValidateKit;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
@@ -25,8 +26,8 @@ public class SysDeptServiceImpl implements SysDeptService {
     private SysDeptMapper sysDeptMapper;
 
     @Override
-    public void add(Dept dept) {
-        isDeptNameExist(dept.getName());
+    public SysDept add(Dept dept) {
+        isDeptNameExist(dept.getParentId(),dept.getName());
         SysDept sysDept = new SysDept();
         BeanUtils.copyProperties(dept,sysDept);
         sysDept.setId(UUID.randomUUID().toString());
@@ -36,14 +37,15 @@ public class SysDeptServiceImpl implements SysDeptService {
         sysDept.setOperateTime(new Date());
         sysDept.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.insert(sysDept);
+        return sysDept;
     }
 
     /**
      * 判断名称是否存在
      */
-    private void isDeptNameExist(String name){
+    private void isDeptNameExist(String parentId,String name){
         SysDeptExample example = new SysDeptExample();
-        example.createCriteria().andNameEqualTo(name);
+        example.createCriteria().andNameEqualTo(name).andParentIdEqualTo(parentId);
         List<SysDept> depts = sysDeptMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(depts)){
             throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NAME_REPEAT_MSG);
@@ -63,5 +65,16 @@ public class SysDeptServiceImpl implements SysDeptService {
         }else{
             return 1;
         }
+    }
+
+    @Override
+    public SysDept edit(Dept dept) {
+        ValidateKit.notBlank(dept.getId(),ResultCode.DEPT_ID_BLANK_MSG);
+        SysDept sysDept = sysDeptMapper.selectByPrimaryKey(dept.getId());
+        ValidateKit.notNull(sysDept,ResultCode.DEPT_NOT_EXIST_MSG);
+        SysDept update = new SysDept();
+        BeanUtils.copyProperties(dept,update);
+        sysDeptMapper.updateByPrimaryKeySelective(update);
+        return update;
     }
 }

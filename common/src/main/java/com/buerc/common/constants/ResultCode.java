@@ -57,4 +57,6 @@ public interface ResultCode {
     String PASSWORD_LENGTH_ERROR_MSG="密码长度为6-18之间";
     String DEPT_NAME_REPEAT_MSG="部门名称重复";
     String TOKEN_BLANK_MSG="token为空";
+    String DEPT_ID_BLANK_MSG="部门ID为空";
+    String DEPT_NOT_EXIST_MSG="部门不存在";
 }
