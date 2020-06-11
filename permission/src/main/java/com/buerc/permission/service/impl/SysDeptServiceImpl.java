@@ -9,6 +9,7 @@ import com.buerc.permission.model.SysDeptExample;
 import com.buerc.permission.param.Dept;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.permission.util.IpUtil;
+import com.buerc.security.holder.SecurityContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -32,8 +33,8 @@ public class SysDeptServiceImpl implements SysDeptService {
         BeanUtils.copyProperties(dept,sysDept);
         sysDept.setId(UUID.randomUUID().toString());
         sysDept.setSeq(getNextSeq(dept.getParentId()));
-        sysDept.setOperateId("1");
-        sysDept.setOperateName("2");
+        sysDept.setOperateId(SecurityContextHolder.getUserId());
+        sysDept.setOperateName(SecurityContextHolder.getUserName());
         sysDept.setOperateTime(new Date());
         sysDept.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.insert(sysDept);
@@ -74,6 +75,9 @@ public class SysDeptServiceImpl implements SysDeptService {
         ValidateKit.notNull(sysDept,ResultCode.DEPT_NOT_EXIST_MSG);
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept,update);
+        update.setOperateId(SecurityContextHolder.getUserId());
+        update.setOperateName(SecurityContextHolder.getUserName());
+        update.setOperateTime(new Date());
         sysDeptMapper.updateByPrimaryKeySelective(update);
         return update;
     }

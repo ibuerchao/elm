@@ -1,11 +1,14 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.vo.permission.UserInfo;
 import com.buerc.common.web.Result;
 import com.buerc.permission.param.ResetPassword;
 import com.buerc.permission.param.SignUp;
 import com.buerc.permission.param.User;
 import com.buerc.permission.service.SysUserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -57,5 +60,13 @@ public class HelpController {
     @GetMapping("/validate_email")
     public ModelAndView validateEmail(@RequestParam(value = "payload") String payload){
         return new ModelAndView("validate_email",sysUserService.validateEmail(payload));
+    }
+
+    @ApiImplicitParams(@ApiImplicitParam(name="token",value = "用户token",dataTypeClass = String.class))
+    @ApiOperation(value = "通过token查询用户信息、角色、权限")
+    @GetMapping("/info")
+    @ResponseBody
+    public Result<UserInfo> info(@RequestParam("token") String token){
+        return Result.success(sysUserService.info(token));
     }
 }
