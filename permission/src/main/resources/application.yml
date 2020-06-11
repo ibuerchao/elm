@@ -38,6 +38,9 @@ spring:
     encoding: UTF-8
 #    servlet:
 #      content-type: text/html
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 #日志级别
 logging:
