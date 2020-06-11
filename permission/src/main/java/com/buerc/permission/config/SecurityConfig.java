@@ -1,11 +1,8 @@
 package com.buerc.permission.config;
 
-import com.buerc.permission.shiro.AuthFilter;
-import com.buerc.permission.shiro.AuthRealm;
+import com.buerc.security.shiro.AuthFilter;
+import com.buerc.security.shiro.DefaultShiroFilterFactoryBean;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,18 +12,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
-public class ShiroConfig {
-
-    @Bean("securityManager")
-    public SecurityManager securityManager(AuthRealm authRealm) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(authRealm);
-        return securityManager;
-    }
+public class SecurityConfig {
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
+    public DefaultShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+        DefaultShiroFilterFactoryBean shiroFilter = new DefaultShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
 
         //oauth过滤
@@ -49,12 +39,5 @@ public class ShiroConfig {
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
-    }
-
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager);
-        return advisor;
     }
 }

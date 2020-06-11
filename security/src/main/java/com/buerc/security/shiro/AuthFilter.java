@@ -1,4 +1,4 @@
-package com.buerc.permission.shiro;
+package com.buerc.security.shiro;
 
 import com.buerc.common.constants.RedisConstant;
 import com.buerc.common.constants.ResultCode;
@@ -12,6 +12,7 @@ import com.buerc.permission.model.SysUser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -52,7 +53,12 @@ public class AuthFilter extends AuthenticatingFilter {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             //设置编码，否则中文字符在重定向时会变为空字符串
             String msg = URLEncoder.encode(e.getMessage(), "UTF-8");
-            httpServletResponse.sendRedirect("/api/unauthorized?code="+e.getCode()+"&msg="+ msg);
+            ServerProperties serverProperties = ApplicationContextUtil.getApplicationContext().getBean(ServerProperties.class);
+            String contextPath = serverProperties.getServlet().getContextPath();
+            if (StringUtils.isBlank(contextPath)){
+                contextPath = "";
+            }
+            httpServletResponse.sendRedirect(contextPath+"/unauthorized?code="+e.getCode()+"&msg="+ msg);
             return false;
         }
 

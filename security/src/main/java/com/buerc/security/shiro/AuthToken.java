@@ -1,4 +1,4 @@
-package com.buerc.permission.shiro;
+package com.buerc.security.shiro;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 

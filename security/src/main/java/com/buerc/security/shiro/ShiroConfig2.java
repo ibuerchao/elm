@@ -1,4 +1,4 @@
-package com.buerc.permission.config;
+package com.buerc.security.shiro;
 
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.springframework.context.annotation.Bean;

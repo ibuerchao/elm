@@ -1,4 +1,4 @@
-package com.buerc.permission.controller;
+package com.buerc.security.controller;
 
 import com.buerc.common.web.Result;
 import io.swagger.annotations.ApiOperation;
