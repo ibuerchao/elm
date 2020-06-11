@@ -315,73 +315,63 @@ public class SysDeptExample {
             return (Criteria) this;
         }
 
-        public Criteria andLevelIsNull() {
-            addCriterion("level is null");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andLevelIsNotNull() {
-            addCriterion("level is not null");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLevelEqualTo(String value) {
-            addCriterion("level =", value, "level");
+        public Criteria andStatusEqualTo(Byte value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotEqualTo(String value) {
-            addCriterion("level <>", value, "level");
+        public Criteria andStatusNotEqualTo(Byte value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelGreaterThan(String value) {
-            addCriterion("level >", value, "level");
+        public Criteria andStatusGreaterThan(Byte value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelGreaterThanOrEqualTo(String value) {
-            addCriterion("level >=", value, "level");
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelLessThan(String value) {
-            addCriterion("level <", value, "level");
+        public Criteria andStatusLessThan(Byte value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelLessThanOrEqualTo(String value) {
-            addCriterion("level <=", value, "level");
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelLike(String value) {
-            addCriterion("level like", value, "level");
+        public Criteria andStatusIn(List<Byte> values) {
+            addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotLike(String value) {
-            addCriterion("level not like", value, "level");
+        public Criteria andStatusNotIn(List<Byte> values) {
+            addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelIn(List<String> values) {
-            addCriterion("level in", values, "level");
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
+            addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andLevelNotIn(List<String> values) {
-            addCriterion("level not in", values, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelBetween(String value1, String value2) {
-            addCriterion("level between", value1, value2, "level");
-            return (Criteria) this;
-        }
-
-        public Criteria andLevelNotBetween(String value1, String value2) {
-            addCriterion("level not between", value1, value2, "level");
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

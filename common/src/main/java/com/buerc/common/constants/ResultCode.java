@@ -55,4 +55,5 @@ public interface ResultCode {
     String CODE_ERROR_MSG="验证码错误";
     String PASSWORD_ERROR_MSG = "密码不能为空";
     String PASSWORD_LENGTH_ERROR_MSG="密码长度为6-18之间";
+    String DEPT_NAME_REPEAT_MSG="部门名称重复";
 }

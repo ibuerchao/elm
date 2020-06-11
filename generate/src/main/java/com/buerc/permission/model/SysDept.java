@@ -14,8 +14,8 @@ public class SysDept implements Serializable {
     @ApiModelProperty(value = "上级部门id")
     private String parentId;
 
-    @ApiModelProperty(value = "部门层级")
-    private String level;
+    @ApiModelProperty(value = "1正常 0禁用")
+    private Byte status;
 
     @ApiModelProperty(value = "部门在当前层级下的顺序，由小到大")
     private Integer seq;
@@ -61,12 +61,12 @@ public class SysDept implements Serializable {
         this.parentId = parentId;
     }
 
-    public String getLevel() {
-        return level;
+    public Byte getStatus() {
+        return status;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Integer getSeq() {
@@ -126,7 +126,7 @@ public class SysDept implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", parentId=").append(parentId);
-        sb.append(", level=").append(level);
+        sb.append(", status=").append(status);
         sb.append(", seq=").append(seq);
         sb.append(", remark=").append(remark);
         sb.append(", operateId=").append(operateId);

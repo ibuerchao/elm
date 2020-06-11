@@ -5,7 +5,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
-    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="seq" jdbcType="INTEGER" property="seq" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="operate_id" jdbcType="VARCHAR" property="operateId" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, parent_id, level, seq, remark, operate_id, operate_name, operate_time, 
+    id, name, parent_id, status, seq, remark, operate_id, operate_name, operate_time, 
     operate_ip
   </sql>
   <select id="selectByExample" parameterType="com.buerc.permission.model.SysDeptExample" resultMap="BaseResultMap">
@@ -107,11 +107,11 @@
   </delete>
   <insert id="insert" parameterType="com.buerc.permission.model.SysDept">
     insert into sys_dept (id, name, parent_id, 
-      level, seq, remark, 
+      status, seq, remark, 
       operate_id, operate_name, operate_time, 
       operate_ip)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
-      #{level,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{seq,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=VARCHAR}, #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
       #{operateIp,jdbcType=VARCHAR})
   </insert>
@@ -127,8 +127,8 @@
       <if test="parentId != null">
         parent_id,
       </if>
-      <if test="level != null">
-        level,
+      <if test="status != null">
+        status,
       </if>
       <if test="seq != null">
         seq,
@@ -159,8 +159,8 @@
       <if test="parentId != null">
         #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="level != null">
-        #{level,jdbcType=VARCHAR},
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="seq != null">
         #{seq,jdbcType=INTEGER},
@@ -200,8 +200,8 @@
       <if test="record.parentId != null">
         parent_id = #{record.parentId,jdbcType=VARCHAR},
       </if>
-      <if test="record.level != null">
-        level = #{record.level,jdbcType=VARCHAR},
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.seq != null">
         seq = #{record.seq,jdbcType=INTEGER},
@@ -231,7 +231,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=VARCHAR},
-      level = #{record.level,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
       seq = #{record.seq,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=VARCHAR},
@@ -251,8 +251,8 @@
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="level != null">
-        level = #{level,jdbcType=VARCHAR},
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="seq != null">
         seq = #{seq,jdbcType=INTEGER},
@@ -279,7 +279,7 @@
     update sys_dept
     set name = #{name,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=VARCHAR},
-      level = #{level,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
       seq = #{seq,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=VARCHAR},

@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sys")
+@RequestMapping("/user")
 public class SysUserController {
     @Resource
     private SysUserService sysUserService;
@@ -27,7 +27,7 @@ public class SysUserController {
 
     @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
     @ApiOperation(value = "查询用户列表")
-    @PostMapping("/user/list")
+    @PostMapping("/list")
     public Result<List<SysUser>> list(){
         List<SysUser> sysUsers = sysUserService.selectByExample(null);
         return Result.success(sysUsers);
