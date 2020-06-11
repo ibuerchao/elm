@@ -123,9 +123,11 @@ public class BeanValidator {
             for (int i = 0; i < list.size(); i++) {
                 String exMsg = list.get(i);
                 if (i != 0) {
-                    sb.append(String.format("%s. %s", i, exMsg)).append(list.size() > 1 ? "<br/>" : "");
+//                    sb.append(String.format("%s. %s", i, exMsg)).append(list.size() > 1 ? "<br/>" : "");
+                    sb.append(String.format("%s. %s; ", i, exMsg));
                 } else {
-                    sb.append(exMsg).append(list.size() > 1 ? "<br/>" : "");
+//                    sb.append(exMsg).append(list.size() > 1 ? "<br/>" : "");
+                    sb.append(exMsg);
                 }
             }
 
