@@ -14,8 +14,7 @@ import java.util.List;
  */
 public class PaginationPlugin extends PluginAdapter {
     @Override
-    public boolean modelExampleClassGenerated(TopLevelClass topLevelClass,
-                                              IntrospectedTable introspectedTable) {
+    public boolean modelExampleClassGenerated(TopLevelClass topLevelClass,IntrospectedTable introspectedTable) {
         addLimit(topLevelClass, introspectedTable, "offset");
         addLimit(topLevelClass, introspectedTable, "limit");
         return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
@@ -27,13 +26,12 @@ public class PaginationPlugin extends PluginAdapter {
         isNotNullElement.addAttribute(new Attribute("test", "offset != null and offset>=0")); //$NON-NLS-1$ //$NON-NLS-2$
         isNotNullElement.addElement(new TextElement("limit #{offset} , #{limit}"));
         element.addElement(isNotNullElement);
-        return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element,
-                introspectedTable);
+        return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element,introspectedTable);
     }
 
     private void addLimit(TopLevelClass topLevelClass, IntrospectedTable introspectedTable, String name) {
         CommentGenerator commentGenerator = (CommentGenerator) context.getCommentGenerator();
-        Field field = new Field(name,new FullyQualifiedJavaType(Integer.class.getName()));
+        Field field = new Field(name, new FullyQualifiedJavaType(Integer.class.getName()));
         field.setVisibility(JavaVisibility.PROTECTED);
         field.setType(FullyQualifiedJavaType.getIntInstance());
         field.setName(name);
