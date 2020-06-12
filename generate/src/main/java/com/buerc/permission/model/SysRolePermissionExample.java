@@ -11,6 +11,10 @@ public class SysRolePermissionExample {
 
     protected List<Criteria> oredCriteria;
 
+    protected int offset;
+
+    protected int limit;
+
     public SysRolePermissionExample() {
         oredCriteria = new ArrayList<>();
     }
@@ -62,6 +66,22 @@ public class SysRolePermissionExample {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset=offset;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit=limit;
+    }
+
+    public Integer getLimit() {
+        return limit;
     }
 
     protected abstract static class GeneratedCriteria {
