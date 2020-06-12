@@ -1,5 +1,6 @@
 package com.buerc.permission.param;
 
+import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class Dept {
     private String name;
 
     @ApiModelProperty(value = "上级部门ID")
-    private String parentId = "root";
+    private String parentId = SysConstant.Sys.DEFAULT_DEPT_PARENT_ID;
 
     @ApiModelProperty(value = "部门状态 1正常 0禁用")
     @NotNull(message = "状态不能为空")

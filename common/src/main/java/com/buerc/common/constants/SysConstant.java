@@ -4,6 +4,8 @@ public interface SysConstant {
     interface Sys{
         //邮箱验证码长度
         int EMAIL_CODE_LENGTH = 6;
+        //默认部门父级ID
+        String DEFAULT_DEPT_PARENT_ID = "root";
     }
 
     //权限编码格式  应用模块:菜单模块:功能模块:操作模块

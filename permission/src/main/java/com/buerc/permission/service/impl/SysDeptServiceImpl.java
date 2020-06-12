@@ -1,6 +1,7 @@
 package com.buerc.permission.service.impl;
 
 import com.buerc.common.constants.ResultCode;
+import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.permission.mapper.SysDeptMapper;
@@ -12,6 +13,7 @@ import com.buerc.permission.util.IpUtil;
 import com.buerc.security.holder.SecurityContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,7 +31,9 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public SysDept add(Dept dept) {
-        isDeptNameExist(dept.getParentId(),dept.getName());
+        checkParentIdIsExist(dept.getParentId());
+        checkNameIsRepeat(null,dept.getParentId(),dept.getName());
+
         SysDept sysDept = new SysDept();
         BeanUtils.copyProperties(dept,sysDept);
         sysDept.setId(UUID.randomUUID().toString());
@@ -44,12 +49,29 @@ public class SysDeptServiceImpl implements SysDeptService {
     /**
      * 判断名称是否存在
      */
-    private void isDeptNameExist(String parentId,String name){
+    private void checkNameIsRepeat(String id,String parentId,String name){
         SysDeptExample example = new SysDeptExample();
         example.createCriteria().andNameEqualTo(name).andParentIdEqualTo(parentId);
         List<SysDept> depts = sysDeptMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(depts)){
-            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NAME_REPEAT_MSG);
+            if (StringUtils.isBlank(id)){
+                throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NAME_REPEAT_MSG);
+            }else{
+                List<String> collect = depts.stream().map(SysDept::getId).collect(Collectors.toList());
+                if (!collect.contains(id)){
+                    throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NAME_REPEAT_MSG);
+                }
+            }
+        }
+    }
+
+    /**
+     * 验证父级ID是否存在
+     */
+    private void checkParentIdIsExist(String parentId){
+        if (!SysConstant.Sys.DEFAULT_DEPT_PARENT_ID.equals(parentId)){
+            SysDept sysDept = sysDeptMapper.selectByPrimaryKey(parentId);
+            ValidateKit.notNull(sysDept,ResultCode.PARENT_DEPT_NOT_EXIST_MSG);
         }
     }
 
@@ -73,11 +95,15 @@ public class SysDeptServiceImpl implements SysDeptService {
         ValidateKit.notBlank(dept.getId(),ResultCode.DEPT_ID_BLANK_MSG);
         SysDept sysDept = sysDeptMapper.selectByPrimaryKey(dept.getId());
         ValidateKit.notNull(sysDept,ResultCode.DEPT_NOT_EXIST_MSG);
+        checkParentIdIsExist(dept.getParentId());
+        checkNameIsRepeat(dept.getId(),dept.getParentId(),dept.getName());
+
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept,update);
         update.setOperateId(SecurityContextHolder.getUserId());
         update.setOperateName(SecurityContextHolder.getUserName());
         update.setOperateTime(new Date());
+        update.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.updateByPrimaryKeySelective(update);
         return update;
     }
