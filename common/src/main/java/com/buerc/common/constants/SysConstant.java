@@ -6,6 +6,10 @@ public interface SysConstant {
         int EMAIL_CODE_LENGTH = 6;
         //默认部门父级ID
         String DEFAULT_DEPT_PARENT_ID = "root";
+        //分页默认起始值
+        int OFFSET = 0;
+        //分页默认每页大小
+        int LIMIT = 10;
     }
 
     //权限编码格式  应用模块:菜单模块:功能模块:操作模块

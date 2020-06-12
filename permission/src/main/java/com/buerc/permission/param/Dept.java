@@ -3,6 +3,7 @@ package com.buerc.permission.param;
 import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.*;
 
@@ -24,8 +25,7 @@ public class Dept {
 
     @ApiModelProperty(value = "部门状态 1正常 0禁用")
     @NotNull(message = "状态不能为空")
-    @Min(value = 0,message = "状态值最小为0")
-    @Max(value = 1,message = "状态值最大为1")
+    @Range(min = 0,max = 1,message = "部门状态只能 0-1之间")
     private Byte status;
 
     @ApiModelProperty(value = "备注")

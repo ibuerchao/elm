@@ -8,6 +8,7 @@ import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
 import com.buerc.permission.param.Dept;
+import com.buerc.permission.param.DeptListParam;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.permission.util.IpUtil;
 import com.buerc.security.holder.SecurityContextHolder;
@@ -106,5 +107,36 @@ public class SysDeptServiceImpl implements SysDeptService {
         update.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.updateByPrimaryKeySelective(update);
         return update;
+    }
+
+    @Override
+    public List<SysDept> list(DeptListParam param) {
+        if (param.getEnd()!=null && param.getStart()!=null){
+            ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart())<0,ResultCode.START_AND_END_INVALID_MSG);
+        }
+        SysDeptExample example = new SysDeptExample();
+        SysDeptExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(param.getName())){
+            criteria.andNameLike("%"+param.getName()+"%");
+        }
+        if (param.getStatus()!=null){
+            criteria.andStatusEqualTo(param.getStatus());
+        }
+        if (StringUtils.isNotBlank(param.getOperateName())){
+            criteria.andOperateNameLike("%"+param.getOperateName()+"%");
+        }
+        if (StringUtils.isNotBlank(param.getParentId())){
+            criteria.andParentIdEqualTo(param.getParentId());
+        }
+        if (param.getStart()!=null){
+            criteria.andOperateTimeGreaterThanOrEqualTo(param.getStart());
+        }
+        if (param.getEnd()!=null){
+            criteria.andOperateTimeLessThanOrEqualTo(param.getEnd());
+        }
+        example.setOffset(param.getOffset());
+        example.setLimit(param.getLimit());
+        example.setOrderByClause("seq asc");
+        return sysDeptMapper.selectByExample(example);
     }
 }

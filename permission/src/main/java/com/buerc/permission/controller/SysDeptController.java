@@ -3,6 +3,7 @@ package com.buerc.permission.controller;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
 import com.buerc.permission.param.Dept;
+import com.buerc.permission.param.DeptListParam;
 import com.buerc.permission.service.SysDeptService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,5 +32,12 @@ public class SysDeptController {
     public Result edit(@RequestBody Dept dept){
         BeanValidator.validator(dept);
         return Result.success(sysDeptService.edit(dept));
+    }
+
+    @ApiOperation(value = "部门列表")
+    @PostMapping("/list")
+    public Result list(@RequestBody DeptListParam param){
+        BeanValidator.validator(param);
+        return Result.success(sysDeptService.list(param));
     }
 }
