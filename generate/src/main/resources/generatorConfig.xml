@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
     <properties resource="generator.properties"/>
-    <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+    <context id="MySqlContext" targetRuntime="com.buerc.elm.InsoIntrospectedTable" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <property name="javaFileEncoding" value="UTF-8"/>

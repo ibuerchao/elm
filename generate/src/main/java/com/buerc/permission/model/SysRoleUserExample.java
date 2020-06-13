@@ -105,24 +105,25 @@ public class SysRoleUserExample {
         }
 
         protected void addCriterion(String condition) {
-            if (condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
+            if (condition!=null && !condition.equals("")){
+                criteria.add(new Criterion(condition));
             }
-            criteria.add(new Criterion(condition));
         }
 
         protected void addCriterion(String condition, Object value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
+            if (value!=null){
+                if (!(value instanceof String)){
+                    criteria.add(new Criterion(condition, value));
+                }else if (!value.equals("")){
+                    criteria.add(new Criterion(condition, value));
+                }
             }
-            criteria.add(new Criterion(condition, value));
         }
 
         protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
+            if (value1 != null && value2 != null) {
+                criteria.add(new Criterion(condition, value1, value2));
             }
-            criteria.add(new Criterion(condition, value1, value2));
         }
 
         public Criteria andIdIsNull() {
