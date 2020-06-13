@@ -224,7 +224,7 @@ public class SysUserServiceImpl implements SysUserService {
             mail.setEmail(email);
             mail.setTitle("vue-web验证码");
             Map<String,Object> map = new HashMap<>();
-            String code = GenerateCodeUtil.code(SysConstant.Sys.EMAIL_CODE_LENGTH);
+            String code = GenerateStrUtil.code(SysConstant.Sys.EMAIL_CODE_LENGTH);
             map.put("code", code);
             mail.setAttachment(map);
             mailUtil.sendTemplateMail(mail,"code");

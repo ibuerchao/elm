@@ -1,5 +1,6 @@
 package com.buerc.permission.service;
 
+import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.param.Dept;
 import com.buerc.permission.param.DeptListParam;
@@ -20,5 +21,5 @@ public interface SysDeptService {
     /**
      * 部门列表
      */
-    List<SysDept> list(DeptListParam param);
+    Result<List<SysDept>> list(DeptListParam param);
 }

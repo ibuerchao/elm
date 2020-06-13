@@ -2,7 +2,7 @@ package com.buerc.common.utils;
 
 import java.util.Random;
 
-public class GenerateCodeUtil {
+public class GenerateStrUtil {
     private static final String ALL_CHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final Integer ALL_CHAR_LENGTH = ALL_CHAR.length();
 
@@ -15,5 +15,12 @@ public class GenerateCodeUtil {
             count++;
         }
         return pwd.toString();
+    }
+
+    public static String like(String condition) {
+        if (condition != null && !condition.equals("")) {
+            return "%" + condition + "%";
+        }
+        return null;
     }
 }

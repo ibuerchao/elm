@@ -3,6 +3,7 @@ package com.buerc.permission.param;
 import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -22,7 +23,7 @@ public class DeptListParam {
     private String operateName;
 
     @ApiModelProperty(value = "父级ID")
-    private String parentId;
+    private String parentId =SysConstant.Sys.DEFAULT_DEPT_PARENT_ID;
 
     @ApiModelProperty(value = "开始时间")
     private Date start;
@@ -30,9 +31,22 @@ public class DeptListParam {
     @ApiModelProperty(value = "结束时间")
     private Date end;
 
+    @ApiModelProperty(value = "排序规则")
+    private String order = "seq asc";
+
     @ApiModelProperty(value = "分页起始值")
     private int offset = SysConstant.Sys.OFFSET;
 
     @ApiModelProperty(value = "分页每页大小")
     private int limit = SysConstant.Sys.LIMIT;
+
+    //当以下参数有值时，全局条件查询而不是只查parentId层级
+    public String getParentId(){
+        if (SysConstant.Sys.DEFAULT_DEPT_PARENT_ID.equals(parentId)){
+            if (StringUtils.isNotBlank(name) || status!=null || StringUtils.isNotBlank(operateName) || start!=null || end!=null){
+                return null;
+            }
+        }
+        return parentId;
+    }
 }

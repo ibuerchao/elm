@@ -3,7 +3,9 @@ package com.buerc.permission.service.impl;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.GenerateStrUtil;
 import com.buerc.common.utils.ValidateKit;
+import com.buerc.common.web.Result;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
@@ -110,33 +112,21 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public List<SysDept> list(DeptListParam param) {
+    public Result<List<SysDept>> list(DeptListParam param) {
         if (param.getEnd()!=null && param.getStart()!=null){
             ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart())<0,ResultCode.START_AND_END_INVALID_MSG);
         }
         SysDeptExample example = new SysDeptExample();
         SysDeptExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(param.getName())){
-            criteria.andNameLike("%"+param.getName()+"%");
-        }
-        if (param.getStatus()!=null){
-            criteria.andStatusEqualTo(param.getStatus());
-        }
-        if (StringUtils.isNotBlank(param.getOperateName())){
-            criteria.andOperateNameLike("%"+param.getOperateName()+"%");
-        }
-        if (StringUtils.isNotBlank(param.getParentId())){
-            criteria.andParentIdEqualTo(param.getParentId());
-        }
-        if (param.getStart()!=null){
-            criteria.andOperateTimeGreaterThanOrEqualTo(param.getStart());
-        }
-        if (param.getEnd()!=null){
-            criteria.andOperateTimeLessThanOrEqualTo(param.getEnd());
-        }
+        criteria.andNameLike(GenerateStrUtil.like(param.getName()))
+                .andStatusEqualTo(param.getStatus())
+                .andOperateNameLike(GenerateStrUtil.like(param.getOperateName()))
+                .andParentIdEqualTo(param.getParentId())
+                .andOperateTimeGreaterThanOrEqualTo(param.getStart())
+                .andOperateTimeLessThanOrEqualTo(param.getEnd());
         example.setOffset(param.getOffset());
         example.setLimit(param.getLimit());
-        example.setOrderByClause("seq asc");
-        return sysDeptMapper.selectByExample(example);
+        example.setOrderByClause(param.getOrder());
+        return Result.success(sysDeptMapper.selectByExample(example),sysDeptMapper.countByExample(example));
     }
 }

@@ -38,6 +38,6 @@ public class SysDeptController {
     @PostMapping("/list")
     public Result list(@RequestBody DeptListParam param){
         BeanValidator.validator(param);
-        return Result.success(sysDeptService.list(param));
+        return sysDeptService.list(param);
     }
 }

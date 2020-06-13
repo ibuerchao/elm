@@ -14,6 +14,8 @@ public class Result<T> {
     private int code;
     @ApiModelProperty(value = "描述")
     private String msg;
+    @ApiModelProperty(value = "总条数")
+    private long total;
     @ApiModelProperty(value = "对象")
     private T data;
 
@@ -23,6 +25,10 @@ public class Result<T> {
 
     public static <T> Result<T> success(T data){
         return new Result<>(ResultCode.SUCCESS_CODE,data);
+    }
+
+    public static <T> Result<T> success(T data,long total){
+        return new Result<>(ResultCode.SUCCESS_CODE,data,total);
     }
 
     public static Result fail(){
@@ -53,5 +59,11 @@ public class Result<T> {
     private Result(int code,T data){
         this.code = code;
         this.data = data;
+    }
+
+    private Result(int code,T data,long total){
+        this.code = code;
+        this.data = data;
+        this.total = total;
     }
 }
