@@ -11,9 +11,9 @@ public class SysPermissionModuleExample {
 
     protected List<Criteria> oredCriteria;
 
-    protected int offset;
+    protected Integer offset;
 
-    protected int limit;
+    protected Integer limit;
 
     public SysPermissionModuleExample() {
         oredCriteria = new ArrayList<>();

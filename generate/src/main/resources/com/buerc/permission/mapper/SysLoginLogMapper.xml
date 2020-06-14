@@ -82,7 +82,7 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="offset != null and offset>=0">
+    <if test="offset != null and offset>=0 and limit!=null and limit>0">
       limit #{offset} , #{limit}
     </if>
   </select>

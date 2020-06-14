@@ -11,9 +11,9 @@ public class SysRoleUserExample {
 
     protected List<Criteria> oredCriteria;
 
-    protected int offset;
+    protected Integer offset;
 
-    protected int limit;
+    protected Integer limit;
 
     public SysRoleUserExample() {
         oredCriteria = new ArrayList<>();

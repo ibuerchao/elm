@@ -11,9 +11,9 @@ public class SysOperLogExample {
 
     protected List<Criteria> oredCriteria;
 
-    protected int offset;
+    protected Integer offset;
 
-    protected int limit;
+    protected Integer limit;
 
     public SysOperLogExample() {
         oredCriteria = new ArrayList<>();

@@ -11,9 +11,9 @@ public class SysDeptExample {
 
     protected List<Criteria> oredCriteria;
 
-    protected int offset;
+    protected Integer offset;
 
-    protected int limit;
+    protected Integer limit;
 
     public SysDeptExample() {
         oredCriteria = new ArrayList<>();

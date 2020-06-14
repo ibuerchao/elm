@@ -23,7 +23,7 @@ public class PaginationPlugin extends PluginAdapter {
     @Override
     public boolean sqlMapSelectByExampleWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
         XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
-        isNotNullElement.addAttribute(new Attribute("test", "offset != null and offset>=0")); //$NON-NLS-1$ //$NON-NLS-2$
+        isNotNullElement.addAttribute(new Attribute("test", "offset != null and offset>=0 and limit!=null and limit>0")); //$NON-NLS-1$ //$NON-NLS-2$
         isNotNullElement.addElement(new TextElement("limit #{offset} , #{limit}"));
         element.addElement(isNotNullElement);
         return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element,introspectedTable);
@@ -33,7 +33,7 @@ public class PaginationPlugin extends PluginAdapter {
         CommentGenerator commentGenerator = (CommentGenerator) context.getCommentGenerator();
         Field field = new Field(name, new FullyQualifiedJavaType(Integer.class.getName()));
         field.setVisibility(JavaVisibility.PROTECTED);
-        field.setType(FullyQualifiedJavaType.getIntInstance());
+        field.setType(PrimitiveTypeWrapper.getIntegerInstance());
         field.setName(name);
         commentGenerator.addFieldComment(field, introspectedTable);
         topLevelClass.addField(field);
