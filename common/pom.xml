@@ -14,9 +14,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.buerc</groupId>
-            <artifactId>generate</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
         </dependency>
 
         <dependency>
