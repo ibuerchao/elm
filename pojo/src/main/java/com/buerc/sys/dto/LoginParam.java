@@ -1,4 +1,4 @@
-package com.buerc.permission.param;
+package com.buerc.sys.dto;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class User {
+public class LoginParam {
     @Email
     private String email;
     @NotBlank(message = "密码不能为空")

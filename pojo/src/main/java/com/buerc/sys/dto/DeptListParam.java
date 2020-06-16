@@ -1,4 +1,4 @@
-package com.buerc.permission.param;
+package com.buerc.sys.dto;
 
 import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;

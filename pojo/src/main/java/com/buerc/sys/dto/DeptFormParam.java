@@ -1,17 +1,19 @@
-package com.buerc.permission.param;
+package com.buerc.sys.dto;
 
 import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
- * 新增部门实体类
+ * 新增和编辑部门实体类
  */
 @Data
-public class Dept {
+public class DeptFormParam {
     @ApiModelProperty(value = "部门主键(编辑时必传)")
     private String id;
 

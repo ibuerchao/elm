@@ -1,4 +1,4 @@
-package com.buerc.permission.param;
+package com.buerc.sys.dto;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  * 用户注册实体
  */
 @Data
-public class SignUp {
+public class SignUpParam {
     @NotBlank(message = "用户名不能为空")
     @Size(min = 3,max = 16,message = "用户名长度在 3 到 16 个字符")
     private String username;

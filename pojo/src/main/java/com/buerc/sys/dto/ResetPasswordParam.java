@@ -1,4 +1,4 @@
-package com.buerc.permission.param;
+package com.buerc.sys.dto;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  * 重置密码实体类
  */
 @Data
-public class ResetPassword {
+public class ResetPasswordParam {
     //邮箱
     @Email
     private String email;
