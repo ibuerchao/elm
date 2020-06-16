@@ -1,6 +1,6 @@
 package com.buerc.permission.util;
 
-import com.buerc.permission.param.Mail;
+import com.buerc.sys.dto.MailParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +38,7 @@ public class MailUtil {
      * 纯文本邮件
      */
     @Async
-    public void sendTextMail(Mail mail) {
+    public void sendTextMail(MailParam mail) {
         //建立邮件消息
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from); // 发送人的邮箱
@@ -56,7 +56,7 @@ public class MailUtil {
      * 发送的邮件是富文本（附件，图片，html等）
      */
     @Async
-    public void sendHtmlMail(Mail mail, boolean isShowHtml) {
+    public void sendHtmlMail(MailParam mail, boolean isShowHtml) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             //是否发送的邮件是富文本（附件，图片，html等）
@@ -94,7 +94,7 @@ public class MailUtil {
      *
      */
     @Async
-    public void sendTemplateMail(Mail mail,String templateName) {
+    public void sendTemplateMail(MailParam mail,String templateName) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);

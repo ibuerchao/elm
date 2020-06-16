@@ -2,14 +2,11 @@ package com.buerc.permission.controller;
 
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
-import com.buerc.permission.param.Dept;
-import com.buerc.permission.param.DeptListParam;
 import com.buerc.permission.service.SysDeptService;
+import com.buerc.sys.dto.DeptFormParam;
+import com.buerc.sys.dto.DeptListParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,14 +19,14 @@ public class SysDeptController {
 
     @ApiOperation(value = "新增部门")
     @PostMapping("/add")
-    public Result add(@RequestBody Dept dept){
+    public Result add(@RequestBody DeptFormParam dept){
         BeanValidator.validator(dept);
         return Result.success(sysDeptService.add(dept));
     }
 
     @ApiOperation(value = "编辑部门")
     @PostMapping("/edit")
-    public Result edit(@RequestBody Dept dept){
+    public Result edit(@RequestBody DeptFormParam dept){
         BeanValidator.validator(dept);
         return Result.success(sysDeptService.edit(dept));
     }
@@ -39,5 +36,11 @@ public class SysDeptController {
     public Result list(@RequestBody DeptListParam param){
         BeanValidator.validator(param);
         return sysDeptService.list(param);
+    }
+
+    @ApiOperation(value = "部门详情")
+    @GetMapping("/detail/{id}")
+    public Result detail(@PathVariable String id){
+        return Result.success(sysDeptService.detail(id));
     }
 }

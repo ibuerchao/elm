@@ -2,8 +2,8 @@ package com.buerc.permission.controller;
 
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.web.Result;
-import com.buerc.permission.model.SysUser;
 import com.buerc.permission.service.SysUserService;
+import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +28,7 @@ public class SysUserController {
     @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
     @ApiOperation(value = "查询用户列表")
     @PostMapping("/list")
-    public Result<List<SysUser>> list(){
-        List<SysUser> sysUsers = sysUserService.selectByExample(null);
-        return Result.success(sysUsers);
+    public Result<List<UserVo>> list(){
+        return Result.success(null);
     }
 }

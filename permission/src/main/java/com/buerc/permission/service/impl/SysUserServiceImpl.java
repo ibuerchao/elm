@@ -5,18 +5,18 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.*;
-import com.buerc.common.vo.permission.UserInfo;
-import com.buerc.common.vo.permission.UserVo;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
-import com.buerc.permission.param.Mail;
-import com.buerc.permission.param.ResetPassword;
-import com.buerc.permission.param.SignUp;
-import com.buerc.permission.param.User;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.permission.util.IpUtil;
 import com.buerc.permission.util.MailUtil;
+import com.buerc.sys.bo.UserInfo;
+import com.buerc.sys.dto.LoginParam;
+import com.buerc.sys.dto.MailParam;
+import com.buerc.sys.dto.ResetPasswordParam;
+import com.buerc.sys.dto.SignUpParam;
+import com.buerc.sys.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +47,7 @@ public class SysUserServiceImpl implements SysUserService {
     private RsaUtil rsaUtil;
 
     @Override
-    public void signUp(SignUp signUp) {
+    public void signUp(SignUpParam signUp) {
         validateSignUp(signUp);
         String id = insertSignUp(signUp);
         sendMail(signUp,id);
@@ -58,7 +58,7 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * 验证注册时用户名或邮箱是否被占用
      */
-    private void validateSignUp(SignUp signUp){
+    private void validateSignUp(SignUpParam signUp){
         SysUserExample example = new SysUserExample();
         SysUserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(signUp.getUsername());
@@ -78,7 +78,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param signUp 注册信息
      * @return 主键id
      */
-    private String insertSignUp(SignUp signUp){
+    private String insertSignUp(SignUpParam signUp){
         String password = validateEncryptPassword(signUp.getPassword());
         SysUser user = new SysUser();
         BeanUtils.copyProperties(signUp,user);
@@ -101,8 +101,8 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * 注册成功后发送邮件激活通知
      */
-    private void sendMail(SignUp signUp,String id){
-        Mail mail = new Mail();
+    private void sendMail(SignUpParam signUp,String id){
+        MailParam mail = new MailParam();
         mail.setEmail(signUp.getEmail());
         mail.setTitle("不二超elm注册成功通知");
         Map<String,Object> map = new HashMap<>();
@@ -179,7 +179,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public String login(User user) {
+    public String login(LoginParam user) {
         String decrypt = rsaUtil.decryptByPrivateKey(user.getPassword());
         SysUserExample sysUserExample = new SysUserExample();
         SysUserExample.Criteria criteria = sysUserExample.createCriteria();
@@ -220,7 +220,7 @@ public class SysUserServiceImpl implements SysUserService {
         ValidateKit.notBlank(email,ResultCode.EMAIL_NOT_BLANK_MSG);
         List<SysUser> users = getSysUserByEmail(email);
         if (CollectionUtils.isNotEmpty(users)){
-            Mail mail = new Mail();
+            MailParam mail = new MailParam();
             mail.setEmail(email);
             mail.setTitle("vue-web验证码");
             Map<String,Object> map = new HashMap<>();
@@ -241,7 +241,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void resetPassword(ResetPassword resetPassword) {
+    public void resetPassword(ResetPasswordParam resetPassword) {
         List<SysUser> users = getSysUserByEmail(resetPassword.getEmail());
         if(CollectionUtils.isNotEmpty(users)){
             String password = validateEncryptPassword(resetPassword.getPassword());

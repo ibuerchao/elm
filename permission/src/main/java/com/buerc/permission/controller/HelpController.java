@@ -1,12 +1,12 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.utils.BeanValidator;
-import com.buerc.common.vo.permission.UserInfo;
 import com.buerc.common.web.Result;
-import com.buerc.permission.param.ResetPassword;
-import com.buerc.permission.param.SignUp;
-import com.buerc.permission.param.User;
 import com.buerc.permission.service.SysUserService;
+import com.buerc.sys.bo.UserInfo;
+import com.buerc.sys.dto.LoginParam;
+import com.buerc.sys.dto.ResetPasswordParam;
+import com.buerc.sys.dto.SignUpParam;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,7 @@ public class HelpController {
     @ApiOperation(value = "用户注册")
     @PostMapping("/sign_up")
     @ResponseBody
-    public Result signUp(@RequestBody SignUp signUp){
+    public Result signUp(@RequestBody SignUpParam signUp){
         BeanValidator.validator(signUp);
         sysUserService.signUp(signUp);
         return Result.success();
@@ -34,7 +34,7 @@ public class HelpController {
     @ApiOperation(value = "用户登录")
     @PostMapping("/sign_in")
     @ResponseBody
-    public Result sign_in(@RequestBody User user){
+    public Result sign_in(@RequestBody LoginParam user){
         BeanValidator.validator(user);
         return Result.success(sysUserService.login(user));
     }
@@ -42,7 +42,7 @@ public class HelpController {
     @ApiOperation(value = "重置密码")
     @PostMapping("/reset/password")
     @ResponseBody
-    public Result resetPassword(@RequestBody ResetPassword resetPassword){
+    public Result resetPassword(@RequestBody ResetPasswordParam resetPassword){
         BeanValidator.validator(resetPassword);
         sysUserService.resetPassword(resetPassword);
         return Result.success();

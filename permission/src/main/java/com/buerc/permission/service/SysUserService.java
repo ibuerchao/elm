@@ -1,11 +1,11 @@
 package com.buerc.permission.service;
 
-import com.buerc.common.vo.permission.UserInfo;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
-import com.buerc.permission.param.ResetPassword;
-import com.buerc.permission.param.SignUp;
-import com.buerc.permission.param.User;
+import com.buerc.sys.bo.UserInfo;
+import com.buerc.sys.dto.LoginParam;
+import com.buerc.sys.dto.ResetPasswordParam;
+import com.buerc.sys.dto.SignUpParam;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,7 @@ public interface SysUserService {
      * @param signUp 用户注册信息
      * @return token
      */
-    void signUp(SignUp signUp);
+    void signUp(SignUpParam signUp);
 
     /**
      * 注册成功后，激活邮箱
@@ -28,7 +28,7 @@ public interface SysUserService {
     /**
      * 用户登录
      */
-    String login(User user);
+    String login(LoginParam user);
 
     Boolean logOut();
 
@@ -48,7 +48,7 @@ public interface SysUserService {
     /**
      * 重置密码
      */
-    void resetPassword(ResetPassword resetPassword);
+    void resetPassword(ResetPasswordParam resetPassword);
 
     UserInfo info(String token);
 }
