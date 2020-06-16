@@ -6,7 +6,7 @@ import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.ApplicationContextUtil;
 import com.buerc.common.utils.JSONUtil;
 import com.buerc.common.utils.JwtTokenUtil;
-import com.buerc.common.vo.permission.UserInfo;
+import com.buerc.sys.bo.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
