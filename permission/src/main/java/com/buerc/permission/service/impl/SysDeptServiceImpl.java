@@ -3,7 +3,6 @@ package com.buerc.permission.service.impl;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
-import com.buerc.common.utils.GenerateStrUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.mapper.SysDeptMapper;
@@ -20,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -97,8 +97,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public SysDept edit(DeptFormParam dept) {
         ValidateKit.notBlank(dept.getId(), ResultCode.DEPT_ID_BLANK_MSG);
-        SysDept sysDept = sysDeptMapper.selectByPrimaryKey(dept.getId());
-        ValidateKit.notNull(sysDept, ResultCode.DEPT_NOT_EXIST_MSG);
+        checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());
         checkNameIsRepeat(dept.getId(), dept.getParentId(), dept.getName());
 
@@ -123,17 +122,87 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public DeptVo detail(String id) {
         ValidateKit.notBlank(id, ResultCode.PARAM_ERROR_MSG);
+        SysDept sysDept = checkIdExist(id);
+        DeptVo deptVo = new DeptVo();
+        BeanUtils.copyProperties(sysDept, deptVo);
+        SysDeptExample example = new SysDeptExample();
+        example.createCriteria().andParentIdEqualTo(sysDept.getId());
+        List<SysDept> depts = sysDeptMapper.selectByExample(example);
+        deptVo.setHasChildren(CollectionUtils.isNotEmpty(depts));
+        return deptVo;
+    }
+
+    @Override
+    @Transactional
+    public void up(String id) {
+        SysDept sysDept = checkIdExist(id);
+        SysDept moveSysDept = getMoveSysDept(sysDept.getParentId(), sysDept.getSeq(), Boolean.TRUE);
+        doMove(sysDept,moveSysDept);
+    }
+
+    @Override
+    @Transactional
+    public void down(String id) {
+        SysDept sysDept = checkIdExist(id);
+        SysDept moveSysDept = getMoveSysDept(sysDept.getParentId(), sysDept.getSeq(), Boolean.FALSE);
+        doMove(sysDept,moveSysDept);
+    }
+
+    /**
+     * 上移或者下移时被动更改seq的记录
+     */
+    private SysDept getMoveSysDept(String parentId,Integer seq,boolean flag){
+        SysDeptExample example = new SysDeptExample();
+        SysDeptExample.Criteria criteria = example.createCriteria();
+        criteria.andParentIdEqualTo(parentId);
+        if (flag){
+            criteria.andSeqLessThan(seq);
+            example.setOrderByClause("seq desc");
+        }else {
+            criteria.andSeqGreaterThan(seq);
+            example.setOrderByClause("seq asc");
+        }
+        List<SysDept> sysDepts = sysDeptMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(sysDepts)){
+            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_CANNOT_MOVE_MSG);
+        }
+        return sysDepts.get(0);
+    }
+
+    private void doMove(SysDept source,SysDept target){
+        SysDept update1 = new SysDept();
+        SysDept update2 = new SysDept();
+        Date date = new Date();
+
+        update1.setId(source.getId());
+        update1.setOperateId(SecurityContextHolder.getUserId());
+        update1.setOperateName(SecurityContextHolder.getUserName());
+        update1.setOperateIp(IpUtil.getRemoteAddr());
+        update1.setOperateTime(date);
+        update1.setSeq(target.getSeq());
+
+        update2.setId(target.getId());
+        update2.setOperateId(SecurityContextHolder.getUserId());
+        update2.setOperateName(SecurityContextHolder.getUserName());
+        update2.setOperateIp(IpUtil.getRemoteAddr());
+        update2.setOperateTime(date);
+        update2.setSeq(source.getSeq());
+
+        sysDeptMapper.updateByPrimaryKeySelective(update1);
+        if (true){
+            throw new BizException(1,"故意异常");
+        }
+        sysDeptMapper.updateByPrimaryKeySelective(update2);
+    }
+
+    /**
+     * 检测id是否合法
+     */
+    private SysDept checkIdExist(String id){
         SysDept sysDept = sysDeptMapper.selectByPrimaryKey(id);
         if (sysDept == null) {
-           throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NOT_EXIST_MSG);
-        }else{
-            DeptVo deptVo = new DeptVo();
-            BeanUtils.copyProperties(sysDept, deptVo);
-            SysDeptExample example = new SysDeptExample();
-            example.createCriteria().andParentIdEqualTo(sysDept.getId());
-            List<SysDept> depts = sysDeptMapper.selectByExample(example);
-            deptVo.setHasChildren(CollectionUtils.isNotEmpty(depts));
-            return deptVo;
+            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NOT_EXIST_MSG);
         }
+        return sysDept;
     }
 }

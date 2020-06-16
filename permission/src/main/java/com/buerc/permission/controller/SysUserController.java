@@ -19,12 +19,6 @@ public class SysUserController {
     @Resource
     private SysUserService sysUserService;
 
-    @ApiOperation(value = "用户登出")
-    @PostMapping("/sign_out")
-    public Result sign_out(){
-        return Result.success(sysUserService.logOut());
-    }
-
     @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
     @ApiOperation(value = "查询用户列表")
     @PostMapping("/list")

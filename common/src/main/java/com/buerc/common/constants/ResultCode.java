@@ -61,4 +61,5 @@ public interface ResultCode {
     String DEPT_NOT_EXIST_MSG="部门不存在";
     String PARENT_DEPT_NOT_EXIST_MSG="父级部门不存在";
     String START_AND_END_INVALID_MSG="结束时间小于开始时间";
+    String DEPT_CANNOT_MOVE_MSG="当前部门无法移动";
 }

@@ -28,4 +28,14 @@ public interface SysDeptService {
      * 部门详情
      */
     DeptVo detail(String id);
+
+    /**
+     * 上移部门
+     */
+    void up(String id);
+
+    /**
+     * 下移部门
+     */
+    void down(String id);
 }

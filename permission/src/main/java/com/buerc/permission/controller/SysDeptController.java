@@ -43,4 +43,18 @@ public class SysDeptController {
     public Result detail(@PathVariable String id){
         return Result.success(sysDeptService.detail(id));
     }
+
+    @ApiOperation(value = "上移部门")
+    @GetMapping("/up/{id}")
+    public Result up(@PathVariable String id){
+        sysDeptService.up(id);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "下移部门")
+    @GetMapping("/down/{id}")
+    public Result down(@PathVariable String id){
+        sysDeptService.down(id);
+        return Result.success();
+    }
 }

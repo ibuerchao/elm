@@ -39,6 +39,12 @@ public class HelpController {
         return Result.success(sysUserService.login(user));
     }
 
+    @ApiOperation(value = "用户登出")
+    @PostMapping("/sign_out")
+    public Result sign_out(){
+        return Result.success(sysUserService.logOut());
+    }
+
     @ApiOperation(value = "重置密码")
     @PostMapping("/reset/password")
     @ResponseBody
