@@ -7,6 +7,8 @@
         <module>generate</module>
         <module>common</module>
         <module>security</module>
+        <module>pojo</module>
+        <module>permission</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -91,16 +93,28 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <build>
+ <!--   <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>
