@@ -38,4 +38,9 @@ public interface SysDeptService {
      * 下移部门
      */
     void down(String id);
+
+    /**
+     * 删除部门
+     */
+    void delete(String id);
 }

@@ -24,6 +24,13 @@ public class SysDeptController {
         return Result.success(sysDeptService.add(dept));
     }
 
+    @ApiOperation(value = "删除部门")
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable String id){
+        sysDeptService.delete(id);
+        return Result.success();
+    }
+
     @ApiOperation(value = "编辑部门")
     @PostMapping("/edit")
     public Result edit(@RequestBody DeptFormParam dept){

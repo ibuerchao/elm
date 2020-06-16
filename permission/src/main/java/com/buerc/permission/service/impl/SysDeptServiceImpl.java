@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -204,5 +205,35 @@ public class SysDeptServiceImpl implements SysDeptService {
             throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NOT_EXIST_MSG);
         }
         return sysDept;
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id) {
+        ValidateKit.notBlank(id, ResultCode.DEPT_ID_BLANK_MSG);
+        checkIdExist(id);
+        List<SysDept> list = new ArrayList<>();
+        childrenList(list,id, Boolean.FALSE);
+        if (CollectionUtils.isNotEmpty(list)){
+            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_CANNOT_DEL_MSG);
+        }
+        sysDeptMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 是否迭代获取当前节点的子节点
+     */
+    private void childrenList(List<SysDept> list,String id,boolean flag){
+        SysDeptExample example = new SysDeptExample();
+        example.createCriteria().andParentIdEqualTo(id);
+        List<SysDept> depts = sysDeptMapper.selectByExample(example);
+        list.addAll(depts);
+        if (flag){
+            if (CollectionUtils.isNotEmpty(depts)){
+                for (SysDept dept:depts){
+                    childrenList(list,dept.getId(), Boolean.TRUE);
+                }
+            }
+        }
     }
 }
