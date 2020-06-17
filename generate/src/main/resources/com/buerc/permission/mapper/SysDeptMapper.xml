@@ -319,13 +319,13 @@
   <sql id="listDynamicWhere">
     <where>
       <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(name)">
-        AND parent.name like #{name}
+        AND parent.name like CONCAT('%', trim(#{name}), '%')
       </if>
       <if test="status!=null">
         AND parent.status = #{status}
       </if>
       <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(operateName)">
-        AND parent.operate_name like #{operateName}
+        AND parent.operate_name like CONCAT('%', trim(#{operateName}), '%')
       </if>
       <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(parentId)">
         AND parent.parent_id = #{parentId}
