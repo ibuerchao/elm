@@ -39,7 +39,8 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.buerc.permission.mapper"
                              targetProject="generate\src\main\java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="%">
+<!--        <table tableName="%">-->
+        <table tableName="sys_oper_log">
             <!--注释此语句，否则生成的insert语句将不会带id-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         </table>

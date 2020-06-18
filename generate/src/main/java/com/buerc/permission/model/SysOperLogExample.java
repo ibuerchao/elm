@@ -196,6 +196,66 @@ public class SysOperLogExample {
             return (Criteria) this;
         }
 
+        public Criteria andModuleIsNull() {
+            addCriterion("module is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleIsNotNull() {
+            addCriterion("module is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleEqualTo(Byte value) {
+            addCriterion("module =", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleNotEqualTo(Byte value) {
+            addCriterion("module <>", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleGreaterThan(Byte value) {
+            addCriterion("module >", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleGreaterThanOrEqualTo(Byte value) {
+            addCriterion("module >=", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleLessThan(Byte value) {
+            addCriterion("module <", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleLessThanOrEqualTo(Byte value) {
+            addCriterion("module <=", value, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleIn(List<Byte> values) {
+            addCriterion("module in", values, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleNotIn(List<Byte> values) {
+            addCriterion("module not in", values, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleBetween(Byte value1, Byte value2) {
+            addCriterion("module between", value1, value2, "module");
+            return (Criteria) this;
+        }
+
+        public Criteria andModuleNotBetween(Byte value1, Byte value2) {
+            addCriterion("module not between", value1, value2, "module");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIsNull() {
             addCriterion("type is null");
             return (Criteria) this;
@@ -253,6 +313,146 @@ public class SysOperLogExample {
 
         public Criteria andTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsIsNull() {
+            addCriterion("args is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsIsNotNull() {
+            addCriterion("args is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsEqualTo(String value) {
+            addCriterion("args =", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsNotEqualTo(String value) {
+            addCriterion("args <>", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsGreaterThan(String value) {
+            addCriterion("args >", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsGreaterThanOrEqualTo(String value) {
+            addCriterion("args >=", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsLessThan(String value) {
+            addCriterion("args <", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsLessThanOrEqualTo(String value) {
+            addCriterion("args <=", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsLike(String value) {
+            addCriterion("args like", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsNotLike(String value) {
+            addCriterion("args not like", value, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsIn(List<String> values) {
+            addCriterion("args in", values, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsNotIn(List<String> values) {
+            addCriterion("args not in", values, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsBetween(String value1, String value2) {
+            addCriterion("args between", value1, value2, "args");
+            return (Criteria) this;
+        }
+
+        public Criteria andArgsNotBetween(String value1, String value2) {
+            addCriterion("args not between", value1, value2, "args");
             return (Criteria) this;
         }
 
