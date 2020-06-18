@@ -43,10 +43,6 @@ public class SysDeptServiceImpl implements SysDeptService {
         BeanUtils.copyProperties(dept, sysDept);
         sysDept.setId(UUID.randomUUID().toString());
         sysDept.setSeq(getNextSeq(dept.getParentId()));
-        sysDept.setOperateId(SecurityContextHolder.getUserId());
-        sysDept.setOperateName(SecurityContextHolder.getUserName());
-        sysDept.setOperateTime(new Date());
-        sysDept.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.insert(sysDept);
         return sysDept;
     }
@@ -104,10 +100,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept, update);
-        update.setOperateId(SecurityContextHolder.getUserId());
-        update.setOperateName(SecurityContextHolder.getUserName());
-        update.setOperateTime(new Date());
-        update.setOperateIp(IpUtil.getRemoteAddr());
         sysDeptMapper.updateByPrimaryKeySelective(update);
         return update;
     }
@@ -173,26 +165,14 @@ public class SysDeptServiceImpl implements SysDeptService {
     private void doMove(SysDept source,SysDept target){
         SysDept update1 = new SysDept();
         SysDept update2 = new SysDept();
-        Date date = new Date();
 
         update1.setId(source.getId());
-        update1.setOperateId(SecurityContextHolder.getUserId());
-        update1.setOperateName(SecurityContextHolder.getUserName());
-        update1.setOperateIp(IpUtil.getRemoteAddr());
-        update1.setOperateTime(date);
         update1.setSeq(target.getSeq());
 
         update2.setId(target.getId());
-        update2.setOperateId(SecurityContextHolder.getUserId());
-        update2.setOperateName(SecurityContextHolder.getUserName());
-        update2.setOperateIp(IpUtil.getRemoteAddr());
-        update2.setOperateTime(date);
         update2.setSeq(source.getSeq());
 
         sysDeptMapper.updateByPrimaryKeySelective(update1);
-        if (true){
-            throw new BizException(1,"故意异常");
-        }
         sysDeptMapper.updateByPrimaryKeySelective(update2);
     }
 
