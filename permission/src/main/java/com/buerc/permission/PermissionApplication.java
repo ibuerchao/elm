@@ -23,9 +23,21 @@ public class PermissionApplication {
         mailThreadPool.setMaxPoolSize(10);
         mailThreadPool.setQueueCapacity(25);
         mailThreadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        mailThreadPool.setThreadNamePrefix("mailThreadPool-");
+        mailThreadPool.setThreadNamePrefix("mail-thread-");
         mailThreadPool.initialize();
         return mailThreadPool;
+    }
+
+    @Bean("logThreadPool")
+    public ThreadPoolTaskExecutor logThreadPool(){
+        ThreadPoolTaskExecutor logThreadPool = new ThreadPoolTaskExecutor();
+        logThreadPool.setCorePoolSize(5);
+        logThreadPool.setMaxPoolSize(10);
+        logThreadPool.setQueueCapacity(25);
+        logThreadPool.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        logThreadPool.setThreadNamePrefix("log-thread-");
+        logThreadPool.initialize();
+        return logThreadPool;
     }
 
     public static void main(String[] args) {
