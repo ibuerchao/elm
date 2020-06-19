@@ -37,7 +37,7 @@ public class MailUtil {
     /**
      * 纯文本邮件
      */
-    @Async
+    @Async("mailThreadPool")
     public void sendTextMail(MailParam mail) {
         //建立邮件消息
         SimpleMailMessage message = new SimpleMailMessage();
@@ -55,7 +55,7 @@ public class MailUtil {
     /**
      * 发送的邮件是富文本（附件，图片，html等）
      */
-    @Async
+    @Async("mailThreadPool")
     public void sendHtmlMail(MailParam mail, boolean isShowHtml) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -93,7 +93,7 @@ public class MailUtil {
      * String emailContent = FreeMarkerTemplateUtils.processTemplateIntoString(configuration.getTemplate("mail.ftl"), params);
      *
      */
-    @Async
+    @Async("mailThreadPool")
     public void sendTemplateMail(MailParam mail,String templateName) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
