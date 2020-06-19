@@ -63,9 +63,9 @@ public class WebLogAspect {
     @AfterReturning(returning = "ret", value = "onMethod() || onClass()")
     public void afterReturning(Object ret) {
         // 结果转换
-        SysOperLog sysOperLog = threadLocal.get();
-        sysOperLog.setResult(JSONUtil.toStr(ret));
         try {
+            SysOperLog sysOperLog = threadLocal.get();
+            sysOperLog.setResult(JSONUtil.toStr(ret));
             applicationContext.publishEvent(new SysOperLogEvent(sysOperLog));
         } finally {
             threadLocal.remove();
@@ -74,9 +74,9 @@ public class WebLogAspect {
 
     @AfterThrowing(throwing = "throwable", value = "onMethod() || onClass()")
     public void afterThrowing(Throwable throwable) {
-        SysOperLog sysOperLog = threadLocal.get();
-        sysOperLog.setResult(ExceptionUtils.getStackTrace(throwable));
         try {
+            SysOperLog sysOperLog = threadLocal.get();
+            sysOperLog.setResult(ExceptionUtils.getStackTrace(throwable));
             applicationContext.publishEvent(new SysOperLogEvent(sysOperLog));
         } finally {
             threadLocal.remove();
