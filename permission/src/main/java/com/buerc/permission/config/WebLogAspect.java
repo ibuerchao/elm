@@ -62,7 +62,7 @@ public class WebLogAspect {
 
     @AfterReturning(returning = "ret", value = "onMethod() || onClass()")
     public void afterReturning(Object ret) {
-        // 结果转换
+        // todo 1.结果转换 2.批量处理
         try {
             SysOperLog sysOperLog = threadLocal.get();
             sysOperLog.setResult(JSONUtil.toStr(ret));

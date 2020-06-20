@@ -21,6 +21,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "新增部门")
     @PostMapping("/add")
+    @OperateLog(value = "新增部门",type = 1)
     public Result add(@RequestBody DeptFormParam dept){
         BeanValidator.validator(dept);
         return Result.success(sysDeptService.add(dept));
@@ -28,6 +29,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "删除部门")
     @DeleteMapping("/delete/{id}")
+    @OperateLog(value = "删除部门",type = 2)
     public Result delete(@PathVariable String id){
         sysDeptService.delete(id);
         return Result.success();
@@ -35,6 +37,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "编辑部门")
     @PostMapping("/edit")
+    @OperateLog(value = "编辑部门",type = 3)
     public Result edit(@RequestBody DeptFormParam dept){
         BeanValidator.validator(dept);
         return Result.success(sysDeptService.edit(dept));
@@ -57,6 +60,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "上移部门")
     @GetMapping("/up/{id}")
+    @OperateLog(value = "上移部门",type = 3)
     public Result up(@PathVariable String id){
         sysDeptService.up(id);
         return Result.success();
@@ -64,7 +68,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "下移部门")
     @GetMapping("/down/{id}")
-    @OperateLog(value = "部门管理",type = 3)
+    @OperateLog(value = "下移部门",type = 3)
     public Result down(@PathVariable String id){
         sysDeptService.down(id);
         return Result.success();
