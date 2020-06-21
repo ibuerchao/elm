@@ -97,11 +97,25 @@ public class SysDeptServiceImpl implements SysDeptService {
         checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());
         checkNameIsRepeat(dept.getId(), dept.getParentId(), dept.getName());
-
+        checkHierarchicalRelationship(dept.getId(),dept.getParentId());
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept, update);
         sysDeptMapper.updateByPrimaryKeySelective(update);
         return update;
+    }
+
+    /**
+     * 检查层级关系(不允许将父级部门挪到其子级部门下)
+     */
+    private void checkHierarchicalRelationship(String id, String parentId) {
+        List<SysDept> list = new ArrayList<>();
+        childrenList(list,id,Boolean.TRUE);
+        if (CollectionUtils.isNotEmpty(list)){
+            List<String> collect = list.stream().map(SysDept::getId).collect(Collectors.toList());
+            if (collect.contains(parentId)){
+                throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.FORBID_DEPT_TO_CHILD_MSG);
+            }
+        }
     }
 
     @Override

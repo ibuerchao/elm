@@ -63,4 +63,5 @@ public interface ResultCode {
     String START_AND_END_INVALID_MSG="结束时间小于开始时间";
     String DEPT_CANNOT_MOVE_MSG="当前部门无法移动";
     String DEPT_CANNOT_DEL_MSG="当前部门存在子部门，无法删除";
+    String FORBID_DEPT_TO_CHILD_MSG="禁止部门挪到其子部门";
 }
