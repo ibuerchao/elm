@@ -333,7 +333,7 @@
       <if test="start!=null">
         AND parent.operate_time &gt;= #{start}
       </if>
-      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(end)">
+      <if test="end!=null">
         AND parent.operate_time &lt;= #{end}
       </if>
     </where>
