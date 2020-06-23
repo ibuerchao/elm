@@ -1,5 +1,6 @@
 package com.buerc.permission.mapper;
 
+import com.buerc.common.utils.TreeNode;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
 import com.buerc.sys.dto.DeptListParam;
@@ -34,4 +35,6 @@ public interface SysDeptMapper {
     List<DeptVo> list(DeptListParam param);
 
     long count(DeptListParam param);
+
+    List<TreeNode> tree(@Param("status") Integer status);
 }

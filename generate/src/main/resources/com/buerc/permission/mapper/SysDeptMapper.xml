@@ -338,4 +338,14 @@
       </if>
     </where>
   </sql>
+
+  <select id="tree" resultType="com.buerc.common.utils.TreeNode">
+    select id,parent_id,`name` as label from sys_dept
+     <where>
+       <if test="status!=null">
+         sys_dept.status = #{status}
+       </if>
+     </where>
+    order by seq asc;
+  </select>
 </mapper>

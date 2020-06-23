@@ -1,5 +1,6 @@
 package com.buerc.permission.service;
 
+import com.buerc.common.utils.TreeNode;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysDept;
 import com.buerc.sys.dto.DeptFormParam;
@@ -43,4 +44,9 @@ public interface SysDeptService {
      * 删除部门
      */
     void delete(String id);
+
+    /**
+     * 查询当前节点的部门树
+     */
+    List<TreeNode> superior(String id,String status);
 }

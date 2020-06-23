@@ -73,4 +73,12 @@ public class SysDeptController {
         sysDeptService.down(id);
         return Result.success();
     }
+
+    @ApiOperation(value = "部门树")
+    @GetMapping("/superior")
+    @OperateLog(value = "部门树",type = 5)
+    public Result superior(@RequestParam("id") String id,
+                           @RequestParam(value = "status",required = false) String status){
+        return Result.success(sysDeptService.superior(id,status));
+    }
 }

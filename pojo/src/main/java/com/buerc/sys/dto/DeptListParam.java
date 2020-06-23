@@ -35,10 +35,10 @@ public class DeptListParam {
     private String order = "seq asc";
 
     @ApiModelProperty(value = "分页起始值")
-    private int offset = SysConstant.Sys.OFFSET;
+    private Integer offset = SysConstant.Sys.OFFSET;
 
     @ApiModelProperty(value = "分页每页大小")
-    private int limit = SysConstant.Sys.LIMIT;
+    private Integer limit = SysConstant.Sys.LIMIT;
 
     //当以下参数有值时，全局条件查询而不是只查parentId层级
     public String getParentId(){

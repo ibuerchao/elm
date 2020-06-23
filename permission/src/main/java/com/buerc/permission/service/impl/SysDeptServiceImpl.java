@@ -3,27 +3,27 @@ package com.buerc.permission.service.impl;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.TreeUtil;
+import com.buerc.common.utils.TreeNode;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
 import com.buerc.permission.service.SysDeptService;
-import com.buerc.permission.util.IpUtil;
-import com.buerc.security.holder.SecurityContextHolder;
 import com.buerc.sys.dto.DeptFormParam;
 import com.buerc.sys.dto.DeptListParam;
 import com.buerc.sys.vo.DeptVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -97,7 +97,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());
         checkNameIsRepeat(dept.getId(), dept.getParentId(), dept.getName());
-        checkHierarchicalRelationship(dept.getId(),dept.getParentId());
+        checkHierarchicalRelationship(dept.getId(), dept.getParentId());
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept, update);
         sysDeptMapper.updateByPrimaryKeySelective(update);
@@ -109,11 +109,11 @@ public class SysDeptServiceImpl implements SysDeptService {
      */
     private void checkHierarchicalRelationship(String id, String parentId) {
         List<SysDept> list = new ArrayList<>();
-        childrenList(list,id,Boolean.TRUE);
-        if (CollectionUtils.isNotEmpty(list)){
+        childrenList(list, id, Boolean.TRUE);
+        if (CollectionUtils.isNotEmpty(list)) {
             List<String> collect = list.stream().map(SysDept::getId).collect(Collectors.toList());
-            if (collect.contains(parentId)){
-                throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.FORBID_DEPT_TO_CHILD_MSG);
+            if (collect.contains(parentId)) {
+                throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.FORBID_DEPT_TO_CHILD_MSG);
             }
         }
     }
@@ -144,7 +144,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     public void up(String id) {
         SysDept sysDept = checkIdExist(id);
         SysDept moveSysDept = getMoveSysDept(sysDept.getParentId(), sysDept.getSeq(), Boolean.TRUE);
-        doMove(sysDept,moveSysDept);
+        doMove(sysDept, moveSysDept);
     }
 
     @Override
@@ -152,31 +152,31 @@ public class SysDeptServiceImpl implements SysDeptService {
     public void down(String id) {
         SysDept sysDept = checkIdExist(id);
         SysDept moveSysDept = getMoveSysDept(sysDept.getParentId(), sysDept.getSeq(), Boolean.FALSE);
-        doMove(sysDept,moveSysDept);
+        doMove(sysDept, moveSysDept);
     }
 
     /**
      * 上移或者下移时被动更改seq的记录
      */
-    private SysDept getMoveSysDept(String parentId,Integer seq,boolean flag){
+    private SysDept getMoveSysDept(String parentId, Integer seq, boolean flag) {
         SysDeptExample example = new SysDeptExample();
         SysDeptExample.Criteria criteria = example.createCriteria();
         criteria.andParentIdEqualTo(parentId);
-        if (flag){
+        if (flag) {
             criteria.andSeqLessThan(seq);
             example.setOrderByClause("seq desc");
-        }else {
+        } else {
             criteria.andSeqGreaterThan(seq);
             example.setOrderByClause("seq asc");
         }
         List<SysDept> sysDepts = sysDeptMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(sysDepts)){
-            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_CANNOT_MOVE_MSG);
+        if (CollectionUtils.isEmpty(sysDepts)) {
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.DEPT_CANNOT_MOVE_MSG);
         }
         return sysDepts.get(0);
     }
 
-    private void doMove(SysDept source,SysDept target){
+    private void doMove(SysDept source, SysDept target) {
         SysDept update1 = new SysDept();
         SysDept update2 = new SysDept();
 
@@ -193,10 +193,10 @@ public class SysDeptServiceImpl implements SysDeptService {
     /**
      * 检测id是否合法
      */
-    private SysDept checkIdExist(String id){
+    private SysDept checkIdExist(String id) {
         SysDept sysDept = sysDeptMapper.selectByPrimaryKey(id);
         if (sysDept == null) {
-            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_NOT_EXIST_MSG);
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.DEPT_NOT_EXIST_MSG);
         }
         return sysDept;
     }
@@ -207,9 +207,9 @@ public class SysDeptServiceImpl implements SysDeptService {
         ValidateKit.notBlank(id, ResultCode.DEPT_ID_BLANK_MSG);
         checkIdExist(id);
         List<SysDept> list = new ArrayList<>();
-        childrenList(list,id, Boolean.FALSE);
-        if (CollectionUtils.isNotEmpty(list)){
-            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.DEPT_CANNOT_DEL_MSG);
+        childrenList(list, id, Boolean.FALSE);
+        if (CollectionUtils.isNotEmpty(list)) {
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.DEPT_CANNOT_DEL_MSG);
         }
         sysDeptMapper.deleteByPrimaryKey(id);
     }
@@ -217,17 +217,30 @@ public class SysDeptServiceImpl implements SysDeptService {
     /**
      * 是否迭代获取当前节点的子节点
      */
-    private void childrenList(List<SysDept> list,String id,boolean flag){
+    private void childrenList(List<SysDept> list, String id, boolean flag) {
         SysDeptExample example = new SysDeptExample();
         example.createCriteria().andParentIdEqualTo(id);
         List<SysDept> depts = sysDeptMapper.selectByExample(example);
         list.addAll(depts);
-        if (flag){
-            if (CollectionUtils.isNotEmpty(depts)){
-                for (SysDept dept:depts){
-                    childrenList(list,dept.getId(), Boolean.TRUE);
+        if (flag) {
+            if (CollectionUtils.isNotEmpty(depts)) {
+                for (SysDept dept : depts) {
+                    childrenList(list, dept.getId(), Boolean.TRUE);
                 }
             }
         }
+    }
+
+    /**
+     * 查询当前节点的部门树
+     */
+    @Override
+    public List<TreeNode> superior(String id, String status) {
+        Integer s = NumberUtils.toInt(status, -1);
+        if (s.equals(-1)) {
+            s = null;
+        }
+        List<TreeNode> data = sysDeptMapper.tree(s);
+        return TreeUtil.tree(data,id);
     }
 }
