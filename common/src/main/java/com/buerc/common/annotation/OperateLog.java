@@ -19,7 +19,7 @@ public @interface OperateLog {
 
     /**
      * 操作类型
-     * 1.增 2.删 3.改 4.查 5.列表
+     * 1.增 2.删 3.改 4.查 5.列表 6.上移 7.下移 8.树
      */
     byte type() default 0;
 }

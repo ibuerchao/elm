@@ -7,6 +7,7 @@ import com.buerc.common.utils.TreeUtil;
 import com.buerc.common.utils.TreeNode;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
+import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
@@ -44,6 +45,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         sysDept.setId(UUID.randomUUID().toString());
         sysDept.setSeq(getNextSeq(dept.getParentId()));
         sysDeptMapper.insert(sysDept);
+        WebLogAspect.fillTextValue(null,sysDept);
         return sysDept;
     }
 
@@ -94,13 +96,14 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public SysDept edit(DeptFormParam dept) {
         ValidateKit.notBlank(dept.getId(), ResultCode.DEPT_ID_BLANK_MSG);
-        checkIdExist(dept.getId());
+        SysDept sysDept = checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());
         checkNameIsRepeat(dept.getId(), dept.getParentId(), dept.getName());
         checkHierarchicalRelationship(dept.getId(), dept.getParentId());
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept, update);
         sysDeptMapper.updateByPrimaryKeySelective(update);
+        WebLogAspect.fillTextValue(sysDept,update);
         return update;
     }
 
@@ -205,13 +208,14 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Transactional
     public void delete(String id) {
         ValidateKit.notBlank(id, ResultCode.DEPT_ID_BLANK_MSG);
-        checkIdExist(id);
+        SysDept dept = checkIdExist(id);
         List<SysDept> list = new ArrayList<>();
         childrenList(list, id, Boolean.FALSE);
         if (CollectionUtils.isNotEmpty(list)) {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.DEPT_CANNOT_DEL_MSG);
         }
         sysDeptMapper.deleteByPrimaryKey(id);
+        WebLogAspect.fillTextValue(dept,null);
     }
 
     /**

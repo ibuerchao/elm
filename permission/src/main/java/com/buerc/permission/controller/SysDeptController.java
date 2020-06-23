@@ -43,6 +43,13 @@ public class SysDeptController {
         return Result.success(sysDeptService.edit(dept));
     }
 
+    @ApiOperation(value = "部门详情")
+    @GetMapping("/detail/{id}")
+    @OperateLog(value = "部门详情",type = 4)
+    public Result detail(@PathVariable String id){
+        return Result.success(sysDeptService.detail(id));
+    }
+
     @ApiOperation(value = "部门列表")
     @PostMapping("/list")
     @OperateLog(value = "部门列表",type = 5)
@@ -51,16 +58,9 @@ public class SysDeptController {
         return sysDeptService.list(param);
     }
 
-    @ApiOperation(value = "部门详情")
-    @GetMapping("/detail/{id}")
-    @OperateLog(value = "部门详情",type = 4)
-    public Result detail(@PathVariable String id){
-        return Result.success(sysDeptService.detail(id));
-    }
-
     @ApiOperation(value = "上移部门")
     @GetMapping("/up/{id}")
-    @OperateLog(value = "上移部门",type = 3)
+    @OperateLog(value = "上移部门",type = 6)
     public Result up(@PathVariable String id){
         sysDeptService.up(id);
         return Result.success();
@@ -68,7 +68,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "下移部门")
     @GetMapping("/down/{id}")
-    @OperateLog(value = "下移部门",type = 3)
+    @OperateLog(value = "下移部门",type = 7)
     public Result down(@PathVariable String id){
         sysDeptService.down(id);
         return Result.success();
@@ -76,7 +76,7 @@ public class SysDeptController {
 
     @ApiOperation(value = "部门树")
     @GetMapping("/superior")
-    @OperateLog(value = "部门树",type = 5)
+    @OperateLog(value = "部门树",type = 8)
     public Result superior(@RequestParam("id") String id,
                            @RequestParam(value = "status",required = false) String status){
         return Result.success(sysDeptService.superior(id,status));

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Aspect
@@ -80,6 +81,16 @@ public class WebLogAspect {
             applicationContext.publishEvent(new SysOperLogEvent(sysOperLog));
         } finally {
             threadLocal.remove();
+        }
+    }
+
+    public static void fillTextValue(Object oldValue,Object newValue){
+        SysOperLog sysOperLog = threadLocal.get();
+        if (Objects.nonNull(oldValue)) {
+            sysOperLog.setOldValue(JSONUtil.toStr(oldValue));
+        }
+        if (Objects.nonNull(newValue)) {
+            sysOperLog.setNewValue(JSONUtil.toStr(newValue));
         }
     }
 }
