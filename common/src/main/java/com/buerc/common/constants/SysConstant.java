@@ -6,6 +6,8 @@ public interface SysConstant {
         int EMAIL_CODE_LENGTH = 6;
         //默认部门父级ID
         String DEFAULT_DEPT_PARENT_ID = "root";
+        //默认权限模块所在ID
+        String DEFAULT_RES_MODULE_ID = "root";
         //分页默认起始值
         int OFFSET = 0;
         //分页默认每页大小
@@ -24,5 +26,10 @@ public interface SysConstant {
         Byte DELETED = 2; //删除
         Byte NO_ACTIVATED = 3; //未激活
         Byte LOCKED = 4; //锁定
+    }
+
+    interface DeptStatus {
+        Byte FORBID = 0; //禁用
+        Byte NORMAL = 1; //正常
     }
 }

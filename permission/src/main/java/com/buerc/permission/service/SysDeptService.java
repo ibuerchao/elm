@@ -5,6 +5,7 @@ import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysDept;
 import com.buerc.sys.dto.DeptFormParam;
 import com.buerc.sys.dto.DeptListParam;
+import com.buerc.sys.dto.UpdateStatusParam;
 import com.buerc.sys.vo.DeptVo;
 
 import java.util.List;
@@ -49,4 +50,9 @@ public interface SysDeptService {
      * 查询当前节点的部门树
      */
     List<TreeNode> superior(String id,String status);
+
+    /**
+     * 更新部门状态
+     */
+    boolean updateStatus(UpdateStatusParam param);
 }

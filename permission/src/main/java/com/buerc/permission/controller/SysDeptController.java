@@ -6,6 +6,7 @@ import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.sys.dto.DeptFormParam;
 import com.buerc.sys.dto.DeptListParam;
+import com.buerc.sys.dto.UpdateStatusParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,5 +81,18 @@ public class SysDeptController {
     public Result superior(@RequestParam("id") String id,
                            @RequestParam(value = "status",required = false) String status){
         return Result.success(sysDeptService.superior(id,status));
+    }
+
+    @ApiOperation(value = "更新状态")
+    @PostMapping("/update/status")
+    @OperateLog(value = "更新状态",type = 3)
+    public Result updateStatus(@RequestBody UpdateStatusParam param){
+        BeanValidator.validator(param);
+        boolean updateStatus = sysDeptService.updateStatus(param);
+        if (updateStatus){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
     }
 }

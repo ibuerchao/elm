@@ -14,6 +14,7 @@ import com.buerc.permission.model.SysDeptExample;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.sys.dto.DeptFormParam;
 import com.buerc.sys.dto.DeptListParam;
+import com.buerc.sys.dto.UpdateStatusParam;
 import com.buerc.sys.vo.DeptVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -111,11 +112,12 @@ public class SysDeptServiceImpl implements SysDeptService {
      * 检查层级关系(不允许将父级部门挪到其子级部门下)
      */
     private void checkHierarchicalRelationship(String id, String parentId) {
+        ValidateKit.assertTrue(StringUtils.equals(id,parentId),ResultCode.FORBID_DEPT_TO_SELF_MSG);
         List<SysDept> list = new ArrayList<>();
         childrenList(list, id, Boolean.TRUE);
         if (CollectionUtils.isNotEmpty(list)) {
             List<String> collect = list.stream().map(SysDept::getId).collect(Collectors.toList());
-            if (collect.contains(parentId)) {
+            if (collect.contains(parentId) || collect.contains(id)) {
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.FORBID_DEPT_TO_CHILD_MSG);
             }
         }
@@ -246,5 +248,20 @@ public class SysDeptServiceImpl implements SysDeptService {
         }
         List<TreeNode> data = sysDeptMapper.tree(s);
         return TreeUtil.tree(data,id);
+    }
+
+    @Override
+    public boolean updateStatus(UpdateStatusParam param) {
+        checkIdExist(param.getId());
+        checkStatus(param.getStatus());
+        SysDept dept = new SysDept();
+        dept.setId(param.getId());
+        dept.setStatus(param.getStatus());
+        int update = sysDeptMapper.updateByPrimaryKeySelective(dept);
+        return update > 0;
+    }
+    private void checkStatus(Byte status){
+        boolean result = SysConstant.DeptStatus.FORBID.equals(status) || SysConstant.DeptStatus.NORMAL.equals(status);
+        ValidateKit.assertTrue(!result,ResultCode.DEPT_STATUS_INVALID_MSG);
     }
 }
