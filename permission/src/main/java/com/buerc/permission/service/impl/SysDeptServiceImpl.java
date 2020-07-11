@@ -211,6 +211,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     public void delete(String id) {
         ValidateKit.notBlank(id, ResultCode.DEPT_ID_BLANK_MSG);
         SysDept dept = checkIdExist(id);
+        ValidateKit.assertTrue(SysConstant.DeptStatus.NORMAL.equals(dept.getStatus()),ResultCode.FORBID_DELETE_DEPT_MSG);
         List<SysDept> list = new ArrayList<>();
         childrenList(list, id, Boolean.FALSE);
         if (CollectionUtils.isNotEmpty(list)) {
