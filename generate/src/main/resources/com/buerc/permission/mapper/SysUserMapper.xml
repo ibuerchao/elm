@@ -326,7 +326,7 @@
 
   <select id="list" parameterType="com.buerc.sys.dto.UserListParam" resultType="com.buerc.sys.vo.UserVo">
     SELECT
-    sys_user.*, sys_dept.`name`
+    sys_user.*, sys_dept.`name` deptname
     FROM
     `sys_user` sys_user
     LEFT JOIN `sys_dept` sys_dept

@@ -13,6 +13,9 @@ public class UserVo {
     @ApiModelProperty(value = "用户名称")
     private String username;
 
+    @ApiModelProperty(value = "部门名称")
+    private String deptname;
+
     @ApiModelProperty(value = "手机号")
     private String telephone;
 
