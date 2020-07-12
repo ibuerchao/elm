@@ -16,7 +16,7 @@ public class UserListParam {
     private List<Byte> status;
 
     @ApiModelProperty(value = "部门ID")
-    private String deptId;
+    private List<String> deptId;
 
     @ApiModelProperty(value = "开始时间")
     private Date start;

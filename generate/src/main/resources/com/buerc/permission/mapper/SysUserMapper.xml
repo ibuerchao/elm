@@ -349,8 +349,11 @@
           #{item}
         </foreach>
       </if>
-      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(deptId)">
-        AND sys_user.dept_id = #{deptId}
+      <if test="@org.apache.commons.collections.CollectionUtils@isNotEmpty(deptId)">
+        AND sys_user.dept_id in
+        <foreach item="item" collection="deptId" separator="," open="(" close=")" index="index">
+          #{deptId}
+        </foreach>
       </if>
       <if test="start!=null">
         AND sys_user.operate_time &gt;= #{start}
