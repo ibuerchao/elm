@@ -388,4 +388,25 @@ public class SysUserServiceImpl implements SysUserService {
         BeanUtils.copyProperties(user, vo);
         return vo;
     }
+
+    @Override
+    public boolean updateStatus(UpdateStatusParam param) {
+        checkStatus(param.getStatus());
+        checkIdExist(param.getId());
+        SysUser sysUser = new SysUser();
+        sysUser.setId(param.getId());
+        sysUser.setStatus(param.getStatus());
+        int update = sysUserMapper.updateByPrimaryKeySelective(sysUser);
+        return update > 0;
+    }
+
+    private void checkStatus(Byte status){
+        ArrayList<Byte> list = new ArrayList<>();
+        list.add(SysConstant.UserStatus.FROZEN);
+        list.add(SysConstant.UserStatus.NORMAL);
+        list.add(SysConstant.UserStatus.DELETED);
+        list.add(SysConstant.UserStatus.NO_ACTIVATED);
+        list.add(SysConstant.UserStatus.LOCKED);
+        ValidateKit.assertTrue(!list.contains(status),ResultCode.USER_STATUS_INVALID_MSG);
+    }
 }

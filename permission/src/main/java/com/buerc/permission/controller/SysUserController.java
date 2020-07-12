@@ -5,6 +5,7 @@ import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
+import com.buerc.sys.dto.UpdateStatusParam;
 import com.buerc.sys.dto.UserFormParam;
 import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
@@ -57,5 +58,18 @@ public class SysUserController {
     @OperateLog(value = "用户详情",type = 4)
     public Result detail(@PathVariable String id){
         return Result.success(sysUserService.detail(id));
+    }
+
+    @ApiOperation(value = "更新状态")
+    @PostMapping("/update/status")
+    @OperateLog(value = "更新状态",type = 3)
+    public Result updateStatus(@RequestBody UpdateStatusParam param){
+        BeanValidator.validator(param);
+        boolean updateStatus = sysUserService.updateStatus(param);
+        if (updateStatus){
+            return Result.success();
+        }else {
+            return Result.error();
+        }
     }
 }

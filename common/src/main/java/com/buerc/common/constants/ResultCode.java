@@ -71,4 +71,5 @@ public interface ResultCode {
     String RES_NAME_REPEAT_MSG="资源名称重复";
     String PHONE_EXIST_ERROR_MSG="手机号已被占用";
     String USER_ID_BLANK_MSG="用户ID为空";
+    String USER_STATUS_INVALID_MSG="用户状态非法";
 }

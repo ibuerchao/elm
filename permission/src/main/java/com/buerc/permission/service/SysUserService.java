@@ -3,10 +3,7 @@ package com.buerc.permission.service;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
 import com.buerc.sys.bo.UserInfo;
-import com.buerc.sys.dto.LoginParam;
-import com.buerc.sys.dto.ResetPasswordParam;
-import com.buerc.sys.dto.SignUpParam;
-import com.buerc.sys.dto.UserFormParam;
+import com.buerc.sys.dto.*;
 import com.buerc.sys.vo.UserVo;
 
 import java.util.List;
@@ -69,5 +66,13 @@ public interface SysUserService {
      */
     UserVo edit(UserFormParam param);
 
+    /**
+     * 用户详情
+     */
     UserVo detail(String id);
+
+    /**
+     * 更改状态
+     */
+    boolean updateStatus(UpdateStatusParam param);
 }
