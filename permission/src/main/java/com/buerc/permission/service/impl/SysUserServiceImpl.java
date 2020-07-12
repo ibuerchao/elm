@@ -5,6 +5,7 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.*;
+import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
@@ -357,4 +358,27 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return sysUser;
     }
+
+    @Override
+    public UserVo edit(UserFormParam param) {
+        ValidateKit.notBlank(param.getId(), ResultCode.USER_ID_BLANK_MSG);
+        SysUser sysUser = checkIdExist(param.getId());
+        if (!sysUser.getUsername().equals(param.getUsername())){
+            validateUsername(param.getUsername());
+        }
+        if (!sysUser.getEmail().equals(param.getEmail())){
+            validateEmail(param.getEmail());
+        }
+        if (!sysUser.getTelephone().equals(param.getTelephone())){
+            validateTelephone(param.getTelephone());
+        }
+        SysUser update = new SysUser();
+        BeanUtils.copyProperties(param, update);
+        sysUserMapper.updateByPrimaryKeySelective(update);
+        WebLogAspect.fillTextValue(sysUser,update);
+        UserVo vo = new UserVo();
+        BeanUtils.copyProperties(update, vo);
+        return vo;
+    }
+
 }

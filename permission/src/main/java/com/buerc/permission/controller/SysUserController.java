@@ -1,5 +1,6 @@
 package com.buerc.permission.controller;
 
+import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@OperateLog(value = "用户管理",module = 2)
 public class SysUserController {
     @Resource
     private SysUserService sysUserService;
@@ -28,6 +30,7 @@ public class SysUserController {
 
     @ApiOperation(value = "新增用户")
     @PostMapping("/add")
+    @OperateLog(value = "新增用户",type = 1)
     public Result<UserVo> add(@RequestBody UserFormParam userFormParam){
         BeanValidator.validator(userFormParam);
         return Result.success(sysUserService.add(userFormParam));
@@ -35,8 +38,17 @@ public class SysUserController {
 
     @ApiOperation(value = "删除用户")
     @DeleteMapping("/delete/{id}")
+    @OperateLog(value = "删除用户",type = 2)
     public Result add(@PathVariable("id") String id){
         sysUserService.delete(id);
         return Result.success();
+    }
+
+    @ApiOperation(value = "编辑用户")
+    @PostMapping("/edit")
+    @OperateLog(value = "编辑用户",type = 3)
+    public Result edit(@RequestBody UserFormParam param){
+        BeanValidator.validator(param);
+        return Result.success(sysUserService.edit(param));
     }
 }

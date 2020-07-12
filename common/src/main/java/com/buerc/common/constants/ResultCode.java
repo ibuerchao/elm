@@ -70,4 +70,5 @@ public interface ResultCode {
     String PARENT_MODULE_NOT_EXIST_MSG="父级模块不存在";
     String RES_NAME_REPEAT_MSG="资源名称重复";
     String PHONE_EXIST_ERROR_MSG="手机号已被占用";
+    String USER_ID_BLANK_MSG="用户ID为空";
 }

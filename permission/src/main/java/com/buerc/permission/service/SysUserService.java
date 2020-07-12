@@ -63,4 +63,9 @@ public interface SysUserService {
      * 删除用户
      */
     void delete(String id);
+
+    /**
+     * 编辑用户
+     */
+    UserVo edit(UserFormParam param);
 }
