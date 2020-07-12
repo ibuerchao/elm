@@ -58,4 +58,9 @@ public interface SysUserService {
      * 新增用户
      */
     UserVo add(UserFormParam userFormParam);
+
+    /**
+     * 删除用户
+     */
+    void delete(String id);
 }

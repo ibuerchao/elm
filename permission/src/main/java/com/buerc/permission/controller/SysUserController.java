@@ -8,10 +8,7 @@ import com.buerc.sys.dto.UserFormParam;
 import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,5 +31,12 @@ public class SysUserController {
     public Result<UserVo> add(@RequestBody UserFormParam userFormParam){
         BeanValidator.validator(userFormParam);
         return Result.success(sysUserService.add(userFormParam));
+    }
+
+    @ApiOperation(value = "删除用户")
+    @DeleteMapping("/delete/{id}")
+    public Result add(@PathVariable("id") String id){
+        sysUserService.delete(id);
+        return Result.success();
     }
 }

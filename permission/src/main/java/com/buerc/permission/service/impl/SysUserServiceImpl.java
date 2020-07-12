@@ -338,4 +338,23 @@ public class SysUserServiceImpl implements SysUserService {
     private String subStrPhone(String phone){
         return StringUtils.substring(phone,phone.length()-SysConstant.Sys.DEFAULT_PASSWORD_LENGTH);
     }
+
+    @Override
+    public void delete(String id) {
+        //todo 用户角色资源
+        ValidateKit.assertTrue(StringUtils.isBlank(id),ResultCode.PARAM_ERROR_MSG);
+        checkIdExist(id);
+        SysUser update = new SysUser();
+        update.setId(id);
+        update.setStatus(SysConstant.UserStatus.DELETED);
+        sysUserMapper.updateByPrimaryKeySelective(update);
+    }
+
+    private SysUser checkIdExist(String id){
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(id);
+        if (sysUser == null) {
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.USER_NOT_EXIST_MSG);
+        }
+        return sysUser;
+    }
 }
