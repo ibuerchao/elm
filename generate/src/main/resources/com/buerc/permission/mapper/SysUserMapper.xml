@@ -343,8 +343,11 @@
       <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(username)">
         AND (sys_user.username like CONCAT('%', trim(#{username}), '%') or sys_user.email like CONCAT('%', trim(#{username}), '%'))
       </if>
-      <if test="status!=null">
-        AND sys_user.status = #{status}
+      <if test="@org.apache.commons.collections.CollectionUtils@isNotEmpty(status)">
+        AND sys_user.status in
+        <foreach item="item" collection="status" separator="," open="(" close=")" index="index">
+          #{item}
+        </foreach>
       </if>
       <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(deptId)">
         AND sys_user.dept_id = #{deptId}

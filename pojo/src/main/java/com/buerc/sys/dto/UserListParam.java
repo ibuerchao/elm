@@ -4,9 +4,8 @@ import com.buerc.common.constants.SysConstant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserListParam {
@@ -14,9 +13,7 @@ public class UserListParam {
     private String username;
 
     @ApiModelProperty(value = "用户状态 0冻结 1正常 2删除 3未激活 4锁定")
-    @Min(value = 0, message = "用户状态 0冻结 1正常 2删除 3未激活 4锁定")
-    @Max(value = 4, message = "用户状态 0冻结 1正常 2删除 3未激活 4锁定")
-    private Byte status;
+    private List<Byte> status;
 
     @ApiModelProperty(value = "部门ID")
     private String deptId;
