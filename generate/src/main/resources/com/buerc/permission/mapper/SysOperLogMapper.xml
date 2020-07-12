@@ -6,7 +6,6 @@
     <result column="module" jdbcType="TINYINT" property="module" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="args" jdbcType="VARCHAR" property="args" />
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
     <result column="operate_id" jdbcType="VARCHAR" property="operateId" />
     <result column="operate_name" jdbcType="VARCHAR" property="operateName" />
@@ -15,6 +14,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.buerc.permission.model.SysOperLog">
+    <result column="args" jdbcType="LONGVARCHAR" property="args" />
     <result column="result" jdbcType="LONGVARCHAR" property="result" />
     <result column="old_value" jdbcType="LONGVARCHAR" property="oldValue" />
     <result column="new_value" jdbcType="LONGVARCHAR" property="newValue" />
@@ -78,11 +78,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, module, type, name, args, target_id, operate_id, operate_name, operate_time, 
-    operate_ip, status
+    id, module, type, name, target_id, operate_id, operate_name, operate_time, operate_ip, 
+    status
   </sql>
   <sql id="Blob_Column_List">
-    result, old_value, new_value
+    args, result, old_value, new_value
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.buerc.permission.model.SysOperLogExample" resultMap="ResultMapWithBLOBs">
     select
@@ -137,14 +137,14 @@
   </delete>
   <insert id="insert" parameterType="com.buerc.permission.model.SysOperLog">
     insert into sys_oper_log (id, module, type, 
-      name, args, target_id, 
-      operate_id, operate_name, operate_time, 
-      operate_ip, status, result, 
+      name, target_id, operate_id, 
+      operate_name, operate_time, operate_ip, 
+      status, args, result, 
       old_value, new_value)
     values (#{id,jdbcType=VARCHAR}, #{module,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}, 
-      #{name,jdbcType=VARCHAR}, #{args,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=VARCHAR}, #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
-      #{operateIp,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{result,jdbcType=LONGVARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, #{operateId,jdbcType=VARCHAR}, 
+      #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{args,jdbcType=LONGVARCHAR}, #{result,jdbcType=LONGVARCHAR}, 
       #{oldValue,jdbcType=LONGVARCHAR}, #{newValue,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.buerc.permission.model.SysOperLog">
@@ -161,9 +161,6 @@
       </if>
       <if test="name != null">
         name,
-      </if>
-      <if test="args != null">
-        args,
       </if>
       <if test="targetId != null">
         target_id,
@@ -182,6 +179,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="args != null">
+        args,
       </if>
       <if test="result != null">
         result,
@@ -206,9 +206,6 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="args != null">
-        #{args,jdbcType=VARCHAR},
-      </if>
       <if test="targetId != null">
         #{targetId,jdbcType=VARCHAR},
       </if>
@@ -226,6 +223,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="args != null">
+        #{args,jdbcType=LONGVARCHAR},
       </if>
       <if test="result != null">
         #{result,jdbcType=LONGVARCHAR},
@@ -259,9 +259,6 @@
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.args != null">
-        args = #{record.args,jdbcType=VARCHAR},
-      </if>
       <if test="record.targetId != null">
         target_id = #{record.targetId,jdbcType=VARCHAR},
       </if>
@@ -279,6 +276,9 @@
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.args != null">
+        args = #{record.args,jdbcType=LONGVARCHAR},
       </if>
       <if test="record.result != null">
         result = #{record.result,jdbcType=LONGVARCHAR},
@@ -300,13 +300,13 @@
       module = #{record.module,jdbcType=TINYINT},
       type = #{record.type,jdbcType=TINYINT},
       name = #{record.name,jdbcType=VARCHAR},
-      args = #{record.args,jdbcType=VARCHAR},
       target_id = #{record.targetId,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=VARCHAR},
       operate_name = #{record.operateName,jdbcType=VARCHAR},
       operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
       operate_ip = #{record.operateIp,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
+      args = #{record.args,jdbcType=LONGVARCHAR},
       result = #{record.result,jdbcType=LONGVARCHAR},
       old_value = #{record.oldValue,jdbcType=LONGVARCHAR},
       new_value = #{record.newValue,jdbcType=LONGVARCHAR}
@@ -320,7 +320,6 @@
       module = #{record.module,jdbcType=TINYINT},
       type = #{record.type,jdbcType=TINYINT},
       name = #{record.name,jdbcType=VARCHAR},
-      args = #{record.args,jdbcType=VARCHAR},
       target_id = #{record.targetId,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=VARCHAR},
       operate_name = #{record.operateName,jdbcType=VARCHAR},
@@ -343,9 +342,6 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="args != null">
-        args = #{args,jdbcType=VARCHAR},
-      </if>
       <if test="targetId != null">
         target_id = #{targetId,jdbcType=VARCHAR},
       </if>
@@ -364,6 +360,9 @@
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
       </if>
+      <if test="args != null">
+        args = #{args,jdbcType=LONGVARCHAR},
+      </if>
       <if test="result != null">
         result = #{result,jdbcType=LONGVARCHAR},
       </if>
@@ -381,13 +380,13 @@
     set module = #{module,jdbcType=TINYINT},
       type = #{type,jdbcType=TINYINT},
       name = #{name,jdbcType=VARCHAR},
-      args = #{args,jdbcType=VARCHAR},
       target_id = #{targetId,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=VARCHAR},
       operate_name = #{operateName,jdbcType=VARCHAR},
       operate_time = #{operateTime,jdbcType=TIMESTAMP},
       operate_ip = #{operateIp,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
+      args = #{args,jdbcType=LONGVARCHAR},
       result = #{result,jdbcType=LONGVARCHAR},
       old_value = #{oldValue,jdbcType=LONGVARCHAR},
       new_value = #{newValue,jdbcType=LONGVARCHAR}
@@ -398,7 +397,6 @@
     set module = #{module,jdbcType=TINYINT},
       type = #{type,jdbcType=TINYINT},
       name = #{name,jdbcType=VARCHAR},
-      args = #{args,jdbcType=VARCHAR},
       target_id = #{targetId,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=VARCHAR},
       operate_name = #{operateName,jdbcType=VARCHAR},

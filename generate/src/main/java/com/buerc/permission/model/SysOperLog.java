@@ -17,9 +17,6 @@ public class SysOperLog implements Serializable {
     @ApiModelProperty(value = "接口名称")
     private String name;
 
-    @ApiModelProperty(value = "接口参数")
-    private String args;
-
     @ApiModelProperty(value = "基于type后指定的对象id，比如用户、权限、角色等表的主键")
     private String targetId;
 
@@ -37,6 +34,9 @@ public class SysOperLog implements Serializable {
 
     @ApiModelProperty(value = "当前是否复原过，0：没有，1：复原过")
     private Byte status;
+
+    @ApiModelProperty(value = "接口参数")
+    private String args;
 
     @ApiModelProperty(value = "返回值")
     private String result;
@@ -79,14 +79,6 @@ public class SysOperLog implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getArgs() {
-        return args;
-    }
-
-    public void setArgs(String args) {
-        this.args = args;
     }
 
     public String getTargetId() {
@@ -137,6 +129,14 @@ public class SysOperLog implements Serializable {
         this.status = status;
     }
 
+    public String getArgs() {
+        return args;
+    }
+
+    public void setArgs(String args) {
+        this.args = args;
+    }
+
     public String getResult() {
         return result;
     }
@@ -171,13 +171,13 @@ public class SysOperLog implements Serializable {
         sb.append(", module=").append(module);
         sb.append(", type=").append(type);
         sb.append(", name=").append(name);
-        sb.append(", args=").append(args);
         sb.append(", targetId=").append(targetId);
         sb.append(", operateId=").append(operateId);
         sb.append(", operateName=").append(operateName);
         sb.append(", operateTime=").append(operateTime);
         sb.append(", operateIp=").append(operateIp);
         sb.append(", status=").append(status);
+        sb.append(", args=").append(args);
         sb.append(", result=").append(result);
         sb.append(", oldValue=").append(oldValue);
         sb.append(", newValue=").append(newValue);
