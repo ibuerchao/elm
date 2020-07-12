@@ -68,4 +68,6 @@ public interface SysUserService {
      * 编辑用户
      */
     UserVo edit(UserFormParam param);
+
+    UserVo detail(String id);
 }

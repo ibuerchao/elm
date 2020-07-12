@@ -51,4 +51,11 @@ public class SysUserController {
         BeanValidator.validator(param);
         return Result.success(sysUserService.edit(param));
     }
+
+    @ApiOperation(value = "用户详情")
+    @GetMapping("/detail/{id}")
+    @OperateLog(value = "用户详情",type = 4)
+    public Result detail(@PathVariable String id){
+        return Result.success(sysUserService.detail(id));
+    }
 }

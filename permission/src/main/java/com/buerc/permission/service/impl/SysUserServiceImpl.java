@@ -381,4 +381,11 @@ public class SysUserServiceImpl implements SysUserService {
         return vo;
     }
 
+    @Override
+    public UserVo detail(String id) {
+        SysUser user = checkIdExist(id);
+        UserVo vo = new UserVo();
+        BeanUtils.copyProperties(user, vo);
+        return vo;
+    }
 }
