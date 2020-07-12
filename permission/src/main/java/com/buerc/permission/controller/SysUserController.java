@@ -7,6 +7,7 @@ import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.sys.dto.UpdateStatusParam;
 import com.buerc.sys.dto.UserFormParam;
+import com.buerc.sys.dto.UserListParam;
 import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -21,13 +22,6 @@ import java.util.List;
 public class SysUserController {
     @Resource
     private SysUserService sysUserService;
-
-    @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
-    @ApiOperation(value = "查询用户列表")
-    @PostMapping("/list")
-    public Result<List<UserVo>> list(){
-        return Result.success(null);
-    }
 
     @ApiOperation(value = "新增用户")
     @PostMapping("/add")
@@ -71,5 +65,13 @@ public class SysUserController {
         }else {
             return Result.error();
         }
+    }
+
+//    @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
+    @ApiOperation(value = "用户列表")
+    @PostMapping("/list")
+    @OperateLog(value = "用户列表",type = 5)
+    public Result<List<UserVo>> list(@RequestBody UserListParam param){
+        return sysUserService.list(param);
     }
 }

@@ -5,6 +5,7 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.*;
+import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
@@ -363,6 +364,7 @@ public class SysUserServiceImpl implements SysUserService {
     public UserVo edit(UserFormParam param) {
         ValidateKit.notBlank(param.getId(), ResultCode.USER_ID_BLANK_MSG);
         SysUser sysUser = checkIdExist(param.getId());
+        sysDeptService.checkIdExist(param.getDeptId());
         if (!sysUser.getUsername().equals(param.getUsername())){
             validateUsername(param.getUsername());
         }
@@ -408,5 +410,13 @@ public class SysUserServiceImpl implements SysUserService {
         list.add(SysConstant.UserStatus.NO_ACTIVATED);
         list.add(SysConstant.UserStatus.LOCKED);
         ValidateKit.assertTrue(!list.contains(status),ResultCode.USER_STATUS_INVALID_MSG);
+    }
+
+    @Override
+    public Result<List<UserVo>> list(UserListParam param) {
+        if (param.getEnd() != null && param.getStart() != null) {
+            ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart()) < 0, ResultCode.START_AND_END_INVALID_MSG);
+        }
+        return Result.success(sysUserMapper.list(param), sysUserMapper.count(param));
     }
 }

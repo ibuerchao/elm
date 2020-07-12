@@ -1,5 +1,6 @@
 package com.buerc.permission.service;
 
+import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
 import com.buerc.sys.bo.UserInfo;
@@ -75,4 +76,6 @@ public interface SysUserService {
      * 更改状态
      */
     boolean updateStatus(UpdateStatusParam param);
+
+    Result<List<UserVo>> list(UserListParam param);
 }

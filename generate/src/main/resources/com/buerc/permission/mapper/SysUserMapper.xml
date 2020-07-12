@@ -323,4 +323,50 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="list" parameterType="com.buerc.sys.dto.UserListParam" resultType="com.buerc.sys.vo.UserVo">
+    SELECT
+    sys_user.*, sys_dept.`name`
+    FROM
+    `sys_user` sys_user
+    LEFT JOIN `sys_dept` sys_dept
+    ON sys_user.`dept_id` = sys_dept.`id`
+    <include refid="listDynamicWhere"></include>
+    ORDER BY ${order}
+    <if test="offset != null and offset>=0 and limit!=null and limit>0">
+      limit #{offset} , #{limit}
+    </if>
+  </select>
+
+  <sql id="listDynamicWhere">
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(username)">
+        AND (sys_user.username like CONCAT('%', trim(#{username}), '%') or sys_user.email like CONCAT('%', trim(#{username}), '%'))
+      </if>
+      <if test="status!=null">
+        AND sys_user.status = #{status}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(deptId)">
+        AND sys_user.dept_id = #{deptId}
+      </if>
+      <if test="start!=null">
+        AND sys_user.operate_time &gt;= #{start}
+      </if>
+      <if test="end!=null">
+        AND sys_user.operate_time &lt;= #{end}
+      </if>
+    </where>
+  </sql>
+
+  <select id="count" parameterType="com.buerc.sys.dto.DeptListParam" resultType="long">
+    SELECT COUNT(id) FROM (
+      SELECT
+      sys_user.*, sys_dept.`name`
+      FROM
+      `sys_user` sys_user
+      LEFT JOIN `sys_dept` sys_dept
+      ON sys_user.`dept_id` = sys_dept.`id`
+      <include refid="listDynamicWhere"></include>
+    ) temp
+  </select>
 </mapper>
