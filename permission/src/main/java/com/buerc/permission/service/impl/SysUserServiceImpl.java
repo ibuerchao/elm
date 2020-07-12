@@ -8,14 +8,12 @@ import com.buerc.common.utils.*;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
+import com.buerc.permission.service.SysDeptService;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.permission.util.IpUtil;
 import com.buerc.permission.util.MailUtil;
 import com.buerc.sys.bo.UserInfo;
-import com.buerc.sys.dto.LoginParam;
-import com.buerc.sys.dto.MailParam;
-import com.buerc.sys.dto.ResetPasswordParam;
-import com.buerc.sys.dto.SignUpParam;
+import com.buerc.sys.dto.*;
 import com.buerc.sys.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class SysUserServiceImpl implements SysUserService {
+
+    @Resource
+    private SysDeptService sysDeptService;
 
     @Resource
     private SysUserMapper sysUserMapper;
@@ -59,18 +60,8 @@ public class SysUserServiceImpl implements SysUserService {
      * 验证注册时用户名或邮箱是否被占用
      */
     private void validateSignUp(SignUpParam signUp){
-        SysUserExample example = new SysUserExample();
-        SysUserExample.Criteria criteria = example.createCriteria();
-        criteria.andUsernameEqualTo(signUp.getUsername());
-        if(sysUserMapper.countByExample(example) > 0){
-            throw new BizException(ResultCode.USER_EXIST_ERROR_CODE,ResultCode.USER_EXIST_ERROR_MSG);
-        }
-        example.clear();
-        criteria = example.createCriteria();
-        criteria.andEmailEqualTo(signUp.getEmail());
-        if(sysUserMapper.countByExample(example) > 0){
-            throw new BizException(ResultCode.MAIL_EXIST_ERROR_CODE,ResultCode.MAIL_EXIST_ERROR_MSG);
-        }
+       validateUsername(signUp.getUsername());
+       validateEmail(signUp.getEmail());
     }
 
     /**
@@ -115,7 +106,7 @@ public class SysUserServiceImpl implements SysUserService {
         mailUtil.sendTemplateMail(mail,"mail");
     }
 
-    public Map<String,Object> validateEmail(String payload){
+    public Map<String,Object> validatePayload(String payload){
         Map<String,Object> map = new HashMap<>();
         String id;
         //1.验证参数token有效性
@@ -286,5 +277,65 @@ public class SysUserServiceImpl implements SysUserService {
         userInfo.setRoles(new HashSet<>());
         userInfo.setPermissions(new HashSet<>());
         return userInfo;
+    }
+
+    @Override
+    public UserVo add(UserFormParam userFormParam) {
+        validateUsername(userFormParam.getUsername());
+        validateEmail(userFormParam.getEmail());
+        validateTelephone(userFormParam.getTelephone());
+        sysDeptService.checkIdExist(userFormParam.getDeptId());
+
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(userFormParam,user);
+        user.setPassword(subStrPhone(userFormParam.getTelephone()));
+        sysUserMapper.insertSelective(user);
+        UserVo vo  = new UserVo();
+        BeanUtils.copyProperties(user,vo);
+        return vo;
+    }
+
+    /**
+     * 验证手机号是否已存在
+     */
+    private void validateTelephone(String phone){
+        SysUserExample example = new SysUserExample();
+        SysUserExample.Criteria criteria = example.createCriteria();
+        criteria.andTelephoneEqualTo(phone);
+        if(sysUserMapper.countByExample(example) > 0){
+            throw new BizException(ResultCode.USER_EXIST_ERROR_CODE,ResultCode.PHONE_EXIST_ERROR_MSG);
+        }
+    }
+
+    /**
+     * 验证用户名是否已存在
+     */
+    private void validateUsername(String username){
+        SysUserExample example = new SysUserExample();
+        SysUserExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        if(sysUserMapper.countByExample(example) > 0){
+            throw new BizException(ResultCode.USER_EXIST_ERROR_CODE,ResultCode.USER_EXIST_ERROR_MSG);
+        }
+    }
+
+    /**
+     * 验证邮箱是否已存在
+     */
+    private void validateEmail(String email){
+        SysUserExample example = new SysUserExample();
+        SysUserExample.Criteria criteria = example.createCriteria();
+        criteria.andEmailEqualTo(email);
+        if(sysUserMapper.countByExample(example) > 0){
+            throw new BizException(ResultCode.MAIL_EXIST_ERROR_CODE,ResultCode.MAIL_EXIST_ERROR_MSG);
+        }
+    }
+
+    /**
+     * 截取手机号后八位作为默认密码
+     * @return
+     */
+    private String subStrPhone(String phone){
+        return StringUtils.substring(phone,phone.length()-SysConstant.Sys.DEFAULT_PASSWORD_LENGTH);
     }
 }

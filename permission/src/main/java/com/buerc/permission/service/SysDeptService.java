@@ -55,4 +55,11 @@ public interface SysDeptService {
      * 更新部门状态
      */
     boolean updateStatus(UpdateStatusParam param);
+
+    /**
+     * 验证部门ID是否存在
+     * @param id
+     * @return
+     */
+    SysDept checkIdExist(String id);
 }

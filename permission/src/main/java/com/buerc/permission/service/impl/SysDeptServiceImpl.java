@@ -198,7 +198,8 @@ public class SysDeptServiceImpl implements SysDeptService {
     /**
      * 检测id是否合法
      */
-    private SysDept checkIdExist(String id) {
+    @Override
+    public SysDept checkIdExist(String id) {
         SysDept sysDept = sysDeptMapper.selectByPrimaryKey(id);
         if (sysDept == null) {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.DEPT_NOT_EXIST_MSG);

@@ -69,4 +69,5 @@ public interface ResultCode {
     String FORBID_DEPT_TO_SELF_MSG="禁止自己作为自己上级部门";
     String PARENT_MODULE_NOT_EXIST_MSG="父级模块不存在";
     String RES_NAME_REPEAT_MSG="资源名称重复";
+    String PHONE_EXIST_ERROR_MSG="手机号已被占用";
 }

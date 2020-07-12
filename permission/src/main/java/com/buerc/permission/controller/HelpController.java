@@ -65,7 +65,7 @@ public class HelpController {
     @ApiOperation(value = "通过链接激活账号")
     @GetMapping("/validate_email")
     public ModelAndView validateEmail(@RequestParam(value = "payload") String payload){
-        return new ModelAndView("validate_email",sysUserService.validateEmail(payload));
+        return new ModelAndView("validate_email",sysUserService.validatePayload(payload));
     }
 
     @ApiImplicitParams(@ApiImplicitParam(name="token",value = "用户token",dataTypeClass = String.class))

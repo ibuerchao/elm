@@ -6,6 +6,8 @@ import com.buerc.sys.bo.UserInfo;
 import com.buerc.sys.dto.LoginParam;
 import com.buerc.sys.dto.ResetPasswordParam;
 import com.buerc.sys.dto.SignUpParam;
+import com.buerc.sys.dto.UserFormParam;
+import com.buerc.sys.vo.UserVo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public interface SysUserService {
      * 注册成功后，激活邮箱
      * @param payload token
      */
-    Map<String,Object> validateEmail(String payload);
+    Map<String,Object> validatePayload(String payload);
 
     /**
      * 用户登录
@@ -51,4 +53,9 @@ public interface SysUserService {
     void resetPassword(ResetPasswordParam resetPassword);
 
     UserInfo info(String token);
+
+    /**
+     * 新增用户
+     */
+    UserVo add(UserFormParam userFormParam);
 }

@@ -12,6 +12,8 @@ public interface SysConstant {
         int OFFSET = 0;
         //分页默认每页大小
         int LIMIT = 10;
+        //默认密码长度(截取手机号后八位)
+        int DEFAULT_PASSWORD_LENGTH = 8;
     }
 
     //权限编码格式  应用模块:菜单模块:功能模块:操作模块
