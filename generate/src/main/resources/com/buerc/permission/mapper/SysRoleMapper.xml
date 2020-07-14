@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.buerc.permission.model.SysRole">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="operate_id" jdbcType="VARCHAR" property="operateId" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, type, status, remark, operate_id, operate_name, operate_time, operate_ip
+    id, name, code, status, remark, operate_id, operate_name, operate_time, operate_ip
   </sql>
   <select id="selectByExample" parameterType="com.buerc.permission.model.SysRoleExample" resultMap="BaseResultMap">
     select
@@ -107,11 +107,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.buerc.permission.model.SysRole">
-    insert into sys_role (id, name, type, 
+    insert into sys_role (id, name, code, 
       status, remark, operate_id, 
       operate_name, operate_time, operate_ip
       )
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{status,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{operateId,jdbcType=VARCHAR}, 
       #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR}
       )
@@ -125,8 +125,8 @@
       <if test="name != null">
         name,
       </if>
-      <if test="type != null">
-        type,
+      <if test="code != null">
+        code,
       </if>
       <if test="status != null">
         status,
@@ -154,8 +154,8 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=TINYINT},
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -192,8 +192,8 @@
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=TINYINT},
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=TINYINT},
@@ -222,7 +222,7 @@
     update sys_role
     set id = #{record.id,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=TINYINT},
+      code = #{record.code,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
       remark = #{record.remark,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=VARCHAR},
@@ -239,8 +239,8 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
@@ -266,7 +266,7 @@
   <update id="updateByPrimaryKey" parameterType="com.buerc.permission.model.SysRole">
     update sys_role
     set name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=TINYINT},
+      code = #{code,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       remark = #{remark,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=VARCHAR},

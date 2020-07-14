@@ -11,10 +11,10 @@ public class SysRole implements Serializable {
     @ApiModelProperty(value = "角色名称")
     private String name;
 
-    @ApiModelProperty(value = "角色的类型，1：管理员角色，2：其他")
-    private Byte type;
+    @ApiModelProperty(value = "角色编码")
+    private String code;
 
-    @ApiModelProperty(value = "状态，1：可用，0：冻结")
+    @ApiModelProperty(value = "状态，1：可用，0：禁用")
     private Byte status;
 
     @ApiModelProperty(value = "备注")
@@ -50,12 +50,12 @@ public class SysRole implements Serializable {
         this.name = name;
     }
 
-    public Byte getType() {
-        return type;
+    public String getCode() {
+        return code;
     }
 
-    public void setType(Byte type) {
-        this.type = type;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Byte getStatus() {
@@ -114,7 +114,7 @@ public class SysRole implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", type=").append(type);
+        sb.append(", code=").append(code);
         sb.append(", status=").append(status);
         sb.append(", remark=").append(remark);
         sb.append(", operateId=").append(operateId);
