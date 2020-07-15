@@ -34,4 +34,9 @@ public interface SysConstant {
         Byte FORBID = 0; //禁用
         Byte NORMAL = 1; //正常
     }
+
+    interface RoleStatus {
+        Byte FORBID = 0; //禁用
+        Byte NORMAL = 1; //正常
+    }
 }
