@@ -5,7 +5,6 @@ import com.buerc.permission.model.SysRole;
 import com.buerc.sys.dto.RoleFormParam;
 import com.buerc.sys.dto.RoleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
-import com.buerc.sys.vo.UserVo;
 
 import java.util.List;
 
@@ -20,5 +19,5 @@ public interface SysRoleService {
 
     boolean updateStatus(UpdateStatusParam param);
 
-    Result<List<UserVo>> list(RoleListParam param);
+    Result<List<SysRole>> list(RoleListParam param);
 }

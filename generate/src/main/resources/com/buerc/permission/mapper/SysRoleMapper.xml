@@ -275,4 +275,42 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="list" parameterType="com.buerc.sys.dto.RoleListParam" resultMap="BaseResultMap">
+    SELECT * FROM `sys_role`
+    <include refid="listDynamicWhere"></include>
+    ORDER BY ${order}
+    <if test="offset != null and offset>=0 and limit!=null and limit>0">
+      limit #{offset} , #{limit}
+    </if>
+  </select>
+
+  <sql id="listDynamicWhere">
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(name)">
+        AND sys_role.name like CONCAT('%', trim(#{name}), '%')
+      </if>
+      <if test="@org.apache.commons.collections.CollectionUtils@isNotEmpty(status)">
+        AND sys_role.status in
+        <foreach item="item" collection="status" separator="," open="(" close=")" index="index">
+          #{item}
+        </foreach>
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(code)">
+        AND sys_role.code like CONCAT('%', trim(#{code}), '%')
+      </if>
+      <if test="start!=null">
+        AND sys_role.operate_time &gt;= #{start}
+      </if>
+      <if test="end!=null">
+        AND sys_role.operate_time &lt;= #{end}
+      </if>
+    </where>
+  </sql>
+
+  <select id="count" parameterType="com.buerc.sys.dto.RoleListParam" resultType="long">
+    SELECT COUNT(id) FROM `sys_role`
+    <include refid="listDynamicWhere"></include>
+  </select>
+
 </mapper>

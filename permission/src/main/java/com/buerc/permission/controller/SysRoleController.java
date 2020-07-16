@@ -3,11 +3,11 @@ package com.buerc.permission.controller;
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
+import com.buerc.permission.model.SysRole;
 import com.buerc.permission.service.SysRoleService;
 import com.buerc.sys.dto.RoleFormParam;
 import com.buerc.sys.dto.RoleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
-import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,7 +68,7 @@ public class SysRoleController {
     @ApiOperation(value = "角色列表")
     @PostMapping("/list")
     @OperateLog(value = "角色列表",type = 5)
-    public Result<List<UserVo>> list(@RequestBody RoleListParam param){
+    public Result<List<SysRole>> list(@RequestBody RoleListParam param){
         return sysRoleService.list(param);
     }
 }

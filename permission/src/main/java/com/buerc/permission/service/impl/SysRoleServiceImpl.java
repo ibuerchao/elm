@@ -100,7 +100,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Result<List<UserVo>> list(RoleListParam param) {
-        return null;
+    public Result<List<SysRole>> list(RoleListParam param) {
+        if (param.getEnd() != null && param.getStart() != null) {
+            ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart()) < 0, ResultCode.START_AND_END_INVALID_MSG);
+        }
+        return Result.success(sysRoleMapper.list(param), sysRoleMapper.count(param));
     }
 }

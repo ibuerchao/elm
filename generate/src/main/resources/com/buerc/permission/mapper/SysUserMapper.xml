@@ -364,7 +364,7 @@
     </where>
   </sql>
 
-  <select id="count" parameterType="com.buerc.sys.dto.DeptListParam" resultType="long">
+  <select id="count" parameterType="com.buerc.sys.dto.UserListParam" resultType="long">
     SELECT COUNT(id) FROM (
       SELECT
       sys_user.*, sys_dept.`name`
