@@ -1,6 +1,10 @@
 package com.buerc.common.constants;
 
 public interface SysConstant {
+    //只查询一条记录
+    int OFFSET = 0;
+    int LIMIT = 1;
+
     interface Sys{
         //邮箱验证码长度
         int EMAIL_CODE_LENGTH = 6;
@@ -36,6 +40,11 @@ public interface SysConstant {
     }
 
     interface RoleStatus {
+        Byte FORBID = 0; //禁用
+        Byte NORMAL = 1; //正常
+    }
+
+    interface ResStatus {
         Byte FORBID = 0; //禁用
         Byte NORMAL = 1; //正常
     }

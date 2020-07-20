@@ -69,6 +69,7 @@ public interface ResultCode {
     String FORBID_DEPT_TO_SELF_MSG="禁止自己作为自己上级部门";
     String PARENT_MODULE_NOT_EXIST_MSG="父级模块不存在";
     String RES_NAME_REPEAT_MSG="资源名称重复";
+    String RES_CODE_REPEAT_MSG="资源编码重复";
     String PHONE_EXIST_ERROR_MSG="手机号已被占用";
     String USER_ID_BLANK_MSG="用户ID为空";
     String USER_STATUS_INVALID_MSG="用户状态非法";
@@ -76,4 +77,9 @@ public interface ResultCode {
     String ROLE_NOT_EXIST_ERROR_MSG="角色不存在";
     String ROLE_STATUS_NORMAL_MSG="当前角色为可用状态，请先禁用后再删除";
     String ROLE_STATUS_INVALID_MSG="用户状态非法";
+    String RES_ID_BLANK_MSG="资源ID为空";
+    String RES_MODULE_ID_BLANK_MSG="资源模块ID为空";
+    String RES_NOT_EXIST_MSG="资源不存在";
+    String RES_MODULE_NOT_EXIST_MSG="资源模块不存在";
+    String FORBID_DELETE_RES_MSG="禁止删除当前资源";
 }
