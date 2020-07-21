@@ -86,6 +86,8 @@ public class SysDeptServiceImpl implements SysDeptService {
         SysDeptExample example = new SysDeptExample();
         example.setOrderByClause("seq desc");
         example.createCriteria().andParentIdEqualTo(parentId);
+        example.setOffset(SysConstant.OFFSET);
+        example.setLimit(SysConstant.LIMIT);
         List<SysDept> depts = sysDeptMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(depts)) {
             return depts.get(0).getSeq() + 1;
