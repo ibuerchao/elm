@@ -9,6 +9,7 @@ import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.mapper.SysPermissionModuleMapper;
+import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.model.SysPermissionModuleExample;
 import com.buerc.permission.service.SysResModuleService;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -233,5 +235,58 @@ public class SysResModuleServiceImpl implements SysResModuleService {
         }
         List<TreeNode> data = sysPermissionModuleMapper.tree(s);
         return TreeUtil.tree(data,id);
+    }
+
+    @Override
+    @Transactional
+    public void up(String id) {
+        SysPermissionModule module = checkIdExist(id);
+        SysPermissionModule moveSysDept = getMoveModule(module.getParentId(), module.getSeq(), Boolean.TRUE);
+        doMove(module, moveSysDept);
+    }
+
+    @Override
+    @Transactional
+    public void down(String id) {
+        SysPermissionModule module = checkIdExist(id);
+        SysPermissionModule moveSysDept = getMoveModule(module.getParentId(), module.getSeq(), Boolean.FALSE);
+        doMove(module, moveSysDept);
+    }
+
+    /**
+     * 上移或者下移时被动更改seq的记录
+     */
+    private SysPermissionModule getMoveModule(String parentId, Integer seq, boolean flag) {
+        SysPermissionModuleExample example = new SysPermissionModuleExample();
+        SysPermissionModuleExample.Criteria criteria = example.createCriteria();
+        criteria.andParentIdEqualTo(parentId);
+        if (flag) {
+            criteria.andSeqLessThan(seq);
+            example.setOrderByClause("seq desc");
+        } else {
+            criteria.andSeqGreaterThan(seq);
+            example.setOrderByClause("seq asc");
+        }
+        List<SysPermissionModule> modules = sysPermissionModuleMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(modules)) {
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.MODULE_CANNOT_MOVE_MSG);
+        }
+        return modules.get(0);
+    }
+
+    private void doMove(SysPermissionModule source, SysPermissionModule target) {
+        SysPermissionModule update1 = new SysPermissionModule();
+        SysPermissionModule update2 = new SysPermissionModule();
+
+        update1.setId(source.getId());
+        update1.setSeq(target.getSeq());
+        update1.setLevel(target.getLevel());
+
+        update2.setId(target.getId());
+        update2.setSeq(source.getSeq());
+        update2.setLevel(source.getLevel());
+
+        sysPermissionModuleMapper.updateByPrimaryKeySelective(update1);
+        sysPermissionModuleMapper.updateByPrimaryKeySelective(update2);
     }
 }

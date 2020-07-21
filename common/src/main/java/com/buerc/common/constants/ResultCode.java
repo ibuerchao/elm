@@ -89,4 +89,5 @@ public interface ResultCode {
     String FORBID_MODULE_TO_CHILD_MSG="禁止模块挪到其子模块";
     String FORBID_MODULE_TO_SELF_MSG="禁止自己作为自己上级模块";
     String MODULE_STATUS_INVALID_MSG="模块状态非法";
+    String MODULE_CANNOT_MOVE_MSG="当前模块无法移动";
 }

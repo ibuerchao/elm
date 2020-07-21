@@ -25,4 +25,8 @@ public interface SysResModuleService {
     Result<List<SysPermissionModule>> list(ResListParam param);
 
     List<TreeNode> superior(String id, String status);
+
+    void up(String id);
+
+    void down(String id);
 }

@@ -79,4 +79,20 @@ public class SysResModuleController {
                            @RequestParam(value = "status",required = false) String status){
         return Result.success(sysResModuleService.superior(id,status));
     }
+
+    @ApiOperation(value = "上移模块")
+    @GetMapping("/up/{id}")
+    @OperateLog(value = "上移模块",type = 6)
+    public Result up(@PathVariable String id){
+        sysResModuleService.up(id);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "下移模块")
+    @GetMapping("/down/{id}")
+    @OperateLog(value = "下移模块",type = 7)
+    public Result down(@PathVariable String id){
+        sysResModuleService.down(id);
+        return Result.success();
+    }
 }
