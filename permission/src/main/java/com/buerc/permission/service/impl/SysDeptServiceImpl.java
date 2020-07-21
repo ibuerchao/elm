@@ -98,6 +98,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public SysDept edit(DeptFormParam dept) {
+        // todo 更新seq
         ValidateKit.notBlank(dept.getId(), ResultCode.DEPT_ID_BLANK_MSG);
         SysDept sysDept = checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());

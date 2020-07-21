@@ -82,4 +82,11 @@ public interface ResultCode {
     String RES_NOT_EXIST_MSG="资源不存在";
     String RES_MODULE_NOT_EXIST_MSG="资源模块不存在";
     String FORBID_DELETE_RES_MSG="禁止删除当前资源";
+    String RES_MODULE_NAME_REPEAT_MSG="模块名称重复";
+    String RES_MODULE_MAX_MSG="当前层级已达到最大数量，无法添加";
+    String FORBID_DELETE_RES_MODULE_MSG="禁止删除当前模块";
+    String MODULE_CANNOT_DEL_MSG="当前模块存在子模块，无法删除";
+    String FORBID_MODULE_TO_CHILD_MSG="禁止模块挪到其子模块";
+    String FORBID_MODULE_TO_SELF_MSG="禁止自己作为自己上级模块";
+    String MODULE_STATUS_INVALID_MSG="模块状态非法";
 }

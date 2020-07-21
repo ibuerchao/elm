@@ -5,6 +5,13 @@ public interface SysConstant {
     int OFFSET = 0;
     int LIMIT = 1;
 
+    //每一级长度
+    int LEVEL_LENGTH = 5;
+    //左填充
+    char PADDING = '0';
+    //最大层级
+    int MAX_LEVELS = 40;
+
     interface Sys{
         //邮箱验证码长度
         int EMAIL_CODE_LENGTH = 6;
@@ -45,6 +52,11 @@ public interface SysConstant {
     }
 
     interface ResStatus {
+        Byte FORBID = 0; //禁用
+        Byte NORMAL = 1; //正常
+    }
+
+    interface ResModuleStatus {
         Byte FORBID = 0; //禁用
         Byte NORMAL = 1; //正常
     }

@@ -1,7 +1,6 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
@@ -10,7 +9,6 @@ import com.buerc.sys.dto.UserFormParam;
 import com.buerc.sys.dto.UserListParam;
 import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
