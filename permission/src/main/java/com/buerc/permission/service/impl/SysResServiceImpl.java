@@ -14,6 +14,7 @@ import com.buerc.permission.service.SysResService;
 import com.buerc.sys.dto.ResFormParam;
 import com.buerc.sys.dto.ResListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
+import com.buerc.sys.vo.ResVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -161,7 +162,10 @@ public class SysResServiceImpl implements SysResService {
     }
 
     @Override
-    public Result<List<SysPermission>> list(ResListParam param) {
-        return null;
+    public Result<List<ResVo>> list(ResListParam param) {
+        if (param.getEnd() != null && param.getStart() != null) {
+            ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart()) < 0, ResultCode.START_AND_END_INVALID_MSG);
+        }
+        return Result.success(sysPermissionMapper.list(param), sysPermissionMapper.count(param));
     }
 }

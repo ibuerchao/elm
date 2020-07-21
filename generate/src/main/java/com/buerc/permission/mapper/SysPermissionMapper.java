@@ -2,9 +2,11 @@ package com.buerc.permission.mapper;
 
 import com.buerc.permission.model.SysPermission;
 import com.buerc.permission.model.SysPermissionExample;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
+import com.buerc.sys.dto.ResListParam;
+import com.buerc.sys.vo.ResVo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysPermissionMapper {
     long countByExample(SysPermissionExample example);
@@ -28,4 +30,8 @@ public interface SysPermissionMapper {
     int updateByPrimaryKeySelective(SysPermission record);
 
     int updateByPrimaryKey(SysPermission record);
+
+    List<ResVo> list(ResListParam param);
+
+    long count(ResListParam param);
 }

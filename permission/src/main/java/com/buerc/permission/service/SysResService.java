@@ -3,6 +3,7 @@ package com.buerc.permission.service;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysPermission;
 import com.buerc.sys.dto.*;
+import com.buerc.sys.vo.ResVo;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface SysResService {
 
     boolean updateStatus(UpdateStatusParam param);
 
-    Result<List<SysPermission>> list(ResListParam param);
+    Result<List<ResVo>> list(ResListParam param);
 }

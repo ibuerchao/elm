@@ -3,9 +3,11 @@ package com.buerc.permission.controller;
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.utils.BeanValidator;
 import com.buerc.common.web.Result;
-import com.buerc.permission.model.SysPermission;
 import com.buerc.permission.service.SysResService;
-import com.buerc.sys.dto.*;
+import com.buerc.sys.dto.ResFormParam;
+import com.buerc.sys.dto.ResListParam;
+import com.buerc.sys.dto.UpdateStatusParam;
+import com.buerc.sys.vo.ResVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +68,7 @@ public class SysResController {
     @ApiOperation(value = "资源列表")
     @PostMapping("/list")
     @OperateLog(value = "资源列表",type = 5)
-    public Result<List<SysPermission>> list(@RequestBody ResListParam param){
+    public Result<List<ResVo>> list(@RequestBody ResListParam param){
         return sysResService.list(param);
     }
 }

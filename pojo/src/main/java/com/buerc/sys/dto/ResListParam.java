@@ -15,6 +15,9 @@ public class ResListParam {
     @ApiModelProperty(value = "资源编码")
     private String code;
 
+    @ApiModelProperty(value = "模块ID")
+    private List<String> moduleId;
+
     @ApiModelProperty(value = "资源状态")
     private List<Byte> status;
 

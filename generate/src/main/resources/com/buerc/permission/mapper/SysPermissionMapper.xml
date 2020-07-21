@@ -338,4 +338,53 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="list" parameterType="com.buerc.sys.dto.ResListParam" resultType="com.buerc.sys.vo.ResVo">
+    SELECT sp.*,spm.`name` module_name
+    FROM `sys_permission_module` spm INNER JOIN `sys_permission` sp
+    ON spm.`id` = sp.`module_id`
+    <include refid="listDynamicWhere"></include>
+    ORDER BY ${order}
+    <if test="offset != null and offset>=0 and limit!=null and limit>0">
+      limit #{offset} , #{limit}
+    </if>
+  </select>
+
+  <sql id="listDynamicWhere">
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(name)">
+        AND sp.name like CONCAT('%', trim(#{name}), '%')
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(code)">
+        AND sp.code like CONCAT('%', trim(#{code}), '%')
+      </if>
+      <if test="@org.apache.commons.collections.CollectionUtils@isNotEmpty(status)">
+        AND sp.status in
+        <foreach item="item" collection="status" separator="," open="(" close=")" index="index">
+          #{item}
+        </foreach>
+      </if>
+      <if test="@org.apache.commons.collections.CollectionUtils@isNotEmpty(moduleId)">
+        AND sp.module_id in
+        <foreach item="item" collection="moduleId" separator="," open="(" close=")" index="index">
+          #{item}
+        </foreach>
+      </if>
+      <if test="start!=null">
+        AND sp.operate_time &gt;= #{start}
+      </if>
+      <if test="end!=null">
+        AND sp.operate_time &lt;= #{end}
+      </if>
+    </where>
+  </sql>
+
+  <select id="count" parameterType="com.buerc.sys.dto.ResListParam" resultType="long">
+    SELECT COUNT(id) FROM (
+      SELECT sp.*,spm.`name` module_name
+      FROM `sys_permission_module` spm INNER JOIN `sys_permission` sp
+      ON spm.`id` = sp.`module_id`
+    <include refid="listDynamicWhere"></include>
+    ) temp
+  </select>
 </mapper>
