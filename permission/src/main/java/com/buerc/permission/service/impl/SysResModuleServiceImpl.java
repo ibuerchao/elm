@@ -3,6 +3,8 @@ package com.buerc.permission.service.impl;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.TreeNode;
+import com.buerc.common.utils.TreeUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
@@ -218,5 +220,18 @@ public class SysResModuleServiceImpl implements SysResModuleService {
     @Override
     public Result<List<SysPermissionModule>> list(ResListParam param) {
         return null;
+    }
+
+    /**
+     * 查询当前节点的模块树
+     */
+    @Override
+    public List<TreeNode> superior(String id, String status) {
+        Integer s = NumberUtils.toInt(status, -1);
+        if (s.equals(-1)) {
+            s = null;
+        }
+        List<TreeNode> data = sysPermissionModuleMapper.tree(s);
+        return TreeUtil.tree(data,id);
     }
 }

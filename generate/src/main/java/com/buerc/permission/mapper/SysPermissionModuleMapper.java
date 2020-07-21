@@ -1,10 +1,11 @@
 package com.buerc.permission.mapper;
 
+import com.buerc.common.utils.TreeNode;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.model.SysPermissionModuleExample;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysPermissionModuleMapper {
     long countByExample(SysPermissionModuleExample example);
@@ -28,4 +29,6 @@ public interface SysPermissionModuleMapper {
     int updateByPrimaryKeySelective(SysPermissionModule record);
 
     int updateByPrimaryKey(SysPermissionModule record);
+
+    List<TreeNode> tree(@Param("status") Integer status);
 }

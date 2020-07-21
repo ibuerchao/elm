@@ -306,4 +306,14 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="tree" resultType="com.buerc.common.utils.TreeNode">
+    select id,parent_id,`name` as label from sys_permission_module
+    <where>
+      <if test="status!=null">
+        sys_permission_module.status = #{status}
+      </if>
+    </where>
+    order by seq asc
+  </select>
 </mapper>

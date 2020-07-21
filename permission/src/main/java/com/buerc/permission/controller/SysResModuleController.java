@@ -71,4 +71,12 @@ public class SysResModuleController {
     public Result<List<SysPermissionModule>> list(@RequestBody ResListParam param){
         return sysResModuleService.list(param);
     }
+
+    @ApiOperation(value = "模块树")
+    @GetMapping("/superior")
+    @OperateLog(value = "模块树",type = 8)
+    public Result superior(@RequestParam("id") String id,
+                           @RequestParam(value = "status",required = false) String status){
+        return Result.success(sysResModuleService.superior(id,status));
+    }
 }

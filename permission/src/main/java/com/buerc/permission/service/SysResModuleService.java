@@ -1,5 +1,6 @@
 package com.buerc.permission.service;
 
+import com.buerc.common.utils.TreeNode;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.sys.dto.ResListParam;
@@ -22,4 +23,6 @@ public interface SysResModuleService {
     boolean updateStatus(UpdateStatusParam param);
 
     Result<List<SysPermissionModule>> list(ResListParam param);
+
+    List<TreeNode> superior(String id, String status);
 }

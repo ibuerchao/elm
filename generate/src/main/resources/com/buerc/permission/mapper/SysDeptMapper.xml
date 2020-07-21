@@ -346,6 +346,6 @@
          sys_dept.status = #{status}
        </if>
      </where>
-    order by seq asc;
+    order by seq asc
   </select>
 </mapper>
