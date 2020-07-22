@@ -7,7 +7,9 @@ import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.service.SysResModuleService;
 import com.buerc.sys.dto.ResListParam;
 import com.buerc.sys.dto.ResModuleFormParam;
+import com.buerc.sys.dto.ResModuleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
+import com.buerc.sys.vo.ResModuleVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,7 +70,7 @@ public class SysResModuleController {
     @ApiOperation(value = "模块列表")
     @PostMapping("/list")
     @OperateLog(value = "模块列表",type = 5)
-    public Result<List<SysPermissionModule>> list(@RequestBody ResListParam param){
+    public Result<List<ResModuleVo>> list(@RequestBody ResModuleListParam param){
         return sysResModuleService.list(param);
     }
 

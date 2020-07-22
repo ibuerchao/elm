@@ -3,6 +3,9 @@ package com.buerc.permission.mapper;
 import com.buerc.common.utils.TreeNode;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.model.SysPermissionModuleExample;
+import com.buerc.sys.dto.ResListParam;
+import com.buerc.sys.dto.ResModuleListParam;
+import com.buerc.sys.vo.ResModuleVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,4 +34,8 @@ public interface SysPermissionModuleMapper {
     int updateByPrimaryKey(SysPermissionModule record);
 
     List<TreeNode> tree(@Param("status") Integer status);
+
+    List<ResModuleVo> list(ResModuleListParam param);
+
+    long count(ResModuleListParam param);
 }

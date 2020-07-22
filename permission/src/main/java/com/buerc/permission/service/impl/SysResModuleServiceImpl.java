@@ -9,13 +9,14 @@ import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.mapper.SysPermissionModuleMapper;
-import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.model.SysPermissionModuleExample;
 import com.buerc.permission.service.SysResModuleService;
 import com.buerc.sys.dto.ResListParam;
 import com.buerc.sys.dto.ResModuleFormParam;
+import com.buerc.sys.dto.ResModuleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
+import com.buerc.sys.vo.ResModuleVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -220,8 +221,11 @@ public class SysResModuleServiceImpl implements SysResModuleService {
     }
 
     @Override
-    public Result<List<SysPermissionModule>> list(ResListParam param) {
-        return null;
+    public Result<List<ResModuleVo>> list(ResModuleListParam param) {
+        if (param.getEnd() != null && param.getStart() != null) {
+            ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart()) < 0, ResultCode.START_AND_END_INVALID_MSG);
+        }
+        return Result.success(sysPermissionModuleMapper.list(param), sysPermissionModuleMapper.count(param));
     }
 
     /**

@@ -316,4 +316,51 @@
     </where>
     order by seq asc
   </select>
+
+  <select id="list" parameterType="com.buerc.sys.dto.ResModuleListParam" resultType="com.buerc.sys.vo.ResModuleVo">
+    SELECT COUNT(child.`id`) has_children,parent.*
+    FROM sys_permission_module parent
+    LEFT JOIN sys_permission_module child
+    ON parent.`id` = child.`parent_id`
+    <include refid="listDynamicWhere"></include>
+    GROUP BY parent.`id`
+    ORDER BY ${order}
+    <if test="offset != null and offset>=0 and limit!=null and limit>0">
+      limit #{offset} , #{limit}
+    </if>
+  </select>
+
+  <select id="count" parameterType="com.buerc.sys.dto.ResModuleListParam" resultType="long">
+    SELECT COUNT(id) FROM (
+    SELECT COUNT(child.`id`) has_children,parent.*
+    FROM sys_permission_module parent
+    LEFT JOIN sys_permission_module child
+    ON parent.`id` = child.`parent_id`
+    <include refid="listDynamicWhere"></include>
+    GROUP BY parent.`id`
+    ) temp
+  </select>
+
+  <sql id="listDynamicWhere">
+    <where>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(name)">
+        AND parent.name like CONCAT('%', trim(#{name}), '%')
+      </if>
+      <if test="status!=null">
+        AND parent.status = #{status}
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(operateName)">
+        AND parent.operate_name like CONCAT('%', trim(#{operateName}), '%')
+      </if>
+      <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(parentId)">
+        AND parent.parent_id = #{parentId}
+      </if>
+      <if test="start!=null">
+        AND parent.operate_time &gt;= #{start}
+      </if>
+      <if test="end!=null">
+        AND parent.operate_time &lt;= #{end}
+      </if>
+    </where>
+  </sql>
 </mapper>
