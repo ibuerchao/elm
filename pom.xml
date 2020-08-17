@@ -9,6 +9,7 @@
         <module>security</module>
         <module>pojo</module>
         <module>permission</module>
+        <module>idutil</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
