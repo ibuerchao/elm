@@ -1,3 +1,5 @@
+package com.buerc;
+
 public class Rule {
     //映射规则
     private int[] rule;

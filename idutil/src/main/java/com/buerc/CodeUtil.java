@@ -1,31 +1,41 @@
+package com.buerc;
+
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CodeUtil {
 
     private static final SecureRandom random = new SecureRandom();
 
+    private static final String INIT_KEY_SUFFIX = "-init";
+    private static final long INIT_KEY_TTL = 60000L;
+
     //+的位置填充特征值
     private static final char EIGENVALUE_CHAR = '+';
     //_的位置使用随机数填充
     private static final char RANDOM_CHAR = '_';
 
-    private static final Map<String, Rule> cache = new ConcurrentHashMap<>();
+    private static final Map<String, Rule> ruleCache = new ConcurrentHashMap<>();
+    private static final Map<String, Config> configCache = new ConcurrentHashMap<>();
 
-    private static int s = 34567;
-
-    public static String getCode(String key, String pattern, String... eigenvalue) {
-        if (StringUtils.isBlank(key) || StringUtils.isBlank(pattern)) {
+    public static String getCode(String key, String... eigenvalue) {
+        if (StringUtils.isBlank(key)) {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, "illegal char sequence");
         }
-        Rule rule = getRuleFromCache(pattern, eigenvalue);
-        long seq = getNextSeq(key, pattern);
+        Config config = configCache.get(key);
+        if (config == null){
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, "configuration is not initialized");
+        }
+        Rule rule = getRuleFromCache(config.getPattern(), eigenvalue);
+        long seq = getNextSeq(key);
         if (seq > rule.getMax()) {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, "exceeds the maximum allowable value");
         }
@@ -46,19 +56,43 @@ public class CodeUtil {
         return sb.toString();
     }
 
-    private static long getNextSeq(String key, String pattern) {
-        return s++;
+    private static synchronized long getNextSeq(String key) {
+        Config config = configCache.get(key);
+        if (config == null) {
+            throw new BizException(ResultCode.PARAM_ERROR_CODE, "configuration is not initialized");
+        }
+        long left = config.getLeft();
+        long currentValue = config.getCurrentValue();
+        if (left > config.getLeftSize()) {
+            config.setLeft(--left);
+            config.setCurrentValue(++currentValue);
+            return currentValue;
+        }
+        if (config.getNextValue() == -1) {
+            config.setNextValue(RedisUtil.increment(key,config.getCacheSize()));
+        }
+
+        if (left > 0) {
+            config.setLeft(--left);
+            config.setCurrentValue(++currentValue);
+            return currentValue;
+        }
+        config.setLeft(config.getCacheSize() - 1);
+        long nextValue = config.getNextValue()+1;
+        config.setCurrentValue(nextValue);
+        config.setNextValue(-1);
+        return nextValue;
     }
 
     private static Rule getRuleFromCache(String pattern, String... eigenvalue) {
-        Rule rule = cache.get(pattern);
+        Rule rule = ruleCache.get(pattern);
         if (rule == null) {
             LegalCharSetUtil.check(pattern);
             rule = resolvePattern(pattern);
             if (rule.getNum() != eigenvalue.length) {
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, "illegal char sequence");
             }
-            cache.put(pattern, rule);
+            ruleCache.put(pattern, rule);
         }
         return rule;
     }
@@ -124,5 +158,28 @@ public class CodeUtil {
             sb.append(i);
         }
         return NumberUtils.toLong(sb.toString());
+    }
+
+    public static void initConfig(Config config) {
+        String key = config.getKey();
+        String value = UUID.randomUUID().toString();
+        String initKey = key + INIT_KEY_SUFFIX;
+        Boolean lock = Boolean.FALSE;
+        while (!lock) {
+            lock = RedisUtil.getLock(initKey, value, INIT_KEY_TTL);
+            if (lock) {
+                String s = RedisUtil.get(key);
+                long currentStepValue;
+                if (StringUtils.isBlank(s)) {
+                    currentStepValue = 0;
+                } else {
+                    currentStepValue = NumberUtils.toLong(s) + config.getCacheSize();
+                }
+                RedisUtil.set(key, String.valueOf(currentStepValue));
+                config.setCurrentValue(currentStepValue);
+                configCache.put(key, config);
+                RedisUtil.delLock(initKey, value);
+            }
+        }
     }
 }

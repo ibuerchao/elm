@@ -42,6 +42,12 @@
 
         <dependency>
             <groupId>com.buerc</groupId>
+            <artifactId>idutil</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.buerc</groupId>
             <artifactId>security</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
