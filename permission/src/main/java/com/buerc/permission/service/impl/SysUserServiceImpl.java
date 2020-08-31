@@ -77,7 +77,7 @@ public class SysUserServiceImpl implements SysUserService {
         BeanUtils.copyProperties(signUp,user);
         String id = UUID.randomUUID().toString();
         user.setId(id);
-        user.setPassword(password);
+        user.setPassword(PasswordUtil.encrypt(password));
         user.setStatus(SysConstant.UserStatus.NO_ACTIVATED);
         user.setOperateId(id);
         user.setOperateName(signUp.getUsername());
@@ -177,7 +177,6 @@ public class SysUserServiceImpl implements SysUserService {
         SysUserExample sysUserExample = new SysUserExample();
         SysUserExample.Criteria criteria = sysUserExample.createCriteria();
         criteria.andEmailEqualTo(user.getEmail());
-        criteria.andPasswordEqualTo(decrypt);
         List<SysUser> users = sysUserMapper.selectByExample(sysUserExample);
         if (CollectionUtils.isEmpty(users)){
             throw new BizException(ResultCode.USER_OR_PASSWORD_ERROR_CODE,ResultCode.USER_OR_PASSWORD_ERROR_MSG);
@@ -186,6 +185,10 @@ public class SysUserServiceImpl implements SysUserService {
             throw new BizException(ResultCode.INTERNAL_ERROR_CODE,ResultCode.INTERNAL_ERROR_MSG);
         }
         SysUser sysUser = users.get(0);
+        boolean check = PasswordUtil.check(decrypt, sysUser.getPassword());
+        if (!check){
+            throw new BizException(ResultCode.USER_OR_PASSWORD_ERROR_CODE,ResultCode.USER_OR_PASSWORD_ERROR_MSG);
+        }
         if (!SysConstant.UserStatus.NORMAL.equals(sysUser.getStatus())){
             throw new BizException(ResultCode.USER_STATUS_ERROR_CODE,ResultCode.USER_STATUS_ERROR_MSG);
         }
@@ -249,7 +252,7 @@ public class SysUserServiceImpl implements SysUserService {
             }
             SysUser user = new SysUser();
             user.setId(id);
-            user.setPassword(password);
+            user.setPassword(PasswordUtil.encrypt(password));
             user.setOperateTime(new Date());
             user.setOperateIp(IpUtil.getRemoteAddr());
             sysUserMapper.updateByPrimaryKeySelective(user);
@@ -290,7 +293,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         SysUser user = new SysUser();
         BeanUtils.copyProperties(userFormParam,user);
-        user.setPassword(subStrPhone(userFormParam.getTelephone()));
+        user.setPassword(PasswordUtil.encrypt(subStrPhone(userFormParam.getTelephone())));
         sysUserMapper.insertSelective(user);
         UserVo vo  = new UserVo();
         BeanUtils.copyProperties(user,vo);
