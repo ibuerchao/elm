@@ -1,6 +1,7 @@
 package com.buerc.permission.model;
 
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,7 +12,10 @@ public class SysRolePermission implements Serializable {
     private String roleId;
 
     @ApiModelProperty(value = "权限id")
-    private String permissionId;
+    private String targetId;
+
+    @ApiModelProperty(value = "1:组织 2:模块 3:资源")
+    private Byte targetType;
 
     @ApiModelProperty(value = "用户id")
     private String operateId;
@@ -43,12 +47,20 @@ public class SysRolePermission implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getPermissionId() {
-        return permissionId;
+    public String getTargetId() {
+        return targetId;
     }
 
-    public void setPermissionId(String permissionId) {
-        this.permissionId = permissionId;
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
+    }
+
+    public Byte getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(Byte targetType) {
+        this.targetType = targetType;
     }
 
     public String getOperateId() {
@@ -91,7 +103,8 @@ public class SysRolePermission implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", roleId=").append(roleId);
-        sb.append(", permissionId=").append(permissionId);
+        sb.append(", targetId=").append(targetId);
+        sb.append(", targetType=").append(targetType);
         sb.append(", operateId=").append(operateId);
         sb.append(", operateName=").append(operateName);
         sb.append(", operateTime=").append(operateTime);

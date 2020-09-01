@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.buerc.permission.model.SysRolePermission">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="role_id" jdbcType="VARCHAR" property="roleId" />
-    <result column="permission_id" jdbcType="VARCHAR" property="permissionId" />
+    <result column="target_id" jdbcType="VARCHAR" property="targetId" />
+    <result column="target_type" jdbcType="TINYINT" property="targetType" />
     <result column="operate_id" jdbcType="VARCHAR" property="operateId" />
     <result column="operate_name" jdbcType="VARCHAR" property="operateName" />
     <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, role_id, permission_id, operate_id, operate_name, operate_time, operate_ip
+    id, role_id, target_id, target_type, operate_id, operate_name, operate_time, operate_ip
   </sql>
   <select id="selectByExample" parameterType="com.buerc.permission.model.SysRolePermissionExample" resultMap="BaseResultMap">
     select
@@ -105,12 +106,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.buerc.permission.model.SysRolePermission">
-    insert into sys_role_permission (id, role_id, permission_id, 
-      operate_id, operate_name, operate_time, 
-      operate_ip)
-    values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{permissionId,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=VARCHAR}, #{operateName,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
-      #{operateIp,jdbcType=VARCHAR})
+    insert into sys_role_permission (id, role_id, target_id, 
+      target_type, operate_id, operate_name, 
+      operate_time, operate_ip)
+    values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, 
+      #{targetType,jdbcType=TINYINT}, #{operateId,jdbcType=VARCHAR}, #{operateName,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.buerc.permission.model.SysRolePermission">
     insert into sys_role_permission
@@ -121,8 +122,11 @@
       <if test="roleId != null">
         role_id,
       </if>
-      <if test="permissionId != null">
-        permission_id,
+      <if test="targetId != null">
+        target_id,
+      </if>
+      <if test="targetType != null">
+        target_type,
       </if>
       <if test="operateId != null">
         operate_id,
@@ -144,8 +148,11 @@
       <if test="roleId != null">
         #{roleId,jdbcType=VARCHAR},
       </if>
-      <if test="permissionId != null">
-        #{permissionId,jdbcType=VARCHAR},
+      <if test="targetId != null">
+        #{targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetType != null">
+        #{targetType,jdbcType=TINYINT},
       </if>
       <if test="operateId != null">
         #{operateId,jdbcType=VARCHAR},
@@ -176,8 +183,11 @@
       <if test="record.roleId != null">
         role_id = #{record.roleId,jdbcType=VARCHAR},
       </if>
-      <if test="record.permissionId != null">
-        permission_id = #{record.permissionId,jdbcType=VARCHAR},
+      <if test="record.targetId != null">
+        target_id = #{record.targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetType != null">
+        target_type = #{record.targetType,jdbcType=TINYINT},
       </if>
       <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=VARCHAR},
@@ -200,7 +210,8 @@
     update sys_role_permission
     set id = #{record.id,jdbcType=VARCHAR},
       role_id = #{record.roleId,jdbcType=VARCHAR},
-      permission_id = #{record.permissionId,jdbcType=VARCHAR},
+      target_id = #{record.targetId,jdbcType=VARCHAR},
+      target_type = #{record.targetType,jdbcType=TINYINT},
       operate_id = #{record.operateId,jdbcType=VARCHAR},
       operate_name = #{record.operateName,jdbcType=VARCHAR},
       operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
@@ -215,8 +226,11 @@
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=VARCHAR},
       </if>
-      <if test="permissionId != null">
-        permission_id = #{permissionId,jdbcType=VARCHAR},
+      <if test="targetId != null">
+        target_id = #{targetId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetType != null">
+        target_type = #{targetType,jdbcType=TINYINT},
       </if>
       <if test="operateId != null">
         operate_id = #{operateId,jdbcType=VARCHAR},
@@ -236,7 +250,8 @@
   <update id="updateByPrimaryKey" parameterType="com.buerc.permission.model.SysRolePermission">
     update sys_role_permission
     set role_id = #{roleId,jdbcType=VARCHAR},
-      permission_id = #{permissionId,jdbcType=VARCHAR},
+      target_id = #{targetId,jdbcType=VARCHAR},
+      target_type = #{targetType,jdbcType=TINYINT},
       operate_id = #{operateId,jdbcType=VARCHAR},
       operate_name = #{operateName,jdbcType=VARCHAR},
       operate_time = #{operateTime,jdbcType=TIMESTAMP},

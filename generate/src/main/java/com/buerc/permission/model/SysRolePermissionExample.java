@@ -266,73 +266,133 @@ public class SysRolePermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdIsNull() {
-            addCriterion("permission_id is null");
+        public Criteria andTargetIdIsNull() {
+            addCriterion("target_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdIsNotNull() {
-            addCriterion("permission_id is not null");
+        public Criteria andTargetIdIsNotNull() {
+            addCriterion("target_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdEqualTo(String value) {
-            addCriterion("permission_id =", value, "permissionId");
+        public Criteria andTargetIdEqualTo(String value) {
+            addCriterion("target_id =", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdNotEqualTo(String value) {
-            addCriterion("permission_id <>", value, "permissionId");
+        public Criteria andTargetIdNotEqualTo(String value) {
+            addCriterion("target_id <>", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdGreaterThan(String value) {
-            addCriterion("permission_id >", value, "permissionId");
+        public Criteria andTargetIdGreaterThan(String value) {
+            addCriterion("target_id >", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdGreaterThanOrEqualTo(String value) {
-            addCriterion("permission_id >=", value, "permissionId");
+        public Criteria andTargetIdGreaterThanOrEqualTo(String value) {
+            addCriterion("target_id >=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdLessThan(String value) {
-            addCriterion("permission_id <", value, "permissionId");
+        public Criteria andTargetIdLessThan(String value) {
+            addCriterion("target_id <", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdLessThanOrEqualTo(String value) {
-            addCriterion("permission_id <=", value, "permissionId");
+        public Criteria andTargetIdLessThanOrEqualTo(String value) {
+            addCriterion("target_id <=", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdLike(String value) {
-            addCriterion("permission_id like", value, "permissionId");
+        public Criteria andTargetIdLike(String value) {
+            addCriterion("target_id like", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdNotLike(String value) {
-            addCriterion("permission_id not like", value, "permissionId");
+        public Criteria andTargetIdNotLike(String value) {
+            addCriterion("target_id not like", value, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdIn(List<String> values) {
-            addCriterion("permission_id in", values, "permissionId");
+        public Criteria andTargetIdIn(List<String> values) {
+            addCriterion("target_id in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdNotIn(List<String> values) {
-            addCriterion("permission_id not in", values, "permissionId");
+        public Criteria andTargetIdNotIn(List<String> values) {
+            addCriterion("target_id not in", values, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdBetween(String value1, String value2) {
-            addCriterion("permission_id between", value1, value2, "permissionId");
+        public Criteria andTargetIdBetween(String value1, String value2) {
+            addCriterion("target_id between", value1, value2, "targetId");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIdNotBetween(String value1, String value2) {
-            addCriterion("permission_id not between", value1, value2, "permissionId");
+        public Criteria andTargetIdNotBetween(String value1, String value2) {
+            addCriterion("target_id not between", value1, value2, "targetId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeIsNull() {
+            addCriterion("target_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeIsNotNull() {
+            addCriterion("target_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeEqualTo(Byte value) {
+            addCriterion("target_type =", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeNotEqualTo(Byte value) {
+            addCriterion("target_type <>", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeGreaterThan(Byte value) {
+            addCriterion("target_type >", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeGreaterThanOrEqualTo(Byte value) {
+            addCriterion("target_type >=", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeLessThan(Byte value) {
+            addCriterion("target_type <", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeLessThanOrEqualTo(Byte value) {
+            addCriterion("target_type <=", value, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeIn(List<Byte> values) {
+            addCriterion("target_type in", values, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeNotIn(List<Byte> values) {
+            addCriterion("target_type not in", values, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeBetween(Byte value1, Byte value2) {
+            addCriterion("target_type between", value1, value2, "targetType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTargetTypeNotBetween(Byte value1, Byte value2) {
+            addCriterion("target_type not between", value1, value2, "targetType");
             return (Criteria) this;
         }
 
