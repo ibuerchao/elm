@@ -9,9 +9,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
@@ -30,36 +28,12 @@ public class AutoFillInterceptor implements Interceptor {
             SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
             if (SqlCommandType.UPDATE.equals(sqlCommandType) || SqlCommandType.INSERT.equals(sqlCommandType)) {
                 Object parameter = invocation.getArgs()[1];
-                Class classParameter = parameter.getClass();
-                Field[] fields = classParameter.getDeclaredFields();
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    String fieldName = field.getName();
-                    Object value = field.get(parameter);
-                    if (FIELD_OPERATE_ID.equalsIgnoreCase(fieldName)) {
-                        if (value == null) {
-                            field.set(parameter, SecurityContextHolder.getUserId());
-                        }
-                    } else if (FIELD_OPERATE_NAME.equalsIgnoreCase(fieldName)) {
-                        if (value == null) {
-                            field.set(parameter, SecurityContextHolder.getUserName());
-                        }
-                    } else if (FIELD_OPERATE_TIME.equalsIgnoreCase(fieldName)) {
-                        if (value == null) {
-                            field.set(parameter, new Date());
-                        }
-                    } else if (FIELD_OPERATE_IP.equalsIgnoreCase(fieldName)) {
-                        if (value == null) {
-                            field.set(parameter, IpUtil.getRemoteAddr());
-                        }
-                    } else if (FIELD_ID.equalsIgnoreCase(fieldName)) {
-                        if (value == null) {
-                            if (SqlCommandType.INSERT.equals(sqlCommandType)) {
-                                field.set(parameter, UUID.randomUUID().toString());
-                            }
-                        }
-                    }
+                if (parameter instanceof HashMap) {
+                    invokeMap(parameter, sqlCommandType);
+                } else {
+                    invoke(parameter, sqlCommandType);
                 }
+
             }
         } catch (Exception e) {
             log.error("通用设置值时出错", e);
@@ -74,5 +48,53 @@ public class AutoFillInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
+    }
+
+    private void invoke(Object parameter, SqlCommandType sqlCommandType) throws IllegalAccessException {
+        Class classParameter = parameter.getClass();
+        Field[] fields = classParameter.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            Object value = field.get(parameter);
+            if (FIELD_OPERATE_ID.equalsIgnoreCase(fieldName)) {
+                if (value == null) {
+                    field.set(parameter, SecurityContextHolder.getUserId());
+                }
+            } else if (FIELD_OPERATE_NAME.equalsIgnoreCase(fieldName)) {
+                if (value == null) {
+                    field.set(parameter, SecurityContextHolder.getUserName());
+                }
+            } else if (FIELD_OPERATE_TIME.equalsIgnoreCase(fieldName)) {
+                if (value == null) {
+                    field.set(parameter, new Date());
+                }
+            } else if (FIELD_OPERATE_IP.equalsIgnoreCase(fieldName)) {
+                if (value == null) {
+                    field.set(parameter, IpUtil.getRemoteAddr());
+                }
+            } else if (FIELD_ID.equalsIgnoreCase(fieldName)) {
+                if (value == null) {
+                    if (SqlCommandType.INSERT.equals(sqlCommandType)) {
+                        field.set(parameter, UUID.randomUUID().toString());
+                    }
+                }
+            }
+        }
+    }
+
+    private void invokeMap(Object parameter, SqlCommandType sqlCommandType) throws IllegalAccessException {
+        HashMap<String, Object> map = (HashMap<String, Object>) parameter;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof List) {
+                List<Object> list = (List<Object>) value;
+                for (Object o : list) {
+                    invoke(o, sqlCommandType);
+                }
+            } else {
+                invoke(value, sqlCommandType);
+            }
+        }
     }
 }
