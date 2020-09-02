@@ -60,4 +60,10 @@ public interface SysConstant {
         Byte FORBID = 0; //禁用
         Byte NORMAL = 1; //正常
     }
+
+    interface RoleResTargetType{
+        Byte ORG = 1; //组织
+        Byte MODULE = 2; //模块
+        Byte RES = 3; //资源
+    }
 }
