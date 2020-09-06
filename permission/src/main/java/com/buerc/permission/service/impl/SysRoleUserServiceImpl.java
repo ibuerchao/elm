@@ -112,37 +112,55 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
 
     @Override
     public TransferVo list(RoleUserListParam param) {
+        if (param.getType() == 1){
+            return listByRole(param);
+        }else {
+            return listByUser(param);
+        }
+    }
+
+    private TransferVo listByUser(RoleUserListParam param){
         TransferVo vo = new TransferVo();
         vo.setId(param.getId());
-        SysRoleUserExample example = new SysRoleUserExample();
-        SysRoleUserExample.Criteria criteria = example.createCriteria();
-        if (param.getType() == 1){
-            List<SysUser> users = sysUserMapper.selectByExample(new SysUserExample());
-            List<TransferVo.TransferData> list = new ArrayList<>();
-            for (SysUser user:users){
-                TransferVo.TransferData data = new TransferVo.TransferData();
-                data.setKey(user.getId());
-                data.setLabel(user.getUsername());
-                data.setDisabled(!SysConstant.UserStatus.NORMAL.equals(user.getStatus()));
-                list.add(data);
-            }
-            criteria.andRoleIdEqualTo(param.getId());
-            vo.setData(list);
-        }else {
-            List<SysRole> roles = sysRoleMapper.selectByExample(new SysRoleExample());
-            List<TransferVo.TransferData> list = new ArrayList<>();
-            for (SysRole role:roles){
-                TransferVo.TransferData data = new TransferVo.TransferData();
-                data.setKey(role.getId());
-                data.setLabel(role.getName());
-                data.setDisabled(!SysConstant.RoleStatus.NORMAL.equals(role.getStatus()));
-                list.add(data);
-            }
-            criteria.andUserIdEqualTo(param.getId());
-            vo.setData(list);
+
+        List<SysRole> roles = sysRoleMapper.selectByExample(new SysRoleExample());
+        List<TransferVo.TransferData> list = new ArrayList<>();
+        for (SysRole role:roles){
+            TransferVo.TransferData data = new TransferVo.TransferData();
+            data.setKey(role.getId());
+            data.setLabel(role.getName());
+            data.setDisabled(!SysConstant.RoleStatus.NORMAL.equals(role.getStatus()));
+            list.add(data);
         }
-        List<SysRoleUser> list = sysRoleUserMapper.selectByExample(example);
-        vo.setValue(list.stream().map(SysRoleUser::getRoleId).collect(Collectors.toSet()));
+        vo.setData(list);
+
+        SysRoleUserExample example = new SysRoleUserExample();
+        example.createCriteria().andUserIdEqualTo(param.getId());
+        List<SysRoleUser> roleUsers = sysRoleUserMapper.selectByExample(example);
+        vo.setValue(roleUsers.stream().map(SysRoleUser::getRoleId).collect(Collectors.toSet()));
+        return vo;
+    }
+
+    private TransferVo listByRole(RoleUserListParam param){
+        TransferVo vo = new TransferVo();
+        vo.setId(param.getId());
+
+        List<SysUser> users = sysUserMapper.selectByExample(new SysUserExample());
+        List<TransferVo.TransferData> list = new ArrayList<>();
+        for (SysUser user:users){
+            TransferVo.TransferData data = new TransferVo.TransferData();
+            data.setKey(user.getId());
+            data.setLabel(user.getUsername());
+            data.setDisabled(!SysConstant.UserStatus.NORMAL.equals(user.getStatus()));
+            list.add(data);
+        }
+        vo.setData(list);
+
+        SysRoleUserExample example = new SysRoleUserExample();
+        example.createCriteria().andRoleIdEqualTo(param.getId());
+        List<SysRoleUser> roleUsers = sysRoleUserMapper.selectByExample(example);
+        vo.setValue(roleUsers.stream().map(SysRoleUser::getUserId).collect(Collectors.toSet()));
+
         return vo;
     }
 }
