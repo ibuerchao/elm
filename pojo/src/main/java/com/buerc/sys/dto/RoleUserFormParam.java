@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -16,7 +15,6 @@ public class RoleUserFormParam {
     private String id;
 
     @ApiModelProperty(value = "目标id")
-    @NotEmpty(message = "目标id不能为空")
     private Set<String> targetIds;
 
     @ApiModelProperty(value = "1:为角色id指定用户 2:为用户id指定角色")

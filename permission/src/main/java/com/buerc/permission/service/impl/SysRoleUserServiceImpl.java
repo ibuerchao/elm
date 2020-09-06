@@ -1,6 +1,7 @@
 package com.buerc.permission.service.impl;
 
 import com.buerc.common.constants.ResultCode;
+import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.permission.mapper.SysRoleMapper;
 import com.buerc.permission.mapper.SysRoleUserMapper;
@@ -9,6 +10,7 @@ import com.buerc.permission.model.*;
 import com.buerc.permission.service.SysRoleUserService;
 import com.buerc.sys.dto.RoleUserFormParam;
 import com.buerc.sys.dto.RoleUserListParam;
+import com.buerc.sys.vo.TransferVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SysRoleUserServiceImpl implements SysRoleUserService {
@@ -57,20 +60,24 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
     }
 
     private void checkRole(Set<String> roleIds) {
-        SysRoleExample example = new SysRoleExample();
-        example.createCriteria().andIdIn(new ArrayList<>(roleIds));
-        List<SysRole> roles = sysRoleMapper.selectByExample(example);
-        if (roles.size() != roleIds.size()) {
-            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.CONTAIN_NOT_EXIST_ROLE_MSG);
+        if (CollectionUtils.isNotEmpty(roleIds)){
+            SysRoleExample example = new SysRoleExample();
+            example.createCriteria().andIdIn(new ArrayList<>(roleIds));
+            List<SysRole> roles = sysRoleMapper.selectByExample(example);
+            if (roles.size() != roleIds.size()) {
+                throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.CONTAIN_NOT_EXIST_ROLE_MSG);
+            }
         }
     }
 
     private void checkUser(Set<String> userIds) {
-        SysUserExample example = new SysUserExample();
-        example.createCriteria().andIdIn(new ArrayList<>(userIds));
-        List<SysUser> users = sysUserMapper.selectByExample(example);
-        if (users.size() != userIds.size()) {
-            throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.CONTAIN_NOT_EXIST_USER_MSG);
+        if (CollectionUtils.isNotEmpty(userIds)){
+            SysUserExample example = new SysUserExample();
+            example.createCriteria().andIdIn(new ArrayList<>(userIds));
+            List<SysUser> users = sysUserMapper.selectByExample(example);
+            if (users.size() != userIds.size()) {
+                throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.CONTAIN_NOT_EXIST_USER_MSG);
+            }
         }
     }
 
@@ -86,31 +93,56 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
     }
 
     private void insert(RoleUserFormParam param){
-        List<SysRoleUser> list = new ArrayList<>();
-        for (String id:param.getTargetIds()){
-            SysRoleUser sysRoleUser = new SysRoleUser();
-            if (param.getType() == 1){
-                sysRoleUser.setUserId(id);
-                sysRoleUser.setRoleId(param.getId());
-            }else{
-                sysRoleUser.setUserId(param.getId());
-                sysRoleUser.setRoleId(id);
+        if (CollectionUtils.isNotEmpty(param.getTargetIds())){
+            List<SysRoleUser> list = new ArrayList<>();
+            for (String id:param.getTargetIds()){
+                SysRoleUser sysRoleUser = new SysRoleUser();
+                if (param.getType() == 1){
+                    sysRoleUser.setUserId(id);
+                    sysRoleUser.setRoleId(param.getId());
+                }else{
+                    sysRoleUser.setUserId(param.getId());
+                    sysRoleUser.setRoleId(id);
+                }
+                list.add(sysRoleUser);
             }
-            list.add(sysRoleUser);
+            sysRoleUserMapper.insertBatch(list);
         }
-
-        sysRoleUserMapper.insertBatch(list);
     }
 
     @Override
-    public List<SysRoleUser> list(RoleUserListParam param) {
+    public TransferVo list(RoleUserListParam param) {
+        TransferVo vo = new TransferVo();
+        vo.setId(param.getId());
         SysRoleUserExample example = new SysRoleUserExample();
         SysRoleUserExample.Criteria criteria = example.createCriteria();
         if (param.getType() == 1){
+            List<SysUser> users = sysUserMapper.selectByExample(new SysUserExample());
+            List<TransferVo.TransferData> list = new ArrayList<>();
+            for (SysUser user:users){
+                TransferVo.TransferData data = new TransferVo.TransferData();
+                data.setKey(user.getId());
+                data.setLabel(user.getUsername());
+                data.setDisabled(!SysConstant.UserStatus.NORMAL.equals(user.getStatus()));
+                list.add(data);
+            }
             criteria.andRoleIdEqualTo(param.getId());
+            vo.setData(list);
         }else {
+            List<SysRole> roles = sysRoleMapper.selectByExample(new SysRoleExample());
+            List<TransferVo.TransferData> list = new ArrayList<>();
+            for (SysRole role:roles){
+                TransferVo.TransferData data = new TransferVo.TransferData();
+                data.setKey(role.getId());
+                data.setLabel(role.getName());
+                data.setDisabled(!SysConstant.RoleStatus.NORMAL.equals(role.getStatus()));
+                list.add(data);
+            }
             criteria.andUserIdEqualTo(param.getId());
+            vo.setData(list);
         }
-        return sysRoleUserMapper.selectByExample(example);
+        List<SysRoleUser> list = sysRoleUserMapper.selectByExample(example);
+        vo.setValue(list.stream().map(SysRoleUser::getRoleId).collect(Collectors.toSet()));
+        return vo;
     }
 }
