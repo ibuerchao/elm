@@ -76,6 +76,9 @@ public interface ResultCode {
     String USER_STATUS_INVALID_MSG="用户状态非法";
     String ROLE_CODE_EXIST_ERROR_MSG="角色编码已存在";
     String ROLE_NOT_EXIST_ERROR_MSG="角色不存在";
+    String USER_NOT_EXIST_ERROR_MSG="用户不存在";
+    String CONTAIN_NOT_EXIST_ROLE_MSG="包含不存在的角色";
+    String CONTAIN_NOT_EXIST_USER_MSG="包含不存在的用户";
     String ROLE_STATUS_NORMAL_MSG="当前角色为可用状态，请先禁用后再删除";
     String ROLE_STATUS_INVALID_MSG="用户状态非法";
     String RES_ID_BLANK_MSG="资源ID为空";

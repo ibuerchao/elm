@@ -2,9 +2,9 @@ package com.buerc.permission.mapper;
 
 import com.buerc.permission.model.SysRoleUser;
 import com.buerc.permission.model.SysRoleUserExample;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysRoleUserMapper {
     long countByExample(SysRoleUserExample example);
@@ -28,4 +28,6 @@ public interface SysRoleUserMapper {
     int updateByPrimaryKeySelective(SysRoleUser record);
 
     int updateByPrimaryKey(SysRoleUser record);
+
+    int insertBatch(List<SysRoleUser> list);
 }
