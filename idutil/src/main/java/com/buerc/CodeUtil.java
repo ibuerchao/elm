@@ -66,18 +66,18 @@ public class CodeUtil {
         long left = config.getLeft();
         long currentValue = config.getCurrentValue();
         if (left > config.getLeftSize()) {
-            config.setLeft(--left);
-            config.setCurrentValue(++currentValue);
-            return currentValue;
+            config.setLeft(left-1);
+            config.setCurrentValue(currentValue+1);
+            return currentValue+1;
         }
         if (config.getNextValue() == -1) {
             config.setNextValue(RedisUtil.increment(key,config.getCacheSize()));
         }
 
         if (left > 0) {
-            config.setLeft(--left);
-            config.setCurrentValue(++currentValue);
-            return currentValue;
+            config.setLeft(left-1);
+            config.setCurrentValue(currentValue+1);
+            return currentValue+1;
         }
         config.setLeft(config.getCacheSize() - 1);
         long nextValue = config.getNextValue()+1;
@@ -91,18 +91,33 @@ public class CodeUtil {
             return seq;
         }else{
             if (config.isCycle()){
-                String s = RedisUtil.get(config.getKey());
-                if (NumberUtils.toLong(s)>=config.getCurrentValue()){
-                    RedisUtil.set(config.getKey(),"0");
+                String key = config.getKey();
+                String value = UUID.randomUUID().toString();
+                String initKey = key + INIT_KEY_SUFFIX;
+                Boolean lock = Boolean.FALSE;
+                boolean reset = false;
+                while (!lock){
+                    lock = RedisUtil.getLock(initKey, value, INIT_KEY_TTL);
+                    if (lock) {
+                        String s = RedisUtil.get(config.getKey());
+                        if (NumberUtils.toLong(s)>rule.getMax()){
+                            RedisUtil.set(config.getKey(),"0");
+                            reset = true;
+                        }
+                        RedisUtil.delLock(initKey, value);
+                    }
+                }
+                if (reset){
                     config.setCurrentValue(1L);
                     config.setLeft(config.getCacheSize()-1);
                     config.setNextValue(-1L);
                     return 1L;
                 }else{
                     Long l = RedisUtil.increment(config.getKey(), config.getCacheSize());
-                    config.setCurrentValue(l++);
+                    config.setCurrentValue(l+1);
                     config.setLeft(config.getCacheSize()-1);
-                    return l;
+                    config.setNextValue(-1L);
+                    return l+1;
                 }
             }else{
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, "exceeds the maximum allowable value");
