@@ -35,10 +35,7 @@ public class CodeUtil {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, "configuration is not initialized");
         }
         Rule rule = getRuleFromCache(config.getPattern(), eigenvalue);
-        long seq = getNextSeq(key);
-        if (seq > rule.getMax()) {
-            throw new BizException(ResultCode.PARAM_ERROR_CODE, "exceeds the maximum allowable value");
-        }
+        long seq = getNextSeq(key,config,rule);
         String str = StringUtils.leftPad(String.valueOf(seq), rule.getCount(), '0');
         StringBuilder sb = new StringBuilder();
         int[] r = rule.getRule();
@@ -56,7 +53,12 @@ public class CodeUtil {
         return sb.toString();
     }
 
-    private static synchronized long getNextSeq(String key) {
+    private static synchronized long getNextSeq(String key,Config config,Rule rule) {
+        long seq = getSeq(key);
+        return doCycle(seq,config,rule);
+    }
+
+    private static long getSeq(String key){
         Config config = configCache.get(key);
         if (config == null) {
             throw new BizException(ResultCode.PARAM_ERROR_CODE, "configuration is not initialized");
@@ -82,6 +84,30 @@ public class CodeUtil {
         config.setCurrentValue(nextValue);
         config.setNextValue(-1);
         return nextValue;
+    }
+
+    private static long doCycle(long seq,Config config,Rule rule){
+        if (seq <= rule.getMax()){
+            return seq;
+        }else{
+            if (config.isCycle()){
+                String s = RedisUtil.get(config.getKey());
+                if (NumberUtils.toLong(s)>=config.getCurrentValue()){
+                    RedisUtil.set(config.getKey(),"0");
+                    config.setCurrentValue(1L);
+                    config.setLeft(config.getCacheSize()-1);
+                    config.setNextValue(-1L);
+                    return 1L;
+                }else{
+                    Long l = RedisUtil.increment(config.getKey(), config.getCacheSize());
+                    config.setCurrentValue(l++);
+                    config.setLeft(config.getCacheSize()-1);
+                    return l;
+                }
+            }else{
+                throw new BizException(ResultCode.PARAM_ERROR_CODE, "exceeds the maximum allowable value");
+            }
+        }
     }
 
     private static Rule getRuleFromCache(String pattern, String... eigenvalue) {
