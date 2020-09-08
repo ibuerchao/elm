@@ -35,6 +35,10 @@ public class Result<T> {
         return new Result(ResultCode.PARAM_ERROR_CODE,ResultCode.PARAM_ERROR_MSG);
     }
 
+    public static Result fail(String message){
+        return new Result(ResultCode.PARAM_ERROR_CODE,message);
+    }
+
     public static Result error(){
         return new Result(ResultCode.INTERNAL_ERROR_CODE,ResultCode.INTERNAL_ERROR_MSG);
     }

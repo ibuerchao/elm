@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class ApplicationRunnerInit implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        CodeUtil.initConfig(new Config("test","2_143_6_57",500,10,false));
+        CodeUtil.initConfig(new Config("test","123",100,10,true));
     }
 }
