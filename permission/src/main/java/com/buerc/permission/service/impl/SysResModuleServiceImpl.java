@@ -1,18 +1,20 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.TreeNode;
 import com.buerc.common.utils.TreeUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysPermissionModuleMapper;
 import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.model.SysPermissionModuleExample;
 import com.buerc.permission.service.SysResModuleService;
-import com.buerc.sys.dto.ResListParam;
 import com.buerc.sys.dto.ResModuleFormParam;
 import com.buerc.sys.dto.ResModuleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
@@ -54,6 +56,7 @@ public class SysResModuleServiceImpl implements SysResModuleService {
         Pair<String, Integer> nextCode = getNextCode(param.getParentId());
         SysPermissionModule module = new SysPermissionModule();
         BeanUtils.copyProperties(param,module);
+        module.setId(CodeUtil.getCode(CodeConfigEnum.MODULE.getKey(), DateUtil.formatShortCompact()));
         module.setLevel(nextCode.getLeft());
         module.setSeq(nextCode.getRight());
         sysPermissionModuleMapper.insertSelective(module);

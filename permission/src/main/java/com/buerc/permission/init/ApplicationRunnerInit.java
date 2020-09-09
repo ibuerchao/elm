@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class ApplicationRunnerInit implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        CodeUtil.initConfig(CodeConfigEnum.getConfig(CodeConfigEnum.TEST));
-        CodeUtil.initConfig(CodeConfigEnum.getConfig(CodeConfigEnum.USER));
-        CodeUtil.initConfig(CodeConfigEnum.getConfig(CodeConfigEnum.DEPT));
+        for (CodeConfigEnum codeConfigEnum:CodeConfigEnum.values()){
+            CodeUtil.initConfig(CodeConfigEnum.getConfig(codeConfigEnum));
+        }
     }
 }

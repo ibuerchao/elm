@@ -6,6 +6,7 @@ public enum CodeConfigEnum {
     TEST("test", "123", 100, 10, true),
     USER("web:sys:user", "+12345", 500, 50, true),
     DEPT("web:sys:dept", "+123", 100, 10, true),
+    MODULE("web:sys:module", "+123", 100, 10, true),
     ;
 
     private String key;
