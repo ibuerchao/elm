@@ -1,11 +1,14 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysPermissionMapper;
 import com.buerc.permission.model.SysPermission;
 import com.buerc.permission.model.SysPermissionExample;
@@ -41,6 +44,7 @@ public class SysResServiceImpl implements SysResService {
         checkCodeIsRepeat(null, param.getModuleId(), param.getCode());
         SysPermission sysPermission = new SysPermission();
         BeanUtils.copyProperties(param,sysPermission);
+        sysPermission.setId(CodeUtil.getCode(CodeConfigEnum.RES.getKey(), DateUtil.formatShortCompact()));
         sysPermission.setSeq(getNextSeq(sysPermission.getModuleId()));
         sysPermissionMapper.insertSelective(sysPermission);
         WebLogAspect.fillTextValue(null,sysPermission);
