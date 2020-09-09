@@ -87,7 +87,8 @@ public class CodeUtil {
     }
 
     private static long doCycle(long seq,Config config,Rule rule){
-        if (seq <= rule.getMax()){
+        long max = rule.getMax();
+        if (seq <= max){
             return seq;
         }else{
             if (config.isCycle()){
@@ -113,11 +114,18 @@ public class CodeUtil {
                     config.setNextValue(-1L);
                     return 1L;
                 }else{
-                    Long l = RedisUtil.increment(config.getKey(), config.getCacheSize());
-                    config.setCurrentValue(l+1);
-                    config.setLeft(config.getCacheSize()-1);
-                    config.setNextValue(-1L);
-                    return l+1;
+                    if (config.getCurrentValue() > max && config.getNextValue() != -1 && config.getNextValue() < max) {
+                        config.setCurrentValue(config.getNextValue()+1);
+                        config.setLeft(config.getCacheSize()-1);
+                        config.setNextValue(-1L);
+                        return config.getCurrentValue();
+                    }else{
+                        Long l = RedisUtil.increment(config.getKey(), config.getCacheSize());
+                        config.setCurrentValue(l+1);
+                        config.setLeft(config.getCacheSize()-1);
+                        config.setNextValue(-1L);
+                        return l+1;
+                    }
                 }
             }else{
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, "exceeds the maximum allowable value");
