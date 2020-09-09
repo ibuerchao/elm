@@ -1,8 +1,11 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.DateUtil;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysRoleMapper;
 import com.buerc.permission.mapper.SysRoleUserMapper;
 import com.buerc.permission.mapper.SysUserMapper;
@@ -97,6 +100,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
             List<SysRoleUser> list = new ArrayList<>();
             for (String id:param.getTargetIds()){
                 SysRoleUser sysRoleUser = new SysRoleUser();
+                sysRoleUser.setId(CodeUtil.getCode(CodeConfigEnum.ROLE_USER.getKey(), DateUtil.formatShortCompact()));
                 if (param.getType() == 1){
                     sysRoleUser.setUserId(id);
                     sysRoleUser.setRoleId(param.getId());

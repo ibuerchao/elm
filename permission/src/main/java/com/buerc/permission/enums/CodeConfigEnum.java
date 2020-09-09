@@ -9,6 +9,8 @@ public enum CodeConfigEnum {
     MODULE("web:sys:module", "+123", 100, 10, true),
     RES("web:sys:res", "+123", 100, 10, true),
     ROLE("web:sys:role", "+1234", 100, 10, true),
+    ROLE_RES("web:sys:role_res", "+123456", 500, 10, true),
+    ROLE_USER("web:sys:role_user", "+123456", 500, 10, true),
     ;
 
     private String key;

@@ -1,5 +1,8 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
+import com.buerc.common.utils.DateUtil;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysRolePermissionMapper;
 import com.buerc.permission.model.SysRolePermission;
 import com.buerc.permission.model.SysRolePermissionExample;
@@ -40,6 +43,7 @@ public class SysRoleResServiceImpl implements SysRoleResService {
         List<SysRolePermission> list = new ArrayList<>();
         for (String targetId:targetIds){
             SysRolePermission sysRolePermission = new SysRolePermission();
+            sysRolePermission.setId(CodeUtil.getCode(CodeConfigEnum.ROLE_RES.getKey(), DateUtil.formatShortCompact()));
             sysRolePermission.setRoleId(param.getRoleId());
             sysRolePermission.setTargetId(targetId);
             sysRolePermission.setTargetType(param.getTargetType());
