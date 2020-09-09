@@ -1,5 +1,6 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.RedisConstant;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
@@ -7,6 +8,7 @@ import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.*;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.SysUser;
 import com.buerc.permission.model.SysUserExample;
@@ -75,7 +77,7 @@ public class SysUserServiceImpl implements SysUserService {
         String password = validateEncryptPassword(signUp.getPassword());
         SysUser user = new SysUser();
         BeanUtils.copyProperties(signUp,user);
-        String id = UUID.randomUUID().toString();
+        String id = CodeUtil.getCode(CodeConfigEnum.USER.getKey(), DateUtil.formatShortCompact());
         user.setId(id);
         user.setPassword(PasswordUtil.encrypt(password));
         user.setStatus(SysConstant.UserStatus.NO_ACTIVATED);
@@ -293,6 +295,7 @@ public class SysUserServiceImpl implements SysUserService {
 
         SysUser user = new SysUser();
         BeanUtils.copyProperties(userFormParam,user);
+        user.setId(CodeUtil.getCode(CodeConfigEnum.USER.getKey(), DateUtil.formatShortCompact()));
         user.setPassword(PasswordUtil.encrypt(subStrPhone(userFormParam.getTelephone())));
         sysUserMapper.insertSelective(user);
         UserVo vo  = new UserVo();

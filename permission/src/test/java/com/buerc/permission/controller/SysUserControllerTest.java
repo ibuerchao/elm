@@ -39,7 +39,7 @@ public class SysUserControllerTest {
     public void add() throws Exception {
         Map<String,Object> map = new HashMap<>();
         Random random = new Random();
-        for (int i=0;i<100;i++){
+        for (int i=1;i<=100;i++){
             String username = "hechao"+String.format("%03d",i);
             int status = random.nextInt(3);
             String email = username+"@163.com";
