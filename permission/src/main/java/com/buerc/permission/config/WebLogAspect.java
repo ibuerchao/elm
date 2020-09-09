@@ -1,9 +1,12 @@
 package com.buerc.permission.config;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.JSONUtil;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.event.SysOperLogEvent;
 import com.buerc.permission.model.SysOperLog;
 import com.buerc.permission.util.IpUtil;
@@ -19,7 +22,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @Aspect
 @Component
@@ -54,7 +56,7 @@ public class WebLogAspect {
         sysOperLog.setType(methodAnnotation.type());
         sysOperLog.setName(classAnnotation.value() + "-" + methodAnnotation.value());
         sysOperLog.setArgs(JSONUtil.toStr(joinPoint.getArgs()));
-        sysOperLog.setId(UUID.randomUUID().toString());
+        sysOperLog.setId(CodeUtil.getCode(CodeConfigEnum.OPER_LOG.getKey(), DateUtil.formatLongCompact()));
         sysOperLog.setOperateId(SecurityContextHolder.getUserId());
         sysOperLog.setOperateName(SecurityContextHolder.getUserName());
         sysOperLog.setOperateIp(IpUtil.getRemoteAddr());

@@ -11,6 +11,7 @@ public enum CodeConfigEnum {
     ROLE("web:sys:role", "+1234", 100, 10, true),
     ROLE_RES("web:sys:role_res", "+123456", 500, 10, true),
     ROLE_USER("web:sys:role_user", "+123456", 500, 10, true),
+    OPER_LOG("web:sys:oper_log", "+12345", 500, 10, true),
     ;
 
     private String key;
