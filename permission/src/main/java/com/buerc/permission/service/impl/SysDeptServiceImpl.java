@@ -1,13 +1,16 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
-import com.buerc.common.utils.TreeUtil;
+import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.TreeNode;
+import com.buerc.common.utils.TreeUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.model.SysDept;
 import com.buerc.permission.model.SysDeptExample;
@@ -27,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +45,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 
         SysDept sysDept = new SysDept();
         BeanUtils.copyProperties(dept, sysDept);
-        sysDept.setId(UUID.randomUUID().toString());
+        sysDept.setId(CodeUtil.getCode(CodeConfigEnum.DEPT.getKey(), DateUtil.formatShortCompact()));
         sysDept.setSeq(getNextSeq(dept.getParentId()));
         sysDeptMapper.insert(sysDept);
         WebLogAspect.fillTextValue(null,sysDept);
