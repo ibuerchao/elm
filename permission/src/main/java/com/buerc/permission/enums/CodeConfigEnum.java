@@ -8,6 +8,7 @@ public enum CodeConfigEnum {
     DEPT("web:sys:dept", "+123", 100, 10, true),
     MODULE("web:sys:module", "+123", 100, 10, true),
     RES("web:sys:res", "+123", 100, 10, true),
+    ROLE("web:sys:role", "+1234", 100, 10, true),
     ;
 
     private String key;

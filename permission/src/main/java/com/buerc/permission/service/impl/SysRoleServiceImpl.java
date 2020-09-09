@@ -1,10 +1,13 @@
 package com.buerc.permission.service.impl;
 
+import com.buerc.CodeUtil;
 import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
+import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.ValidateKit;
 import com.buerc.common.web.Result;
+import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysRoleMapper;
 import com.buerc.permission.model.SysRole;
 import com.buerc.permission.model.SysRoleExample;
@@ -12,7 +15,6 @@ import com.buerc.permission.service.SysRoleService;
 import com.buerc.sys.dto.RoleFormParam;
 import com.buerc.sys.dto.RoleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
-import com.buerc.sys.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         validateCode(param.getCode());
         SysRole role = new SysRole();
         BeanUtils.copyProperties(param,role);
+        role.setId(CodeUtil.getCode(CodeConfigEnum.ROLE.getKey(), DateUtil.formatShortCompact()));
         sysRoleMapper.insertSelective(role);
         return role;
     }
