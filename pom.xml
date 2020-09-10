@@ -10,6 +10,7 @@
         <module>pojo</module>
         <module>permission</module>
         <module>idutil</module>
+        <module>message</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
