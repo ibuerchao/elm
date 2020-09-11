@@ -116,7 +116,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
 
     @Override
     public TransferVo list(RoleUserListParam param) {
-        if (param.getType() == 1){
+        if (SysConstant.RoleUserTargetType.ROLE_USER.equals(param.getType())){
             return listByRole(param);
         }else {
             return listByUser(param);
