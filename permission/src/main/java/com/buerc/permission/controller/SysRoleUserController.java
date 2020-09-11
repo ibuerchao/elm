@@ -1,7 +1,7 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysRoleUserService;
 import com.buerc.sys.dto.RoleUserFormParam;
@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/role_user")
 @OperateLog(value = "角色用户管理",module = 6)
+@ParamValid
 public class SysRoleUserController {
 
     @Resource
@@ -27,7 +28,6 @@ public class SysRoleUserController {
     @PostMapping("/save")
     @OperateLog(value = "保存角色用户",type = 1)
     public Result save(@RequestBody RoleUserFormParam param){
-        BeanValidator.validator(param);
         sysRoleUserService.save(param);
         return Result.success();
     }
@@ -36,7 +36,6 @@ public class SysRoleUserController {
     @PostMapping("/list")
     @OperateLog(value = "角色用户列表",type = 5)
     public Result<TransferVo> list(@RequestBody RoleUserListParam param){
-        BeanValidator.validator(param);
         return Result.success(sysRoleUserService.list(param));
     }
 }

@@ -1,7 +1,7 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.sys.dto.DeptFormParam;
@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/dept")
 @OperateLog(value = "部门管理",module = 1)
+@ParamValid
 public class SysDeptController {
 
     @Resource
@@ -24,7 +25,6 @@ public class SysDeptController {
     @PostMapping("/add")
     @OperateLog(value = "新增部门",type = 1)
     public Result add(@RequestBody DeptFormParam dept){
-        BeanValidator.validator(dept);
         return Result.success(sysDeptService.add(dept));
     }
 
@@ -40,7 +40,6 @@ public class SysDeptController {
     @PostMapping("/edit")
     @OperateLog(value = "编辑部门",type = 3)
     public Result edit(@RequestBody DeptFormParam dept){
-        BeanValidator.validator(dept);
         return Result.success(sysDeptService.edit(dept));
     }
 
@@ -55,7 +54,6 @@ public class SysDeptController {
     @PostMapping("/list")
     @OperateLog(value = "部门列表",type = 5)
     public Result list(@RequestBody DeptListParam param){
-        BeanValidator.validator(param);
         return sysDeptService.list(param);
     }
 
@@ -87,7 +85,6 @@ public class SysDeptController {
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)
     public Result updateStatus(@RequestBody UpdateStatusParam param){
-        BeanValidator.validator(param);
         boolean updateStatus = sysDeptService.updateStatus(param);
         if (updateStatus){
             return Result.success();

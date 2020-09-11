@@ -17,6 +17,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ import java.util.Objects;
 @Aspect
 @Component
 @Slf4j
+@Order(1000)
 public class WebLogAspect {
     private static ThreadLocal<SysOperLog> threadLocal = new ThreadLocal<>();
 

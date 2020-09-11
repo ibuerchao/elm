@@ -1,7 +1,7 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysRole;
 import com.buerc.permission.service.SysRoleService;
@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 @OperateLog(value = "角色管理",module = 5)
+@ParamValid
 public class SysRoleController {
     @Resource
     private SysRoleService sysRoleService;
@@ -25,7 +26,6 @@ public class SysRoleController {
     @PostMapping("/add")
     @OperateLog(value = "新增角色",type = 1)
     public Result add(@RequestBody RoleFormParam param){
-        BeanValidator.validator(param);
         return Result.success(sysRoleService.add(param));
     }
 
@@ -41,7 +41,6 @@ public class SysRoleController {
     @PostMapping("/edit")
     @OperateLog(value = "编辑角色",type = 3)
     public Result edit(@RequestBody RoleFormParam param){
-        BeanValidator.validator(param);
         return Result.success(sysRoleService.edit(param));
     }
 
@@ -56,7 +55,6 @@ public class SysRoleController {
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)
     public Result updateStatus(@RequestBody UpdateStatusParam param){
-        BeanValidator.validator(param);
         boolean updateStatus = sysRoleService.updateStatus(param);
         if (updateStatus){
             return Result.success();

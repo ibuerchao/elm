@@ -1,7 +1,7 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.sys.dto.UpdateStatusParam;
@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @OperateLog(value = "用户管理",module = 2)
+@ParamValid
 public class SysUserController {
     @Resource
     private SysUserService sysUserService;
@@ -25,7 +26,6 @@ public class SysUserController {
     @PostMapping("/add")
     @OperateLog(value = "新增用户",type = 1)
     public Result<UserVo> add(@RequestBody UserFormParam userFormParam){
-        BeanValidator.validator(userFormParam);
         return Result.success(sysUserService.add(userFormParam));
     }
 
@@ -41,7 +41,6 @@ public class SysUserController {
     @PostMapping("/edit")
     @OperateLog(value = "编辑用户",type = 3)
     public Result edit(@RequestBody UserFormParam param){
-        BeanValidator.validator(param);
         return Result.success(sysUserService.edit(param));
     }
 
@@ -56,7 +55,6 @@ public class SysUserController {
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)
     public Result updateStatus(@RequestBody UpdateStatusParam param){
-        BeanValidator.validator(param);
         boolean updateStatus = sysUserService.updateStatus(param);
         if (updateStatus){
             return Result.success();

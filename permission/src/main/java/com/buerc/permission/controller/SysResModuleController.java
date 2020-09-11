@@ -1,11 +1,9 @@
 package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
-import com.buerc.permission.model.SysPermissionModule;
 import com.buerc.permission.service.SysResModuleService;
-import com.buerc.sys.dto.ResListParam;
 import com.buerc.sys.dto.ResModuleFormParam;
 import com.buerc.sys.dto.ResModuleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
@@ -19,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/res/module")
 @OperateLog(value = "模块管理",module = 4)
+@ParamValid
 public class SysResModuleController {
     @Resource
     private SysResModuleService sysResModuleService;
@@ -27,7 +26,6 @@ public class SysResModuleController {
     @PostMapping("/add")
     @OperateLog(value = "新增模块",type = 1)
     public Result add(@RequestBody ResModuleFormParam param){
-        BeanValidator.validator(param);
         return Result.success(sysResModuleService.add(param));
     }
 
@@ -43,7 +41,6 @@ public class SysResModuleController {
     @PostMapping("/edit")
     @OperateLog(value = "编辑模块",type = 3)
     public Result edit(@RequestBody ResModuleFormParam param){
-        BeanValidator.validator(param);
         return Result.success(sysResModuleService.edit(param));
     }
 
@@ -58,7 +55,6 @@ public class SysResModuleController {
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)
     public Result updateStatus(@RequestBody UpdateStatusParam param){
-        BeanValidator.validator(param);
         boolean updateStatus = sysResModuleService.updateStatus(param);
         if (updateStatus){
             return Result.success();
