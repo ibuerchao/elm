@@ -1,6 +1,6 @@
 package com.buerc.permission.controller;
 
-import com.buerc.common.utils.BeanValidator;
+import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.sys.bo.UserInfo;
@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 
 @Controller
 @RequestMapping("/help")
+@ParamValid
 public class HelpController {
     @Resource
     private SysUserService sysUserService;
@@ -26,7 +27,6 @@ public class HelpController {
     @PostMapping("/sign_up")
     @ResponseBody
     public Result signUp(@RequestBody SignUpParam signUp){
-        BeanValidator.validator(signUp);
         sysUserService.signUp(signUp);
         return Result.success();
     }
@@ -35,7 +35,6 @@ public class HelpController {
     @PostMapping("/sign_in")
     @ResponseBody
     public Result sign_in(@RequestBody LoginParam user){
-        BeanValidator.validator(user);
         return Result.success(sysUserService.login(user));
     }
 
@@ -49,7 +48,6 @@ public class HelpController {
     @PostMapping("/reset/password")
     @ResponseBody
     public Result resetPassword(@RequestBody ResetPasswordParam resetPassword){
-        BeanValidator.validator(resetPassword);
         sysUserService.resetPassword(resetPassword);
         return Result.success();
     }
