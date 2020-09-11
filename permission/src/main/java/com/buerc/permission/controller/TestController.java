@@ -41,7 +41,7 @@ public class TestController {
     @RequestMapping("/redis")
     public Result redis(){
         Event<Map<String,Object>> event = new Event<>();
-        event.setTopic("chat1");
+        event.setTopic(messageProcessor.getTopic());
         event.setModule(1);
         event.setType(2);
         Map<String,Object> map = new HashMap<>();

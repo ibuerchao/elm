@@ -43,7 +43,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
     }
 
     private void check(RoleUserFormParam param){
-        if (param.getType() == 1){
+        if (SysConstant.RoleUserTargetType.ROLE_USER.equals(param.getType())){
             SysRoleExample example = new SysRoleExample();
             example.createCriteria().andIdEqualTo(param.getId());
             List<SysRole> roles = sysRoleMapper.selectByExample(example);
@@ -87,7 +87,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
     private void delete(RoleUserFormParam param) {
         SysRoleUserExample example = new SysRoleUserExample();
         SysRoleUserExample.Criteria criteria = example.createCriteria();
-        if (param.getType() == 1){
+        if (SysConstant.RoleUserTargetType.ROLE_USER.equals(param.getType())){
             criteria.andRoleIdEqualTo(param.getId());
         }else{
             criteria.andUserIdEqualTo(param.getId());
@@ -101,7 +101,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
             for (String id:param.getTargetIds()){
                 SysRoleUser sysRoleUser = new SysRoleUser();
                 sysRoleUser.setId(CodeUtil.getCode(CodeConfigEnum.ROLE_USER.getKey(), DateUtil.formatShortCompact()));
-                if (param.getType() == 1){
+                if (SysConstant.RoleUserTargetType.ROLE_USER.equals(param.getType())){
                     sysRoleUser.setUserId(id);
                     sysRoleUser.setRoleId(param.getId());
                 }else{

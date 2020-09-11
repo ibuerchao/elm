@@ -66,4 +66,9 @@ public interface SysConstant {
         Byte MODULE = 2; //模块
         Byte RES = 3; //资源
     }
+
+    interface RoleUserTargetType{
+        Byte ROLE_USER = 1; //为角色id指定用户
+        Byte USER_ROLE = 2; //为用户id指定角色
+    }
 }
