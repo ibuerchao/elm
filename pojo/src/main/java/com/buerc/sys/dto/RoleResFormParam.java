@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class RoleResFormParam {
@@ -22,5 +22,5 @@ public class RoleResFormParam {
 
     @ApiModelProperty(value = "targetIds")
     @NotEmpty(message = "targetIds不能为空")
-    private List<String> targetIds;
+    private Set<String> targetIds;
 }
