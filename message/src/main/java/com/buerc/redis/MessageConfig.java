@@ -16,16 +16,15 @@ public class MessageConfig {
     private String topic;
 
     @Bean
-    RedisMessageListenerContainer container(RedisConnectionFactory factory, ApplicationContext applicationContext){
+    RedisMessageListenerContainer container(RedisConnectionFactory factory, ApplicationContext context,StringRedisTemplate template){
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        MessageProcessor messageProcessor = new MessageProcessor(applicationContext);
         container.setConnectionFactory(factory);
-        container.addMessageListener(messageProcessor,new ChannelTopic(topic));
+        container.addMessageListener(messageProcessor(context,template),new ChannelTopic(topic));
         return container;
     }
 
     @Bean
-    MessagePublish messagePublish(StringRedisTemplate stringRedisTemplate){
-        return new MessagePublish(stringRedisTemplate,topic);
+    MessageProcessor messageProcessor(ApplicationContext context,StringRedisTemplate template){
+        return new MessageProcessor(context, template, topic);
     }
 }

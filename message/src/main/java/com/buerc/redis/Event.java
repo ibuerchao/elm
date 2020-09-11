@@ -1,17 +1,17 @@
 package com.buerc.redis;
 
-public class Event {
-    private String appId;
+public class Event<T> {
+    private String topic;
     private Integer module;
     private Integer type;
-    private Object data;
+    private T data;
 
-    public String getAppId() {
-        return appId;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public Integer getModule() {
@@ -30,11 +30,11 @@ public class Event {
         this.type = type;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }
