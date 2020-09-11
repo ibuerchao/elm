@@ -44,4 +44,8 @@ public class MessageProcessor implements MessageListener {
         this.stringRedisTemplate = stringRedisTemplate;
         this.topic = topic;
     }
+
+    public String getTopic() {
+        return topic;
+    }
 }
