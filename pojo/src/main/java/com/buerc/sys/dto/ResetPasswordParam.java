@@ -12,7 +12,8 @@ import javax.validation.constraints.Size;
 @Data
 public class ResetPasswordParam {
     //邮箱
-    @Email
+    @Email(message = "邮箱地址不合法")
+    @NotBlank(message = "邮箱不能为空")
     private String email;
     //新密码
     @NotBlank(message = "密码不能为空")

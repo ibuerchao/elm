@@ -25,8 +25,8 @@ public class UserFormParam {
     private String telephone;
 
     @ApiModelProperty(value = "邮箱")
+    @Email(message = "邮箱地址不合法")
     @NotBlank(message = "邮箱不能为空")
-    @Email(message = "邮箱格式非法")
     private String email;
 
     @ApiModelProperty(value = "所在部门")

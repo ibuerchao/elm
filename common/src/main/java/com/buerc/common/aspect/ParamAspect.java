@@ -26,6 +26,12 @@ public class ParamAspect {
         Object[] args = joinPoint.getArgs();
         if (args != null) {
             for (Object o : args) {
+                if (o == null){
+                    continue;
+                }
+                if(o instanceof String){
+                    continue;
+                }
                 BeanValidator.validator(o);
             }
         }
