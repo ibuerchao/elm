@@ -5,8 +5,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Aspect
 @Order(999)
@@ -23,16 +25,14 @@ public class ParamAspect {
 
     @Before(value = "onMethod() || onClass()")
     public void before(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-        if (args != null) {
-            for (Object o : args) {
-                if (o == null){
-                    continue;
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        GetMapping getMapping = methodSignature.getMethod().getAnnotation(GetMapping.class);
+        if (getMapping == null) {
+            Object[] args = joinPoint.getArgs();
+            if (args != null) {
+                for (Object o : args) {
+                    BeanValidator.validator(o);
                 }
-                if(o instanceof String){
-                    continue;
-                }
-                BeanValidator.validator(o);
             }
         }
     }
