@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SysRoleResServiceImpl implements SysRoleResService {
@@ -113,9 +114,10 @@ public class SysRoleResServiceImpl implements SysRoleResService {
     }
 
     @Override
-    public List<SysRolePermission> list(RoleResListParam param) {
+    public Set<String> list(RoleResListParam param) {
         SysRolePermissionExample example = new SysRolePermissionExample();
         example.createCriteria().andRoleIdEqualTo(param.getRoleId()).andTargetTypeEqualTo(param.getTargetType());
-        return sysRolePermissionMapper.selectByExample(example);
+        List<SysRolePermission> list = sysRolePermissionMapper.selectByExample(example);
+        return list.stream().map(SysRolePermission::getTargetId).collect(Collectors.toSet());
     }
 }

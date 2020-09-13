@@ -3,7 +3,6 @@ package com.buerc.permission.controller;
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.annotation.ParamValid;
 import com.buerc.common.web.Result;
-import com.buerc.permission.model.SysRolePermission;
 import com.buerc.permission.service.SysRoleResService;
 import com.buerc.sys.dto.RoleResFormParam;
 import com.buerc.sys.dto.RoleResListParam;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/role_res")
@@ -36,7 +35,7 @@ public class SysRoleResController {
     @ApiOperation(value = "角色资源列表")
     @PostMapping("/list")
     @OperateLog(value = "角色资源列表",type = 5)
-    public Result<List<SysRolePermission>> list(@RequestBody RoleResListParam param){
+    public Result<Set<String>> list(@RequestBody RoleResListParam param){
         return Result.success(sysRoleResService.list(param));
     }
 }
