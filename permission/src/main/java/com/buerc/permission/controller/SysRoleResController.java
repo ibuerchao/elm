@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/role_res")
@@ -35,7 +34,7 @@ public class SysRoleResController {
     @ApiOperation(value = "角色资源列表")
     @PostMapping("/list")
     @OperateLog(value = "角色资源列表",type = 5)
-    public Result<Set<String>> list(@RequestBody RoleResListParam param){
-        return Result.success(sysRoleResService.list(param));
+    public Result list(@RequestBody RoleResListParam param){
+        return sysRoleResService.list(param);
     }
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -21,6 +20,5 @@ public class RoleResFormParam {
     private Byte targetType;
 
     @ApiModelProperty(value = "targetIds")
-    @NotEmpty(message = "targetIds不能为空")
     private Set<String> targetIds;
 }

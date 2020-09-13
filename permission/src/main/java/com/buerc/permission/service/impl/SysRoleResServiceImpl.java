@@ -5,6 +5,7 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.constants.SysConstant;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.DateUtil;
+import com.buerc.common.web.Result;
 import com.buerc.permission.enums.CodeConfigEnum;
 import com.buerc.permission.mapper.SysDeptMapper;
 import com.buerc.permission.mapper.SysPermissionMapper;
@@ -15,6 +16,7 @@ import com.buerc.permission.service.SysRoleResService;
 import com.buerc.permission.service.SysRoleService;
 import com.buerc.sys.dto.RoleResFormParam;
 import com.buerc.sys.dto.RoleResListParam;
+import com.buerc.sys.vo.TransferVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -101,23 +103,44 @@ public class SysRoleResServiceImpl implements SysRoleResService {
 
     private void insert(RoleResFormParam param){
         Set<String> targetIds = param.getTargetIds();
-        List<SysRolePermission> list = new ArrayList<>();
-        for (String targetId:targetIds){
-            SysRolePermission sysRolePermission = new SysRolePermission();
-            sysRolePermission.setId(CodeUtil.getCode(CodeConfigEnum.ROLE_RES.getKey(), DateUtil.formatShortCompact()));
-            sysRolePermission.setRoleId(param.getRoleId());
-            sysRolePermission.setTargetId(targetId);
-            sysRolePermission.setTargetType(param.getTargetType());
-            list.add(sysRolePermission);
+        if (CollectionUtils.isNotEmpty(targetIds)){
+            List<SysRolePermission> list = new ArrayList<>();
+            for (String targetId:targetIds){
+                SysRolePermission sysRolePermission = new SysRolePermission();
+                sysRolePermission.setId(CodeUtil.getCode(CodeConfigEnum.ROLE_RES.getKey(), DateUtil.formatShortCompact()));
+                sysRolePermission.setRoleId(param.getRoleId());
+                sysRolePermission.setTargetId(targetId);
+                sysRolePermission.setTargetType(param.getTargetType());
+                list.add(sysRolePermission);
+            }
+            sysRolePermissionMapper.insertBatch(list);
         }
-        sysRolePermissionMapper.insertBatch(list);
     }
 
     @Override
-    public Set<String> list(RoleResListParam param) {
+    public Result list(RoleResListParam param) {
         SysRolePermissionExample example = new SysRolePermissionExample();
         example.createCriteria().andRoleIdEqualTo(param.getRoleId()).andTargetTypeEqualTo(param.getTargetType());
         List<SysRolePermission> list = sysRolePermissionMapper.selectByExample(example);
-        return list.stream().map(SysRolePermission::getTargetId).collect(Collectors.toSet());
+        Set<String> set = list.stream().map(SysRolePermission::getTargetId).collect(Collectors.toSet());
+        if (SysConstant.RoleResTargetType.RES.equals(param.getTargetType())){
+            TransferVo vo = new TransferVo();
+            List<SysPermission> permissions = sysPermissionMapper.selectByExample(new SysPermissionExample());
+            vo.setId(param.getRoleId());
+
+            List<TransferVo.TransferData> l = new ArrayList<>();
+            for (SysPermission permission:permissions){
+                TransferVo.TransferData data = new TransferVo.TransferData();
+                data.setKey(permission.getId());
+                data.setLabel(permission.getName());
+                data.setDisabled(!SysConstant.ResStatus.NORMAL.equals(permission.getStatus()));
+                l.add(data);
+            }
+            vo.setData(l);
+            vo.setValue(set);
+            return Result.success(vo);
+        }else{
+            return Result.success(set);
+        }
     }
 }
