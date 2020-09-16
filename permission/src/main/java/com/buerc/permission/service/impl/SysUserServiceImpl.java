@@ -9,9 +9,8 @@ import com.buerc.common.utils.*;
 import com.buerc.common.web.Result;
 import com.buerc.permission.config.WebLogAspect;
 import com.buerc.permission.enums.CodeConfigEnum;
-import com.buerc.permission.mapper.SysUserMapper;
-import com.buerc.permission.model.SysUser;
-import com.buerc.permission.model.SysUserExample;
+import com.buerc.permission.mapper.*;
+import com.buerc.permission.model.*;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.permission.util.IpUtil;
@@ -31,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,6 +50,18 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private RsaUtil rsaUtil;
+
+    @Resource
+    private SysRoleUserMapper sysRoleUserMapper;
+
+    @Resource
+    private SysRoleMapper sysRoleMapper;
+
+    @Resource
+    private SysRolePermissionMapper sysRolePermissionMapper;
+
+    @Resource
+    private SysPermissionMapper sysPermissionMapper;
 
     @Override
     public void signUp(SignUpParam signUp) {
@@ -273,17 +285,61 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public UserInfo info(String token) {
+        UserInfo userInfo = new UserInfo();
+        UserVo user = getUser(token);
+        userInfo.setInfo(user);
+
+        List<String> roleIds = getRoleIds(user.getId());
+        userInfo.setRoles(getRoleCodes(roleIds));
+        userInfo.setPermissions(getPermissions(roleIds));
+        return userInfo;
+    }
+
+    private UserVo getUser(String token){
         ValidateKit.notBlank(token,ResultCode.TOKEN_BLANK_MSG);
         String userId = jwtTokenUtil.getUserId(token);
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         ValidateKit.notNull(sysUser,ResultCode.USER_NOT_EXIST_MSG);
-        UserInfo userInfo = new UserInfo();
+
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(sysUser,userVo);
-        userInfo.setInfo(userVo);
-        userInfo.setRoles(new HashSet<>());
-        userInfo.setPermissions(new HashSet<>());
-        return userInfo;
+        return userVo;
+    }
+
+    private List<String> getRoleIds(String userId){
+        SysRoleUserExample sysRoleUserExample = new SysRoleUserExample();
+        sysRoleUserExample.createCriteria().andUserIdEqualTo(userId);
+        List<SysRoleUser> roleUsers = sysRoleUserMapper.selectByExample(sysRoleUserExample);
+        return roleUsers.stream().map(SysRoleUser::getRoleId).collect(Collectors.toList());
+    }
+
+    private Set<String> getRoleCodes(List<String> roleIds){
+        if (CollectionUtils.isNotEmpty(roleIds)){
+            SysRoleExample sysRoleExample = new SysRoleExample();
+            sysRoleExample.createCriteria().andIdIn(roleIds);
+            List<SysRole> roles = sysRoleMapper.selectByExample(sysRoleExample);
+            return roles.stream().map(SysRole::getCode).collect(Collectors.toSet());
+        }
+        return new HashSet<>();
+    }
+
+    private Set<String> getPermissions(List<String> roleIds){
+        if (CollectionUtils.isNotEmpty(roleIds)){
+            SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
+            sysRolePermissionExample.createCriteria().andRoleIdIn(roleIds);
+            List<SysRolePermission> rolePermissions = sysRolePermissionMapper.selectByExample(sysRolePermissionExample);
+            Map<Byte, List<SysRolePermission>> collect = rolePermissions.stream().collect(Collectors.groupingBy(SysRolePermission::getTargetType));
+            List<String> list = collect.get(SysConstant.RoleResTargetType.RES).stream().map(SysRolePermission::getTargetId).collect(Collectors.toList());
+
+            if (CollectionUtils.isNotEmpty(list)){
+                SysPermissionExample sysPermissionExample = new SysPermissionExample();
+                sysPermissionExample.createCriteria().andIdIn(list);
+                List<SysPermission> permissions = sysPermissionMapper.selectByExample(sysPermissionExample);
+                return permissions.stream().map(SysPermission::getCode).collect(Collectors.toSet());
+            }
+            return new HashSet<>();
+        }
+        return new HashSet<>();
     }
 
     @Override
