@@ -1,6 +1,7 @@
 package com.buerc.security.shiro;
 
 import com.buerc.common.utils.JwtTokenUtil;
+import com.buerc.security.holder.SecurityContextHolder;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -37,15 +37,11 @@ public class AuthRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(userId,token,this.getName());
     }
 
-    //todo 调用permission服务接口获取角色
     private Set<String> roles(String userId){
-        System.out.println(userId);
-        return new HashSet<>();
+        return SecurityContextHolder.get(userId).getRoles();
     }
 
-    //todo 调用permission服务接口获取权限
     private Collection<String> permissions(String userId){
-        System.out.println(userId);
-        return new HashSet<>();
+        return SecurityContextHolder.get(userId).getPermissions();
     }
 }

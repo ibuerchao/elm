@@ -1,12 +1,11 @@
 package com.buerc.security.shiro;
 
 import com.buerc.common.constants.RedisConstant;
-import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.ApplicationContextUtil;
 import com.buerc.common.utils.JSONUtil;
-import com.buerc.common.utils.JwtTokenUtil;
 import com.buerc.common.web.Result;
+import com.buerc.security.holder.SecurityContextHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
@@ -40,12 +39,7 @@ public class AuthFilter extends AuthenticatingFilter {
         //由于AuthFilter继承链路是javax.servlet.Filter,在DispatchServlet之前,如果期间抛出异常，spring全局异常增强器将无法捕获
         //所以在验证token时如果有异常，则表示token过期或者非法，此时throw出去的异常无法被spring异常处理器捕获，则重定向到未登录接口返回友好提示
         try {
-            JwtTokenUtil jwtTokenUtil = ApplicationContextUtil.getApplicationContext().getBean(JwtTokenUtil.class);
-            String id = jwtTokenUtil.getUserId(token);
-            //todo 通过id调用permission服务获取用户信息来判断用户是否存在
-            if (id == null){
-                throw new BizException(ResultCode.USER_NOT_EXIST_CODE,ResultCode.USER_NOT_EXIST_MSG);
-            }
+            SecurityContextHolder.get();
         }catch (BizException e){
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             //设置编码，否则中文字符在重定向时会变为空字符串

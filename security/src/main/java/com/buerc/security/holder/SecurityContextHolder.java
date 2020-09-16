@@ -27,6 +27,13 @@ public class SecurityContextHolder {
         return getUserInfo(getCurrentToken());
     }
 
+    public static UserInfo get(String userId){
+        if (StringUtils.isBlank(userId)){
+            throw new BizException(ResultCode.PARAM_ERROR_CODE,ResultCode.USER_ID_BLANK_MSG);
+        }
+        return map.get(userId);
+    }
+
     public static String getUserId(){
         return get().getInfo().getId();
     }

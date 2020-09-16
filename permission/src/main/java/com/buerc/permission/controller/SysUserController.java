@@ -2,6 +2,7 @@ package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.annotation.ParamValid;
+import com.buerc.common.constants.SysConstant;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.sys.dto.UpdateStatusParam;
@@ -9,6 +10,7 @@ import com.buerc.sys.dto.UserFormParam;
 import com.buerc.sys.dto.UserListParam;
 import com.buerc.sys.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -63,7 +65,7 @@ public class SysUserController {
         }
     }
 
-//    @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
+    @RequiresRoles(SysConstant.UserCode.QUERY_USER_LIST)
     @ApiOperation(value = "用户列表")
     @PostMapping("/list")
     @OperateLog(value = "用户列表",type = 5)
