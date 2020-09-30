@@ -27,12 +27,6 @@ public interface SysConstant {
         int DEFAULT_PASSWORD_LENGTH = 8;
     }
 
-    //权限编码格式  应用模块:菜单模块:功能模块:操作模块
-    interface UserCode {
-        String QUERY_USER_LIST = "web:sys:user:list";
-        String USER_LOGIN = "web:sys:user:login";
-    }
-
     interface UserStatus {
         Byte FROZEN = 0; //冻结
         Byte NORMAL = 1; //正常
