@@ -21,4 +21,7 @@ public class RoleUserFormParam {
     @NotNull(message = "类型不能为空")
     @Range(min = 1,max = 2,message = "类型只能 1-2之间")
     private Byte type;
+
+    //角色-用户变更时，受影响的用户id组成的集合
+    private Set<String> userIds;
 }

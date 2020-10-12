@@ -71,6 +71,6 @@ public class HelpController {
     @GetMapping("/info")
     @ResponseBody
     public Result<UserInfo> info(@RequestParam("token") String token){
-        return Result.success(sysUserService.info(token));
+        return Result.success(sysUserService.infoByToken(token));
     }
 }

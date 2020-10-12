@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,6 +58,10 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.ROLE_NOT_EXIST_ERROR_MSG);
             }
             checkUser(param.getTargetIds());
+            List<SysRoleUser> roleUsers = getSysRoleUserByRoleId(param.getId());
+            Set<String> collect = roleUsers.stream().map(SysRoleUser::getUserId).collect(Collectors.toSet());
+            collect.addAll(param.getTargetIds());
+            param.setUserIds(collect);
         }else{
             SysUserExample example = new SysUserExample();
             example.createCriteria().andIdEqualTo(param.getId());
@@ -65,6 +70,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
                 throw new BizException(ResultCode.PARAM_ERROR_CODE, ResultCode.USER_NOT_EXIST_ERROR_MSG);
             }
             checkRole(param.getTargetIds());
+            param.setUserIds(Collections.singleton(param.getId()));
         }
     }
 
@@ -144,9 +150,7 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
         }
         vo.setData(list);
 
-        SysRoleUserExample example = new SysRoleUserExample();
-        example.createCriteria().andUserIdEqualTo(param.getId());
-        List<SysRoleUser> roleUsers = sysRoleUserMapper.selectByExample(example);
+        List<SysRoleUser> roleUsers = getSysRoleUserByUserId(param.getId());
         vo.setValue(roleUsers.stream().map(SysRoleUser::getRoleId).collect(Collectors.toSet()));
         return vo;
     }
@@ -166,12 +170,23 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
         }
         vo.setData(list);
 
-        SysRoleUserExample example = new SysRoleUserExample();
-        example.createCriteria().andRoleIdEqualTo(param.getId());
-        List<SysRoleUser> roleUsers = sysRoleUserMapper.selectByExample(example);
+        List<SysRoleUser> roleUsers = getSysRoleUserByRoleId(param.getId());
         vo.setValue(roleUsers.stream().map(SysRoleUser::getUserId).collect(Collectors.toSet()));
 
         return vo;
+    }
+
+    @Override
+    public List<SysRoleUser> getSysRoleUserByRoleId(String roleId){
+        SysRoleUserExample example = new SysRoleUserExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        return sysRoleUserMapper.selectByExample(example);
+    }
+
+    private List<SysRoleUser> getSysRoleUserByUserId(String userId){
+        SysRoleUserExample example = new SysRoleUserExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        return sysRoleUserMapper.selectByExample(example);
     }
 
     @Override

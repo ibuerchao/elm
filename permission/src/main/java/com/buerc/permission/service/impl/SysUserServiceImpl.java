@@ -284,9 +284,19 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public UserInfo info(String token) {
+    public UserInfo infoByToken(String token) {
+        UserVo user = getUserByToken(token);
+        return info(user);
+    }
+
+    @Override
+    public UserInfo infoByUserId(String userId) {
+        UserVo user = getUserByUserId(userId);
+        return info(user);
+    }
+
+    private UserInfo info(UserVo user){
         UserInfo userInfo = new UserInfo();
-        UserVo user = getUser(token);
         userInfo.setInfo(user);
 
         List<String> roleIds = getRoleIds(user.getId());
@@ -295,9 +305,13 @@ public class SysUserServiceImpl implements SysUserService {
         return userInfo;
     }
 
-    private UserVo getUser(String token){
+    private UserVo getUserByToken(String token){
         ValidateKit.notBlank(token,ResultCode.TOKEN_BLANK_MSG);
         String userId = jwtTokenUtil.getUserId(token);
+        return getUserByUserId(userId);
+    }
+
+    private UserVo getUserByUserId(String userId){
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         ValidateKit.notNull(sysUser,ResultCode.USER_NOT_EXIST_MSG);
 

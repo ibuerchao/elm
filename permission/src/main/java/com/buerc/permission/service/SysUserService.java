@@ -50,7 +50,9 @@ public interface SysUserService {
      */
     void resetPassword(ResetPasswordParam resetPassword);
 
-    UserInfo info(String token);
+    UserInfo infoByToken(String token);
+
+    UserInfo infoByUserId(String userId);
 
     /**
      * 新增用户

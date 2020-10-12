@@ -21,4 +21,7 @@ public class RoleResFormParam {
 
     @ApiModelProperty(value = "targetIds")
     private Set<String> targetIds;
+
+    //角色-资源变更时，受影响的用户id组成的集合
+    private Set<String> userIds;
 }

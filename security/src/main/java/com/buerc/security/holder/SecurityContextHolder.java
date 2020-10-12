@@ -85,5 +85,8 @@ public class SecurityContextHolder {
         }
         return token;
     }
-    //todo 监听用户信息变更后重新加载缓存
+
+    public static void refreshUserInfo(String userId,UserInfo userInfo){
+        map.put(userId,userInfo);
+    }
 }

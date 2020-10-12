@@ -14,6 +14,7 @@ import com.buerc.permission.mapper.SysRolePermissionMapper;
 import com.buerc.permission.model.*;
 import com.buerc.permission.service.SysRoleResService;
 import com.buerc.permission.service.SysRoleService;
+import com.buerc.permission.service.SysRoleUserService;
 import com.buerc.redis.Event;
 import com.buerc.redis.MessageProcessor;
 import com.buerc.redis.constants.EventConstants;
@@ -34,6 +35,9 @@ public class SysRoleResServiceImpl implements SysRoleResService {
 
     @Resource
     private SysRoleService sysRoleService;
+
+    @Resource
+    private SysRoleUserService sysRoleUserService;
 
     @Resource
     private SysRolePermissionMapper sysRolePermissionMapper;
@@ -156,6 +160,10 @@ public class SysRoleResServiceImpl implements SysRoleResService {
         event.setTopic(messageProcessor.getTopic());
         event.setModule(EventConstants.Module.WEB_SYS);
         event.setType(EventConstants.Type.ROLE_RES);
+
+        List<SysRoleUser> roleUsers = sysRoleUserService.getSysRoleUserByRoleId(param.getRoleId());
+        Set<String> userIds = roleUsers.stream().map(SysRoleUser::getUserId).collect(Collectors.toSet());
+        param.setUserIds(userIds);
         event.setData(param);
         messageProcessor.publish(event);
     }
