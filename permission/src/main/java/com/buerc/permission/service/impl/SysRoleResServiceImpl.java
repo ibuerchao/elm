@@ -14,6 +14,9 @@ import com.buerc.permission.mapper.SysRolePermissionMapper;
 import com.buerc.permission.model.*;
 import com.buerc.permission.service.SysRoleResService;
 import com.buerc.permission.service.SysRoleService;
+import com.buerc.redis.Event;
+import com.buerc.redis.MessageProcessor;
+import com.buerc.redis.constants.EventConstants;
 import com.buerc.sys.dto.RoleResFormParam;
 import com.buerc.sys.dto.RoleResListParam;
 import com.buerc.sys.vo.TransferVo;
@@ -43,6 +46,9 @@ public class SysRoleResServiceImpl implements SysRoleResService {
 
     @Resource
     private SysPermissionMapper sysPermissionMapper;
+
+    @Resource
+    private MessageProcessor messageProcessor;
 
     @Override
     public void save(RoleResFormParam param) {
@@ -142,5 +148,15 @@ public class SysRoleResServiceImpl implements SysRoleResService {
         }else{
             return Result.success(set);
         }
+    }
+
+    @Override
+    public void publish(RoleResFormParam param) {
+        Event<RoleResFormParam> event = new Event<>();
+        event.setTopic(messageProcessor.getTopic());
+        event.setModule(EventConstants.Module.WEB_SYS);
+        event.setType(EventConstants.Type.ROLE_RES);
+        event.setData(param);
+        messageProcessor.publish(event);
     }
 }

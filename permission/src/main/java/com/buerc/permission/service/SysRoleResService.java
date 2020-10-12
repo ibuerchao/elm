@@ -8,4 +8,6 @@ public interface SysRoleResService {
     void save(RoleResFormParam param);
 
     Result list(RoleResListParam param);
+
+    void publish(RoleResFormParam param);
 }

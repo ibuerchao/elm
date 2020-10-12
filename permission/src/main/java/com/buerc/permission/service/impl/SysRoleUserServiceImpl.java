@@ -11,6 +11,9 @@ import com.buerc.permission.mapper.SysRoleUserMapper;
 import com.buerc.permission.mapper.SysUserMapper;
 import com.buerc.permission.model.*;
 import com.buerc.permission.service.SysRoleUserService;
+import com.buerc.redis.Event;
+import com.buerc.redis.MessageProcessor;
+import com.buerc.redis.constants.EventConstants;
 import com.buerc.sys.dto.RoleUserFormParam;
 import com.buerc.sys.dto.RoleUserListParam;
 import com.buerc.sys.vo.TransferVo;
@@ -34,6 +37,9 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Resource
+    private MessageProcessor messageProcessor;
 
     @Override
     public void save(RoleUserFormParam param) {
@@ -166,5 +172,15 @@ public class SysRoleUserServiceImpl implements SysRoleUserService {
         vo.setValue(roleUsers.stream().map(SysRoleUser::getUserId).collect(Collectors.toSet()));
 
         return vo;
+    }
+
+    @Override
+    public void publish(RoleUserFormParam param) {
+        Event<RoleUserFormParam> event = new Event<>();
+        event.setTopic(messageProcessor.getTopic());
+        event.setModule(EventConstants.Module.WEB_SYS);
+        event.setType(EventConstants.Type.ROLE_USER);
+        event.setData(param);
+        messageProcessor.publish(event);
     }
 }

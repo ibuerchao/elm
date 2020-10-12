@@ -8,4 +8,6 @@ public interface SysRoleUserService {
     void save(RoleUserFormParam param);
 
     TransferVo list(RoleUserListParam param);
+
+    void publish(RoleUserFormParam param);
 }

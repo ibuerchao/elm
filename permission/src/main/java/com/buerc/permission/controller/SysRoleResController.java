@@ -28,6 +28,7 @@ public class SysRoleResController {
     @OperateLog(value = "保存角色资源",type = 1)
     public Result save(@RequestBody RoleResFormParam param){
         sysRoleResService.save(param);
+        sysRoleResService.publish(param);
         return Result.success();
     }
 

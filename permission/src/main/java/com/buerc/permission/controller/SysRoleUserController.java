@@ -29,6 +29,7 @@ public class SysRoleUserController {
     @OperateLog(value = "保存角色用户",type = 1)
     public Result save(@RequestBody RoleUserFormParam param){
         sysRoleUserService.save(param);
+        sysRoleUserService.publish(param);
         return Result.success();
     }
 
