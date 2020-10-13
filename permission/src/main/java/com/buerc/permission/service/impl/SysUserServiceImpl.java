@@ -15,6 +15,9 @@ import com.buerc.permission.service.SysDeptService;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.permission.util.IpUtil;
 import com.buerc.permission.util.MailUtil;
+import com.buerc.redis.Event;
+import com.buerc.redis.MessageProcessor;
+import com.buerc.redis.constants.EventConstants;
 import com.buerc.sys.bo.UserInfo;
 import com.buerc.sys.dto.*;
 import com.buerc.sys.vo.UserVo;
@@ -62,6 +65,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private SysPermissionMapper sysPermissionMapper;
+
+    @Resource
+    private MessageProcessor messageProcessor;
 
     @Override
     public void signUp(SignUpParam signUp) {
@@ -425,7 +431,6 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void delete(String id) {
-        //todo 用户角色资源
         ValidateKit.assertTrue(StringUtils.isBlank(id),ResultCode.PARAM_ERROR_MSG);
         checkIdExist(id);
         SysUser update = new SysUser();
@@ -500,5 +505,15 @@ public class SysUserServiceImpl implements SysUserService {
             ValidateKit.assertTrue(param.getEnd().compareTo(param.getStart()) < 0, ResultCode.START_AND_END_INVALID_MSG);
         }
         return Result.success(sysUserMapper.list(param), sysUserMapper.count(param));
+    }
+
+    @Override
+    public void publish(String userId) {
+        Event<String> event = new Event<>();
+        event.setTopic(messageProcessor.getTopic());
+        event.setModule(EventConstants.Module.WEB_SYS);
+        event.setType(EventConstants.Type.USER_CHANGE);
+        event.setData(userId);
+        messageProcessor.publish(event);
     }
 }

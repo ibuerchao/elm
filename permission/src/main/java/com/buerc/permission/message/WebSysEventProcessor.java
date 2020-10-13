@@ -1,5 +1,6 @@
 package com.buerc.permission.message;
 
+import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.JSONUtil;
 import com.buerc.permission.service.SysUserService;
 import com.buerc.redis.Event;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Set;
 
 @Component
@@ -38,32 +40,45 @@ public class WebSysEventProcessor implements EventProcessor {
             case EventConstants.Type.ROLE_CHANGE:
                 roleChange(event.getData());
                 break;
+            case EventConstants.Type.USER_CHANGE:
+                userChange(event.getData());
+                break;
             default:
         }
     }
 
-    private void roleUser(Object o){
+    private void roleUser(Object o) {
         RoleUserFormParam data = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<RoleUserFormParam>() {
         });
         refresh(data.getUserIds());
     }
 
-    private void roleRes(Object o){
+    private void roleRes(Object o) {
         RoleResFormParam data = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<RoleResFormParam>() {
         });
         refresh(data.getUserIds());
     }
 
-    private void roleChange(Object o){
+    private void roleChange(Object o) {
         Set<String> data = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<Set<String>>() {
         });
         refresh(data);
     }
 
-    private void refresh(Set<String> userIds){
-        for (String userId:userIds){
+    private void userChange(Object o) {
+        String userId = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<String>() {
+        });
+        refresh(Collections.singleton(userId));
+    }
+
+    private void refresh(Set<String> userIds) {
+        for (String userId : userIds) {
             UserInfo userInfo = sysUserService.infoByUserId(userId);
-            SecurityContextHolder.refreshUserInfo(userId,userInfo);
+            if (userInfo.getInfo().getStatus().equals(SysConstant.UserStatus.NORMAL)) {
+                SecurityContextHolder.refreshUserInfoCache(userId, userInfo);
+            } else {
+                SecurityContextHolder.deleteUserInfoCache(userId);
+            }
         }
     }
 }

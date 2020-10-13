@@ -38,6 +38,7 @@ public class SysUserController {
     @OperateLog(value = "删除用户",type = 2)
     public Result add(@PathVariable("id") String id){
         sysUserService.delete(id);
+        sysUserService.publish(id);
         return Result.success();
     }
 
@@ -64,6 +65,7 @@ public class SysUserController {
     public Result updateStatus(@RequestBody UpdateStatusParam param){
         boolean updateStatus = sysUserService.updateStatus(param);
         if (updateStatus){
+            sysUserService.publish(param.getId());
             return Result.success();
         }else {
             return Result.error();

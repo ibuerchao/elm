@@ -86,7 +86,11 @@ public class SecurityContextHolder {
         return token;
     }
 
-    public static void refreshUserInfo(String userId,UserInfo userInfo){
+    public static void refreshUserInfoCache(String userId,UserInfo userInfo){
         map.put(userId,userInfo);
+    }
+
+    public static void deleteUserInfoCache(String userId){
+        map.remove(userId);
     }
 }

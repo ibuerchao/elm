@@ -80,4 +80,6 @@ public interface SysUserService {
     boolean updateStatus(UpdateStatusParam param);
 
     Result<List<UserVo>> list(UserListParam param);
+
+    void publish(String userId);
 }

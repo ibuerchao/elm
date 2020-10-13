@@ -7,4 +7,6 @@ interface ModuleWebSys {
     int ROLE_RES = 2;
     //角色本身发生变化(删除，状态变化)
     int ROLE_CHANGE = 3;
+    //用户本身发生变化(删除，状态变化)
+    int USER_CHANGE = 4;
 }
