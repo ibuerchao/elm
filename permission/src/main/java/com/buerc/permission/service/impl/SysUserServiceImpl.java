@@ -299,9 +299,15 @@ public class SysUserServiceImpl implements SysUserService {
         UserInfo userInfo = new UserInfo();
         userInfo.setInfo(user);
 
+        //拿到用户所有角色之后剔除禁用的角色
         List<String> roleIds = getRoleIds(user.getId());
-        userInfo.setRoles(getRoleCodes(roleIds));
-        userInfo.setPermissions(getPermissions(roleIds));
+        SysRoleExample sysRoleExample = new SysRoleExample();
+        sysRoleExample.createCriteria().andIdIn(roleIds).andStatusEqualTo(SysConstant.RoleStatus.NORMAL);
+        List<SysRole> roles = sysRoleMapper.selectByExample(sysRoleExample);
+        List<String> userRoleIds = roles.stream().map(SysRole::getId).collect(Collectors.toList());
+
+        userInfo.setRoles(getRoleCodes(userRoleIds));
+        userInfo.setPermissions(getPermissions(userRoleIds));
         return userInfo;
     }
 
