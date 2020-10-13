@@ -35,6 +35,9 @@ public class WebSysEventProcessor implements EventProcessor {
             case EventConstants.Type.ROLE_RES:
                 roleRes(event.getData());
                 break;
+            case EventConstants.Type.ROLE_CHANGE:
+                roleChange(event.getData());
+                break;
             default:
         }
     }
@@ -49,6 +52,12 @@ public class WebSysEventProcessor implements EventProcessor {
         RoleResFormParam data = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<RoleResFormParam>() {
         });
         refresh(data.getUserIds());
+    }
+
+    private void roleChange(Object o){
+        Set<String> data = JSONUtil.toObject(JSONUtil.toStr(o), new TypeReference<Set<String>>() {
+        });
+        refresh(data);
     }
 
     private void refresh(Set<String> userIds){

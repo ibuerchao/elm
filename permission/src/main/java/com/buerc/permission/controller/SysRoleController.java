@@ -9,10 +9,12 @@ import com.buerc.sys.dto.RoleFormParam;
 import com.buerc.sys.dto.RoleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/role")
@@ -33,7 +35,8 @@ public class SysRoleController {
     @DeleteMapping("/delete/{id}")
     @OperateLog(value = "删除角色",type = 2)
     public Result add(@PathVariable("id") String id){
-        sysRoleService.delete(id);
+        Set<String> userIds = sysRoleService.delete(id);
+        sysRoleService.publish(userIds);
         return Result.success();
     }
 
@@ -41,7 +44,11 @@ public class SysRoleController {
     @PostMapping("/edit")
     @OperateLog(value = "编辑角色",type = 3)
     public Result edit(@RequestBody RoleFormParam param){
-        return Result.success(sysRoleService.edit(param));
+        Pair<SysRole, Boolean> pair = sysRoleService.edit(param);
+        if (!pair.getRight()){
+            sysRoleService.publish(param.getId());
+        }
+        return Result.success(pair.getLeft());
     }
 
     @ApiOperation(value = "角色详情")
@@ -57,6 +64,7 @@ public class SysRoleController {
     public Result updateStatus(@RequestBody UpdateStatusParam param){
         boolean updateStatus = sysRoleService.updateStatus(param);
         if (updateStatus){
+            sysRoleService.publish(param.getId());
             return Result.success();
         }else {
             return Result.error();
