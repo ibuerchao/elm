@@ -11,6 +11,7 @@
         <module>permission</module>
         <module>idutil</module>
         <module>message</module>
+        <module>elm-log</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
