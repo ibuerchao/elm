@@ -1,26 +1,17 @@
 package com.buerc.permission.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.xbill.DNS.*;
+
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.xbill.DNS.Lookup;
-import org.xbill.DNS.MXRecord;
-import org.xbill.DNS.Record;
-import org.xbill.DNS.TextParseException;
-import org.xbill.DNS.Type;
 
 
 public class MailValid {
@@ -117,10 +108,8 @@ public class MailValid {
             Thread.sleep(sleepSect);
             if (bufferedReader.ready()) {
                 String outline = bufferedReader.readLine();
-                // FIXME 读完……
                 while (bufferedReader.ready())
-                    /*System.out.println(*/ bufferedReader.readLine()/*)*/;
-                /*System.out.println(outline);*/
+                    bufferedReader.readLine();
                 code = Integer.parseInt(outline.substring(0, 3));
                 break;
             }
