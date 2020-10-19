@@ -1,10 +1,10 @@
-package com.buerc.permission.mapper;
+package com.buerc.log.mapper;
 
-import com.buerc.permission.model.SysLoginLog;
-import com.buerc.permission.model.SysLoginLogExample;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
+import com.buerc.log.model.SysLoginLog;
+import com.buerc.log.model.SysLoginLogExample;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysLoginLogMapper {
     long countByExample(SysLoginLogExample example);

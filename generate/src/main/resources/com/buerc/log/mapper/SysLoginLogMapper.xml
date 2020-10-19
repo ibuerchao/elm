@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.buerc.permission.mapper.SysLoginLogMapper">
-  <resultMap id="BaseResultMap" type="com.buerc.permission.model.SysLoginLog">
+<mapper namespace="com.buerc.log.mapper.SysLoginLogMapper">
+  <resultMap id="BaseResultMap" type="com.buerc.log.model.SysLoginLog">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
@@ -69,7 +69,7 @@
   <sql id="Base_Column_List">
     id, user_id, user_name, login_time, operate_ip
   </sql>
-  <select id="selectByExample" parameterType="com.buerc.permission.model.SysLoginLogExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.buerc.log.model.SysLoginLogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -96,19 +96,19 @@
     delete from sys_login_log
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.buerc.permission.model.SysLoginLogExample">
+  <delete id="deleteByExample" parameterType="com.buerc.log.model.SysLoginLogExample">
     delete from sys_login_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.buerc.permission.model.SysLoginLog">
+  <insert id="insert" parameterType="com.buerc.log.model.SysLoginLog">
     insert into sys_login_log (id, user_id, user_name, 
       login_time, operate_ip)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{loginTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.buerc.permission.model.SysLoginLog">
+  <insert id="insertSelective" parameterType="com.buerc.log.model.SysLoginLog">
     insert into sys_login_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -145,7 +145,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.buerc.permission.model.SysLoginLogExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.buerc.log.model.SysLoginLogExample" resultType="java.lang.Long">
     select count(*) from sys_login_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -185,7 +185,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.buerc.permission.model.SysLoginLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.buerc.log.model.SysLoginLog">
     update sys_login_log
     <set>
       <if test="userId != null">
@@ -203,7 +203,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.buerc.permission.model.SysLoginLog">
+  <update id="updateByPrimaryKey" parameterType="com.buerc.log.model.SysLoginLog">
     update sys_login_log
     set user_id = #{userId,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},

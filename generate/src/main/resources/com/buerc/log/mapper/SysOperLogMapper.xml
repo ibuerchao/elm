@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.buerc.permission.mapper.SysOperLogMapper">
-  <resultMap id="BaseResultMap" type="com.buerc.permission.model.SysOperLog">
+<mapper namespace="com.buerc.log.mapper.SysOperLogMapper">
+  <resultMap id="BaseResultMap" type="com.buerc.log.model.SysOperLog">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="module" jdbcType="TINYINT" property="module" />
     <result column="type" jdbcType="TINYINT" property="type" />
@@ -13,7 +13,7 @@
     <result column="operate_ip" jdbcType="VARCHAR" property="operateIp" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.buerc.permission.model.SysOperLog">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.buerc.log.model.SysOperLog">
     <result column="args" jdbcType="LONGVARCHAR" property="args" />
     <result column="result" jdbcType="LONGVARCHAR" property="result" />
     <result column="old_value" jdbcType="LONGVARCHAR" property="oldValue" />
@@ -84,7 +84,7 @@
   <sql id="Blob_Column_List">
     args, result, old_value, new_value
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.buerc.permission.model.SysOperLogExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.buerc.log.model.SysOperLogExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -100,7 +100,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.buerc.permission.model.SysOperLogExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.buerc.log.model.SysOperLogExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -129,13 +129,13 @@
     delete from sys_oper_log
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.buerc.permission.model.SysOperLogExample">
+  <delete id="deleteByExample" parameterType="com.buerc.log.model.SysOperLogExample">
     delete from sys_oper_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.buerc.permission.model.SysOperLog">
+  <insert id="insert" parameterType="com.buerc.log.model.SysOperLog">
     insert into sys_oper_log (id, module, type, 
       name, target_id, operate_id, 
       operate_name, operate_time, operate_ip, 
@@ -147,7 +147,7 @@
       #{status,jdbcType=TINYINT}, #{args,jdbcType=LONGVARCHAR}, #{result,jdbcType=LONGVARCHAR}, 
       #{oldValue,jdbcType=LONGVARCHAR}, #{newValue,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.buerc.permission.model.SysOperLog">
+  <insert id="insertSelective" parameterType="com.buerc.log.model.SysOperLog">
     insert into sys_oper_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -238,7 +238,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.buerc.permission.model.SysOperLogExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.buerc.log.model.SysOperLogExample" resultType="java.lang.Long">
     select count(*) from sys_oper_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -330,7 +330,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.buerc.permission.model.SysOperLog">
+  <update id="updateByPrimaryKeySelective" parameterType="com.buerc.log.model.SysOperLog">
     update sys_oper_log
     <set>
       <if test="module != null">
@@ -375,7 +375,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.buerc.permission.model.SysOperLog">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.buerc.log.model.SysOperLog">
     update sys_oper_log
     set module = #{module,jdbcType=TINYINT},
       type = #{type,jdbcType=TINYINT},
@@ -392,7 +392,7 @@
       new_value = #{newValue,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.buerc.permission.model.SysOperLog">
+  <update id="updateByPrimaryKey" parameterType="com.buerc.log.model.SysOperLog">
     update sys_oper_log
     set module = #{module,jdbcType=TINYINT},
       type = #{type,jdbcType=TINYINT},

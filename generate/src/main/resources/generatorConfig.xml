@@ -32,15 +32,15 @@
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.buerc.permission.model" targetProject="generate\src\main\java"/>
+        <javaModelGenerator targetPackage="com.buerc.log.model" targetProject="generate\src\main\java"/>
 
-        <sqlMapGenerator targetPackage="com.buerc.permission.mapper" targetProject="generate\src\main\resources"/>
+        <sqlMapGenerator targetPackage="com.buerc.log.mapper" targetProject="generate\src\main\resources"/>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.buerc.permission.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.buerc.log.mapper"
                              targetProject="generate\src\main\java"/>
         <!--生成全部表tableName设为%-->
-<!--        <table tableName="%">-->
-        <table tableName="sys_oper_log">
+        <table tableName="%">
+<!--        <table tableName="sys_oper_log">-->
             <!--注释此语句，否则生成的insert语句将不会带id-->
 <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         </table>

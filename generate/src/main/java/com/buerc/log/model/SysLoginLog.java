@@ -1,6 +1,7 @@
-package com.buerc.permission.model;
+package com.buerc.log.model;
 
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.buerc.permission.model;
+package com.buerc.log.model;
 
 import java.util.ArrayList;
 import java.util.Date;
