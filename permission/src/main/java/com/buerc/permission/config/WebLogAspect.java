@@ -6,8 +6,9 @@ import com.buerc.common.constants.ResultCode;
 import com.buerc.common.exception.BizException;
 import com.buerc.common.utils.DateUtil;
 import com.buerc.common.utils.JSONUtil;
+import com.buerc.kafka.KafkaComponent;
+import com.buerc.kafka.KafkaConstants;
 import com.buerc.permission.enums.CodeConfigEnum;
-import com.buerc.permission.event.SysOperLogEvent;
 import com.buerc.permission.model.SysOperLog;
 import com.buerc.permission.util.IpUtil;
 import com.buerc.security.holder.SecurityContextHolder;
@@ -16,7 +17,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +29,11 @@ import java.util.Objects;
 @Slf4j
 @Order(1000)
 public class WebLogAspect {
-    private static ThreadLocal<SysOperLog> threadLocal = new ThreadLocal<>();
 
     @Resource
-    private ApplicationContext applicationContext;
+    private KafkaComponent<SysOperLog> kafkaComponent;
+
+    private static ThreadLocal<SysOperLog> threadLocal = new ThreadLocal<>();
 
     @Pointcut("@annotation(com.buerc.common.annotation.OperateLog)")
     public void onMethod() {
@@ -67,11 +68,10 @@ public class WebLogAspect {
 
     @AfterReturning(returning = "ret", value = "onMethod() || onClass()")
     public void afterReturning(Object ret) {
-        // todo 1.结果转换 2.批量处理
         try {
             SysOperLog sysOperLog = threadLocal.get();
             sysOperLog.setResult(JSONUtil.toStr(ret));
-            applicationContext.publishEvent(new SysOperLogEvent(sysOperLog));
+            kafkaComponent.send(KafkaConstants.Topic.OPERATE_LOG,KafkaConstants.Type.WEB_SYS_API,sysOperLog);
         } finally {
             threadLocal.remove();
         }
@@ -82,7 +82,7 @@ public class WebLogAspect {
         try {
             SysOperLog sysOperLog = threadLocal.get();
             sysOperLog.setResult(ExceptionUtils.getStackTrace(throwable));
-            applicationContext.publishEvent(new SysOperLogEvent(sysOperLog));
+            kafkaComponent.send(KafkaConstants.Topic.OPERATE_LOG,KafkaConstants.Type.WEB_SYS_API,sysOperLog);
         } finally {
             threadLocal.remove();
         }
