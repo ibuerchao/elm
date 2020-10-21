@@ -176,13 +176,17 @@ public class SysResModuleServiceImpl implements SysResModuleService {
 
     @Override
     public SysPermissionModule edit(ResModuleFormParam param) {
-        //todo 更新seq和level
         SysPermissionModule module = checkIdExist(param.getId());
         checkNameIsRepeat(param.getId(), param.getParentId(), param.getName());
         checkParentIdIsExist(param.getParentId());
         checkHierarchicalRelationship(param.getId(), param.getParentId());
         SysPermissionModule update = new SysPermissionModule();
         BeanUtils.copyProperties(param, update);
+        if (!module.getParentId().equals(param.getParentId())){
+            Pair<String, Integer> nextCode = getNextCode(param.getParentId());
+            update.setLevel(nextCode.getLeft());
+            update.setSeq(nextCode.getRight());
+        }
         sysPermissionModuleMapper.updateByPrimaryKeySelective(update);
         WebLogAspect.fillTextValue(module,update);
         return update;
