@@ -285,7 +285,7 @@ public class SysUserServiceImpl implements SysUserService {
     private String validateEncryptPassword(String encryptPassword){
         String password = rsaUtil.decryptByPrivateKey(encryptPassword);
         ValidateKit.assertTrue(password.length()<6 || password.length()>18,ResultCode.PASSWORD_LENGTH_ERROR_MSG);
-        //todo 密码数字字母下划线符号等
+        ValidateKit.assertTrue(!PasswordUtil.match(password),ResultCode.PASSWORD_RULE_ERROR_MSG);
         return password;
     }
 

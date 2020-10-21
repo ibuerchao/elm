@@ -56,6 +56,7 @@ public interface ResultCode {
     String PASSWORD_ERROR_MSG = "密码不能为空";
     String PASSWORD_INVALID_MSG = "密码不正确";
     String PASSWORD_LENGTH_ERROR_MSG="密码长度为6-18之间";
+    String PASSWORD_RULE_ERROR_MSG="必须由大小写字母、数字、特殊符号的8位以上组成";
     String DEPT_NAME_REPEAT_MSG="部门名称重复";
     String TOKEN_BLANK_MSG="token为空";
     String DEPT_ID_BLANK_MSG="部门ID为空";
