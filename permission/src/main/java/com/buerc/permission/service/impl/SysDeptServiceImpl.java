@@ -100,7 +100,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public SysDept edit(DeptFormParam dept) {
-        // todo 更新seq
         ValidateKit.notBlank(dept.getId(), ResultCode.DEPT_ID_BLANK_MSG);
         SysDept sysDept = checkIdExist(dept.getId());
         checkParentIdIsExist(dept.getParentId());
@@ -108,6 +107,9 @@ public class SysDeptServiceImpl implements SysDeptService {
         checkHierarchicalRelationship(dept.getId(), dept.getParentId());
         SysDept update = new SysDept();
         BeanUtils.copyProperties(dept, update);
+        if (!sysDept.getParentId().equals(dept.getParentId())){
+            update.setSeq(getNextSeq(dept.getParentId()));
+        }
         sysDeptMapper.updateByPrimaryKeySelective(update);
         WebLogAspect.fillTextValue(sysDept,update);
         return update;
