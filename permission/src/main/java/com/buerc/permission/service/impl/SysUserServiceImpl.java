@@ -18,6 +18,8 @@ import com.buerc.permission.util.MailUtil;
 import com.buerc.redis.Event;
 import com.buerc.redis.MessageProcessor;
 import com.buerc.redis.constants.EventConstants;
+import com.buerc.sys.bo.Button;
+import com.buerc.sys.bo.Menu;
 import com.buerc.sys.bo.UserInfo;
 import com.buerc.sys.dto.*;
 import com.buerc.sys.vo.UserVo;
@@ -313,8 +315,46 @@ public class SysUserServiceImpl implements SysUserService {
         List<String> userRoleIds = roles.stream().map(SysRole::getId).collect(Collectors.toList());
 
         userInfo.setRoles(getRoleCodes(userRoleIds));
-        userInfo.setPermissions(getPermissions(userRoleIds));
+        setExtInfo(userInfo,userRoleIds);
         return userInfo;
+    }
+
+    private void setExtInfo(UserInfo userInfo,List<String> roleIds){
+        if (CollectionUtils.isNotEmpty(roleIds)){
+            SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
+            sysRolePermissionExample.createCriteria().andRoleIdIn(roleIds);
+            List<SysRolePermission> rolePermissions = sysRolePermissionMapper.selectByExample(sysRolePermissionExample);
+            Map<Byte, List<SysRolePermission>> collect = rolePermissions.stream().collect(Collectors.groupingBy(SysRolePermission::getTargetType));
+            List<String> list = collect.get(SysConstant.RoleResTargetType.RES).stream().map(SysRolePermission::getTargetId).collect(Collectors.toList());
+
+            if (CollectionUtils.isNotEmpty(list)){
+                SysPermissionExample sysPermissionExample = new SysPermissionExample();
+                sysPermissionExample.createCriteria().andIdIn(list);
+                List<SysPermission> permissions = sysPermissionMapper.selectByExample(sysPermissionExample);
+                List<Button> buttons = new ArrayList<>();
+                Set<String> set = new HashSet<>();
+                List<Menu> menuList = new ArrayList<>();
+               for (SysPermission sysPermission:permissions){
+                   if (SysConstant.ResType.BUTTON.equals(sysPermission.getType())){
+                       set.add(sysPermission.getCode());
+                       Button button = new Button();
+                       button.setCode(sysPermission.getCode());
+                       button.setUrl(sysPermission.getUrl());
+                       buttons.add(button);
+                   }else if(SysConstant.ResType.MENU.equals(sysPermission.getType())){
+                       Menu menu = new Menu();
+                       menu.setName(sysPermission.getName());
+                       menu.setPath(sysPermission.getUrl());
+                       menu.setHidden(SysConstant.ResStatus.FORBID.equals(sysPermission.getStatus()));
+                       menu.setComponent(sysPermission.getCode());
+                       menuList.add(menu);
+                   }
+               }
+                userInfo.setPermissions(set);
+                userInfo.setButtons(buttons);
+                userInfo.setMenus(menuList);// todo menu构造成树
+            }
+        }
     }
 
     private UserVo getUserByToken(String token){
@@ -350,21 +390,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     private Set<String> getPermissions(List<String> roleIds){
-        if (CollectionUtils.isNotEmpty(roleIds)){
-            SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
-            sysRolePermissionExample.createCriteria().andRoleIdIn(roleIds);
-            List<SysRolePermission> rolePermissions = sysRolePermissionMapper.selectByExample(sysRolePermissionExample);
-            Map<Byte, List<SysRolePermission>> collect = rolePermissions.stream().collect(Collectors.groupingBy(SysRolePermission::getTargetType));
-            List<String> list = collect.get(SysConstant.RoleResTargetType.RES).stream().map(SysRolePermission::getTargetId).collect(Collectors.toList());
 
-            if (CollectionUtils.isNotEmpty(list)){
-                SysPermissionExample sysPermissionExample = new SysPermissionExample();
-                sysPermissionExample.createCriteria().andIdIn(list);
-                List<SysPermission> permissions = sysPermissionMapper.selectByExample(sysPermissionExample);
-                return permissions.stream().map(SysPermission::getCode).collect(Collectors.toSet());
-            }
-            return new HashSet<>();
-        }
         return new HashSet<>();
     }
 

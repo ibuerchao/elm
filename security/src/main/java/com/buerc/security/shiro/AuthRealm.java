@@ -1,5 +1,6 @@
 package com.buerc.security.shiro;
 
+import com.buerc.common.constants.SysConstant;
 import com.buerc.common.utils.JwtTokenUtil;
 import com.buerc.security.holder.SecurityContextHolder;
 import org.apache.shiro.authc.AuthenticationException;
@@ -19,7 +20,6 @@ import java.util.Set;
 
 @Component
 public class AuthRealm extends AuthorizingRealm {
-    private static final String SUPER_ADMIN = "SUPER_ADMIN";
 
     @Resource
     private JwtTokenUtil jwtTokenUtil;
@@ -42,12 +42,12 @@ public class AuthRealm extends AuthorizingRealm {
 
     @Override
     protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
-        return info.getRoles().contains(SUPER_ADMIN) || super.isPermitted(permission, info);
+        return info.getRoles().contains(SysConstant.SUPER_ADMIN) || super.isPermitted(permission, info);
     }
 
     @Override
     protected boolean hasRole(String roleIdentifier, AuthorizationInfo info) {
-        return info.getRoles().contains(SUPER_ADMIN) || super.hasRole(roleIdentifier, info);
+        return info.getRoles().contains(SysConstant.SUPER_ADMIN) || super.hasRole(roleIdentifier, info);
     }
 
     private Set<String> roles(String userId) {

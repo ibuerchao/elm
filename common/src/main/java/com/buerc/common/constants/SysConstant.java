@@ -12,6 +12,8 @@ public interface SysConstant {
     //最大层级
     int MAX_LEVELS = 40;
 
+    String SUPER_ADMIN = "SUPER_ADMIN";
+
     interface Sys{
         //邮箱验证码长度
         int EMAIL_CODE_LENGTH = 6;
@@ -64,5 +66,11 @@ public interface SysConstant {
     interface RoleUserTargetType{
         Byte ROLE_USER = 1; //为角色id指定用户
         Byte USER_ROLE = 2; //为用户id指定角色
+    }
+
+    interface ResType{
+        Byte MENU = 1; // 菜单
+        Byte BUTTON = 2; //按钮
+        Byte OTHER = 3; //其他
     }
 }
