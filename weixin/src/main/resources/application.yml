@@ -1,0 +1,17 @@
+server:
+  servlet:
+    context-path: /weixin
+  port: 8111
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+weixin:
+  mp:
+    appId: wxbcc4e25879fc23ac
+    sercret: beb2b6245818ba931c6f50cfd6d72a46
+    token: buerchao
+    aeskey: abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG
