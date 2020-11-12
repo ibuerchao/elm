@@ -1,9 +1,6 @@
 package com.buerc.weixin.mp.config;
 
-import com.buerc.weixin.mp.Handler.DefaultWxMpMessageHandler;
-import com.buerc.weixin.mp.Handler.LogWxMpMessageHandler;
-import com.buerc.weixin.mp.Handler.TextWxMpMessageHandler;
-import com.buerc.weixin.mp.Handler.VoiceWxMpMessageHandler;
+import com.buerc.weixin.mp.Handler.*;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -51,6 +48,7 @@ public class MpConfig {
         router.rule().handler(new LogWxMpMessageHandler()).next()
                 .rule().async(false).msgType(WxConsts.XmlMsgType.TEXT).handler(new TextWxMpMessageHandler()).end()
                 .rule().async(false).msgType(WxConsts.XmlMsgType.VOICE).handler(new VoiceWxMpMessageHandler()).end()
+                .rule().async(false).msgType(WxConsts.XmlMsgType.EVENT).event(WxConsts.EventType.TEMPLATE_SEND_JOB_FINISH).handler(new TemplateSendJobFinishWxMpMessageHandler()).end()
                 .rule().async(false).handler(new DefaultWxMpMessageHandler()).end();
         return router;
     }
