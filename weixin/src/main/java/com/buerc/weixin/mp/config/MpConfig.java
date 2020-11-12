@@ -49,6 +49,8 @@ public class MpConfig {
                 .rule().async(false).msgType(WxConsts.XmlMsgType.TEXT).handler(new TextWxMpMessageHandler()).end()
                 .rule().async(false).msgType(WxConsts.XmlMsgType.VOICE).handler(new VoiceWxMpMessageHandler()).end()
                 .rule().async(false).msgType(WxConsts.XmlMsgType.EVENT).event(WxConsts.EventType.TEMPLATE_SEND_JOB_FINISH).handler(new TemplateSendJobFinishWxMpMessageHandler()).end()
+                .rule().async(false).msgType(WxConsts.XmlMsgType.EVENT).event(WxConsts.EventType.UNSUBSCRIBE).handler(new UnsubscribeWxMpMessageHandler()).end()
+                .rule().async(false).msgType(WxConsts.XmlMsgType.EVENT).event(WxConsts.EventType.SUBSCRIBE).handler(new SubscribeWxMpMessageHandler()).end()
                 .rule().async(false).handler(new DefaultWxMpMessageHandler()).end();
         return router;
     }
