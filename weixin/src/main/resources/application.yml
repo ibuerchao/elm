@@ -11,7 +11,17 @@ logging:
 
 weixin:
   mp:
-    appId: wxbcc4e25879fc23ac
-    sercret: beb2b6245818ba931c6f50cfd6d72a46
-    token: buerchao
-    aeskey: abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG
+#    appId: wxbcc4e25879fc23ac
+#    sercret: beb2b6245818ba931c6f50cfd6d72a46
+#    token: buerchao
+#    aeskey: abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG
+
+#    appId: wxf09c51d39db304b8
+#    sercret: 2952b9b3f81177f8b5d506caba500c54
+#    token: buerchao
+#    aeskey: s6V7wd0zs0vrYe0GQW3Gsp9tbHhxRPrRWw60HZzltIE
+
+    appId: wxffc1ddd38a43315f
+    sercret: a04cc9a78917bcf185cc2ff2d14d5db1
+    token: dfe8831da0c1d0d68d46d605a641e2ff
+    aeskey: s6V7wd0zs0vrYe0GQW3Gsp9tbHhxRPrRWw60HZzltIE

@@ -19,13 +19,13 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/mp")
+@RequestMapping("/mp/template")
 public class TemplateController {
 
     @Resource
     private WxMpService wxMpService;
 
-    @PostMapping("/template/send")
+    @PostMapping("/send")
     @ResponseBody
     public String send(@RequestBody Map<String,Object> map) throws WxErrorException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
