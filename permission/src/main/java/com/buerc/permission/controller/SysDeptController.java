@@ -2,12 +2,14 @@ package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.annotation.ParamValid;
+import com.buerc.common.permission.PermissionCode;
 import com.buerc.common.web.Result;
 import com.buerc.permission.service.SysDeptService;
 import com.buerc.sys.dto.DeptFormParam;
 import com.buerc.sys.dto.DeptListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +23,7 @@ public class SysDeptController {
     @Resource
     private SysDeptService sysDeptService;
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_ADD)
     @ApiOperation(value = "新增部门")
     @PostMapping("/add")
     @OperateLog(value = "新增部门",type = 1)
@@ -28,6 +31,7 @@ public class SysDeptController {
         return Result.success(sysDeptService.add(dept));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_DELETE)
     @ApiOperation(value = "删除部门")
     @DeleteMapping("/delete/{id}")
     @OperateLog(value = "删除部门",type = 2)
@@ -36,6 +40,7 @@ public class SysDeptController {
         return Result.success();
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_EDIT)
     @ApiOperation(value = "编辑部门")
     @PostMapping("/edit")
     @OperateLog(value = "编辑部门",type = 3)
@@ -43,6 +48,7 @@ public class SysDeptController {
         return Result.success(sysDeptService.edit(dept));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_DETAIL)
     @ApiOperation(value = "部门详情")
     @GetMapping("/detail/{id}")
     @OperateLog(value = "部门详情",type = 4)
@@ -50,6 +56,7 @@ public class SysDeptController {
         return Result.success(sysDeptService.detail(id));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_LIST)
     @ApiOperation(value = "部门列表")
     @PostMapping("/list")
     @OperateLog(value = "部门列表",type = 5)
@@ -57,6 +64,7 @@ public class SysDeptController {
         return sysDeptService.list(param);
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_UP)
     @ApiOperation(value = "上移部门")
     @GetMapping("/up/{id}")
     @OperateLog(value = "上移部门",type = 6)
@@ -65,6 +73,7 @@ public class SysDeptController {
         return Result.success();
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_DOWN)
     @ApiOperation(value = "下移部门")
     @GetMapping("/down/{id}")
     @OperateLog(value = "下移部门",type = 7)
@@ -73,6 +82,7 @@ public class SysDeptController {
         return Result.success();
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_SUPERIOR)
     @ApiOperation(value = "部门树")
     @GetMapping("/superior")
     @OperateLog(value = "部门树",type = 8)
@@ -81,6 +91,7 @@ public class SysDeptController {
         return Result.success(sysDeptService.superior(id,status));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.DEPT_UPDATE_STATUS)
     @ApiOperation(value = "更新状态")
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)

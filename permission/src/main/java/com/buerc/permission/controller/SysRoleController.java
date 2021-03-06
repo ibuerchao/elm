@@ -2,6 +2,7 @@ package com.buerc.permission.controller;
 
 import com.buerc.common.annotation.OperateLog;
 import com.buerc.common.annotation.ParamValid;
+import com.buerc.common.permission.PermissionCode;
 import com.buerc.common.web.Result;
 import com.buerc.permission.model.SysRole;
 import com.buerc.permission.service.SysRoleService;
@@ -10,6 +11,7 @@ import com.buerc.sys.dto.RoleListParam;
 import com.buerc.sys.dto.UpdateStatusParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +26,7 @@ public class SysRoleController {
     @Resource
     private SysRoleService sysRoleService;
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_ADD)
     @ApiOperation(value = "新增角色")
     @PostMapping("/add")
     @OperateLog(value = "新增角色",type = 1)
@@ -31,6 +34,7 @@ public class SysRoleController {
         return Result.success(sysRoleService.add(param));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_DELETE)
     @ApiOperation(value = "删除角色")
     @DeleteMapping("/delete/{id}")
     @OperateLog(value = "删除角色",type = 2)
@@ -40,6 +44,7 @@ public class SysRoleController {
         return Result.success();
     }
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_EDIT)
     @ApiOperation(value = "编辑角色")
     @PostMapping("/edit")
     @OperateLog(value = "编辑角色",type = 3)
@@ -51,6 +56,7 @@ public class SysRoleController {
         return Result.success(pair.getLeft());
     }
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_DETAIL)
     @ApiOperation(value = "角色详情")
     @GetMapping("/detail/{id}")
     @OperateLog(value = "角色详情",type = 4)
@@ -58,6 +64,7 @@ public class SysRoleController {
         return Result.success(sysRoleService.detail(id));
     }
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_UPDATE_STATUS)
     @ApiOperation(value = "更新状态")
     @PostMapping("/update/status")
     @OperateLog(value = "更新状态",type = 3)
@@ -71,6 +78,7 @@ public class SysRoleController {
         }
     }
 
+    @RequiresPermissions(PermissionCode.Sys.ROLE_LIST)
     @ApiOperation(value = "角色列表")
     @PostMapping("/list")
     @OperateLog(value = "角色列表",type = 5)
