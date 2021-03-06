@@ -2,6 +2,7 @@ package com.buerc.kafka;
 
 import com.buerc.common.utils.JSONUtil;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ public class KafkaComponent<T> {
     @Resource
     private KafkaTemplate<String,String> kafkaTemplate;
 
+    @Async("logThreadPool")
     public void send(String topic,String type,T data){
         KafkaMessage<T> message = new KafkaMessage<>();
         message.setTopic(topic);
