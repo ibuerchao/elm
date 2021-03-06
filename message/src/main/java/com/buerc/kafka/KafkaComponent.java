@@ -1,6 +1,5 @@
 package com.buerc.kafka;
 
-import com.buerc.common.utils.JSONUtil;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,6 @@ public class KafkaComponent<T> {
         message.setTopic(topic);
         message.setType(type);
         message.setData(data);
-        kafkaTemplate.send(topic, JSONUtil.toStr(message));
+//        kafkaTemplate.send(topic, JSONUtil.toStr(message));
     }
 }
