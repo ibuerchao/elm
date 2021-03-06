@@ -47,6 +47,7 @@ public class MyExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result exception(Exception e){
-        return Result.fail(e.getMessage());
+//        return Result.fail(e.getMessage());
+        return Result.fail("出现bug啦");
     }
 }
